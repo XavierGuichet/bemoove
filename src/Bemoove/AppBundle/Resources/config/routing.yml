@@ -1,11 +1,7 @@
-bemoove_front:
-    resource: "@BemooveAppBundle/Resources/config/routing-front.yml"
-    prefix:   /
-
-bemoove_sporty:
-    resource: "@BemooveAppBundle/Resources/config/routing-sporty.yml"
-    prefix:   /sporty
-
-bemoove_coach:
-    resource: "@BemooveAppBundle/Resources/config/routing-coach.yml"
-    prefix:   /coach
+# bemoove_front:
+#     resource: "@BemooveAppBundle/Resources/config/routing-front.yml"
+#     prefix:   /
+#
+# bemoove_app_coach_profile:
+#     path:     /profile
+#     defaults: { _controller: BemooveAppBundle:Coach:profile }

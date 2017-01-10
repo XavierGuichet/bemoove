@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bemoove\UserBundle\BemooveUserBundle(),
             new Bemoove\AppBundle\BemooveAppBundle(),
-            new Bemoove\AdminBundle\BemooveAdminBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
