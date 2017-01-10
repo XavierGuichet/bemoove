@@ -1,0 +1,135 @@
+{# src/Bemoove/AppBundle/Resources/views/Coach/profile.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Add training session{% endblock %}
+
+{% block body %}
+    <h1>Add training session</h1>
+    <section class="row">
+        <div class="wrapper">
+            <nav class="sm-2">
+                <h2>liens Coach</h2>
+                <ul>
+                    <li><a href="{{ path('bemoove_app_coach_dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ path('bemoove_app_coach_profile') }}">My profile</a></li>
+                    <li><a href="{{ path('bemoove_app_coach_mytraining') }}">My trainning</a></li>
+                    <li><a href="{{ path('bemoove_app_coach_gallery') }}">My Images</a></li>
+                </ul>
+            </nav>
+            <div class="sm-10">
+                <h2>Add training session</h2>
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="sm-6">
+                        <h3>Informations générales</h3>
+
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.sport) }}
+                        <label>Ajouter une image</label><input type="file" disabled />
+
+                        <ul class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
+                            {# iterate over each existing tag and render its only field: name #}
+                            {% for tag in form.tags %}
+                                <li>{{ form_row(tag.name) }}</li>
+                            {% endfor %}
+                        </ul>
+
+
+                    </div>
+                    <div class="sm-6">
+                        <h3>Information pratique</h3>
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.date) }}
+                        {{ form_row(form.duration) }}
+                        {{ form_row(form.price) }}
+                    </div>
+                    <div class="sm-6">
+                        <h3>Information utilitaire</h3>
+                        <label>Nb de place minimum pour réaliser la session</label>
+                        <label>Fin des inscriptions</label>
+                        <label>Récurrence</label>
+                        {{ form_row(form.nbTicketAvailable) }}
+                    </div>
+                </div>
+
+
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+    <section>
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script>
+            var $collectionHolder;
+
+            // setup an "add a tag" link
+            var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
+            var $newLinkLi = $('<li></li>').append($addTagLink);
+
+            jQuery(document).ready(function() {
+                // Get the ul that holds the collection of tags
+                $collectionHolder = $('ul.tags');
+
+                // add a delete link to all of the existing tag form li elements
+                $collectionHolder.find('li').each(function() {
+                    addTagFormDeleteLink($(this));
+                });
+
+                // add the "add a tag" anchor and li to the tags ul
+                $collectionHolder.append($newLinkLi);
+
+                // count the current form inputs we have (e.g. 2), use that as the new
+                // index when inserting a new item (e.g. 2)
+                $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+                $addTagLink.on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // add a new tag form (see next code block)
+                    addTagForm($collectionHolder, $newLinkLi);
+                });
+            });
+
+            function addTagForm($collectionHolder, $newLinkLi) {
+                // Get the data-prototype explained earlier
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormLi = $('<li></li>').append(newForm);
+                $newLinkLi.before($newFormLi);
+
+                // add a delete link to the new form
+                addTagFormDeleteLink($newFormLi);
+            }
+
+            function addTagFormDeleteLink($tagFormLi) {
+                var $removeFormA = $('<a href="#">delete this tag</a>');
+                $tagFormLi.append($removeFormA);
+
+                $removeFormA.on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $tagFormLi.remove();
+                });
+            }
+        </script>
+    {% endblock %}
+    

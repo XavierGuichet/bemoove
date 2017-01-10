@@ -1,0 +1,24 @@
+login_check:
+    path:   /login_check
+    methods: POST
+
+user_login:
+    path:     /login
+    defaults: { _controller: BemooveUserBundle:Security:login }
+    methods: GET
+
+logout:
+    path: /logout
+
+admin_login:
+    path:     /admin/login
+    defaults: { _controller: BemooveUserBundle:Security:login }
+    methods: GET
+
+admin_logout:
+    path: /admin_logout
+
+user_register:
+    path: /register
+    defaults: { _controller: BemooveUserBundle:Security:register }
+    methods: GET

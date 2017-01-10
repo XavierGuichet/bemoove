@@ -1,0 +1,25 @@
+bemoove_app_sporty_profile:
+    path:     /profile
+    defaults: { _controller: BemooveAppBundle:Sporty:profile }
+
+bemoove_app_sporty_messagerie:
+    path:     /messagerie
+    defaults: { _controller: BemooveAppBundle:Sporty:messagerie }
+
+bemoove_app_sporty_comingtraining:
+    path:     /comingtraining
+    defaults: { _controller: BemooveAppBundle:Sporty:comingtraining }
+
+bemoove_app_sporty_pasttraining:
+    path:     /pasttraining
+    defaults: { _controller: BemooveAppBundle:Sporty:pasttraining }
+
+bemoove_app_sporty_favorites:
+    path:     /
+    defaults: { _controller: BemooveAppBundle:Sporty:favorites }
+
+bemoove_app_sporty_direct_booking:
+    path:   /direct_booking/{id_session}
+    defaults: { _controller: BemooveAppBundle:Sporty:directBooking}
+    requirements:
+        id_session:  \d+

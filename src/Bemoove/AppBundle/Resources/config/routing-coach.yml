@@ -1,0 +1,25 @@
+bemoove_app_coach_profile:
+    path:     /profile
+    defaults: { _controller: BemooveAppBundle:Coach:profile }
+
+bemoove_app_coach_gallery:
+    path:     /gallery
+    defaults: { _controller: BemooveAppBundle:Coach:gallery }
+
+bemoove_app_coach_mytraining:
+    path:     /training/list
+    defaults: { _controller: BemooveAppBundle:Coach:mytraining }
+
+bemoove_app_coach_addtraining:
+    path:     /training/new
+    defaults: { _controller: BemooveAppBundle:Coach:addtraining }
+
+bemoove_app_coach_edittraining:
+    path:     /training/edit/{idtrainingsession}
+    defaults: { _controller: BemooveAppBundle:Coach:addtraining }
+    requirements:
+        idtrainingsession:  \d+
+
+bemoove_app_coach_dashboard:
+    path:     /dashboard
+    defaults: { _controller: BemooveAppBundle:Coach:dashboard }

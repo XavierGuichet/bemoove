@@ -1,0 +1,26 @@
+{# src/Bemoove/AppBundle/Resources/views/security/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Bemoove{% endblock %}
+
+{% block body %}
+    <h1>Search result</h1>
+    <section class="row">
+        <div class="wrapper">
+
+            {% for trainingSessionList in sorted_training %}
+                <h2>Resultat de pertinence :
+                    {{ loop.revindex }}</h2>
+                <div class="row">
+                    {% for trainingSession in trainingSessionList %}
+                        {{ include("BemooveAppBundle:Parts:trainingsession-block.html.twig")}}
+                    {% else %}
+                        <div class="sm-4">Pas de training dans cette catégorie.</div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">Aucun Training ne correspond à ces critères.</div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -18,7 +18,9 @@ class AppKernel extends Kernel
             new Dunglas\ActionBundle\DunglasActionBundle(),
             new ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
-            new AppBundle\AppBundle(),
+            new Bemoove\UserBundle\BemooveUserBundle(),
+            new Bemoove\AppBundle\BemooveAppBundle(),
+            new Bemoove\AdminBundle\BemooveAdminBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

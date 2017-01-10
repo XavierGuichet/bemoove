@@ -1,0 +1,17 @@
+{# app/Resources/views/security/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Bemoove{% endblock %}
+
+{% block body %}
+    <h2>PROFILE USER</h2>
+    <section class="row">
+        <div class="wrapper">
+            {{ user.firstname }}
+            {{ user.lastname }}
+            <div class="sm-4">
+                <img src="/{{ user.avatar.getWebPath() }}" class="sm-12"/>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{# src/Bemoove/AppBundle/Resources/views/Search/trainingsession.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Bemoove{% endblock %}
+
+{% block body %}
+    <h1>Display one trainingsession</h1>
+    <section class="row">
+        <div class="wrapper">
+            {% if trainingSession.photo != null %}
+                <img src="/{{ trainingSession.photo.getWebPath() }}" class="sm-12"/>
+            {% else %}
+                <img src="/uploads/images/trainingsession/default.jpg" class="sm-12"/>
+            {% endif %}
+            <h3>{{ trainingSession.title }}</h3>
+            <p>Le
+                {{ trainingSession.date|date('Y-m-d \à H:i:s') }}
+                par
+                {{ trainingSession.coach.profile.firstname }}
+                {{ trainingSession.coach.profile.lastname }}</p>
+            <p>Sport
+                {{ trainingSession.sport.name }}</p>
+            <ul class="inline">
+                {% for tag in trainingSession.tags %}
+                    <li>{{ tag.name }}</li>
+                {% endfor %}
+            </ul>
+            <p>Durée
+                {{ trainingSession.duration|date('H:i') }}</p>
+            <p>{{ trainingSession.address.city.name }}</p>
+            <p>{{ trainingSession.nbTicketAvailable }}</p>
+            <p>{{ trainingSession.price }}</p>
+            {% if trainingSession.soldOut == false %}
+                {#% if is_granted("IS_AUTHENTICATED_REMEMBERED") %#}
+                    <p>
+                        <a href="{{ path('bemoove_app_sporty_direct_booking', {'id_session': trainingSession.id}) }}" class="button">M'inscrire</a>
+                    </p>
+                {#% else %}
+                    <p>
+                        <a href="{{ path('bemoove_user_register_with_profile') }}" class="notready button">M'inscrire</a>
+                    </p>
+                {% endif %#}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
