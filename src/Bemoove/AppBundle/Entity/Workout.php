@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Workout
  *
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"workout.search"}})
  * @ORM\Table(name="workout")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\WorkoutRepository")
  */

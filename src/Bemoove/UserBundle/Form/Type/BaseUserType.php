@@ -1,6 +1,6 @@
 <?php
 
-namespace Bemoove\UserBundle\Type\Form;
+namespace Bemoove\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

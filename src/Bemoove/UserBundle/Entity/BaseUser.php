@@ -63,7 +63,11 @@ class BaseUser implements UserInterface
         // Chaque utilisateur va se voir attribuer une clé permettant
         // de saler son mot de passe. Cela n'est pas obligatoire,
         // on pourrait mettre $salt à null
-        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        var_dump($this->id);
+        var_dump($this->salt);
+        if(empty($this->salt)) {
+            $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        }
     }
     /**
      * Get id
@@ -136,7 +140,7 @@ class BaseUser implements UserInterface
         $arr_roles = array_unique($arr_roles);
         sort($arr_roles);
         $this->setRoles($arr_roles);
-        
+
         return unserialize($this->roles);
     }
 

@@ -10,4 +10,5 @@ namespace Bemoove\AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

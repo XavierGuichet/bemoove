@@ -2,6 +2,12 @@ api:
     resource: '.'
     type:     'api_platform'
 
+# api_login_check:
+#     path: /login_check
+
 #app:
 #    resource: '@AppBundle/Action/'
 #    type:     'annotation'
+bemoove_user:
+    resource: "@BemooveUserBundle/Resources/config/routing.yml"
+    prefix:   /

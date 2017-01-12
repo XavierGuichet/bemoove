@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Bemoove\UserBundle\Entity\BaseUser;
 use Bemoove\UserBundle\Form\Type\BaseUserType;
 
+use Bemoove\AppBundle\Entity\User;
+
 class SecurityController extends Controller
 {
 
