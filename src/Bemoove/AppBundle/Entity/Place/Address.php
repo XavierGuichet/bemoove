@@ -26,6 +26,13 @@ class Address
     /**
      * @var string
      *
+     * @ORM\Column(name="Name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="Firstline", type="string", length=255)
      */
     private $firstline;
@@ -219,5 +226,29 @@ class Address
     public function getLongitude()
     {
         return $this->longitude;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Address
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
