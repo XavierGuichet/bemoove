@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Address
  *
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"address.search"}})
  * @ORM\Table(name="address")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\AddressRepository")
  */
@@ -71,6 +71,11 @@ class Address
      */
     private $longitude;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bemoove\AppBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
 
 
@@ -250,5 +255,46 @@ class Address
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add user
+     *
+     * @param \Bemoove\AppBundle\Entity\User $user
+     *
+     * @return Address
+     */
+    public function addUser(\Bemoove\AppBundle\Entity\User $user)
+    {
+        $this->user[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \Bemoove\AppBundle\Entity\User $user
+     */
+    public function removeUser(\Bemoove\AppBundle\Entity\User $user)
+    {
+        $this->user->removeElement($user);
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

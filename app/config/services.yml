@@ -18,6 +18,10 @@ services:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { coach.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'workout.search' }]
+    address.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { user.id: 'exact' }]
+        tags: [ { name: 'api_platform.filter', id: 'address.search' }]
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
