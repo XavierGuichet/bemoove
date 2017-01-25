@@ -3,12 +3,14 @@
 namespace Bemoove\AppBundle\Entity\Place;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Address
  *
- * @ApiResource(attributes={"filters"={"address.search"}})
+ * @ApiResource(attributes={"filters"={"address.search"},"normalization_context"={"groups"={"address","workout"}}})
  * @ORM\Table(name="address")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\AddressRepository")
  */
@@ -17,6 +19,7 @@ class Address
     /**
      * @var int
      *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,41 +28,48 @@ class Address
 
     /**
      * @var string
-     *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="Name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="Firstline", type="string", length=255)
      */
     private $firstline;
 
     /**
      * @var string
-     *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="Secondline", type="string", length=255, nullable=true)
      */
     private $secondline;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="District", type="string", length=255)
-     */
-    private $district;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Place\City", cascade={"persist"})
+     * @Groups({"address","workout"})
+     * @ORM\Column(name="City", type="string", length=255)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(groups={"address"})
      */
     private $city;
 
     /**
      * @var string
      *
+     * @ORM\Column(name="PostalCode", type="string", length=255)
+     * @Groups({"address"})
+     * @Assert\NotBlank(groups={"address"})
+     * @Assert\Length(min=5,groups={"address"})
+     * @Assert\Length(max=5,groups={"address"})
+     */
+    private $postalCode;
+
+    /**
+     * @var string
+     *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="Latitude", type="string", length=255, nullable=true)
      */
     private $latitude;
@@ -67,13 +77,24 @@ class Address
     /**
      * @var string
      *
+     * @Groups({"address","workout"})
      * @ORM\Column(name="Longitude", type="string", length=255, nullable=true)
      */
     private $longitude;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bemoove\AppBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var boolean
+     *
+     * @ORM\Column(name="Editable", type="boolean",nullable=true)
+     */
+    private $editable;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User", cascade={"persist"})
+     * @Groups({"address","workout"})
+     * @Assert\NotNull(groups={"address"})
+     * @Assert\NotBlank(groups={"address"})
      */
     private $user;
 
@@ -135,30 +156,6 @@ class Address
     public function getSecondline()
     {
         return $this->secondline;
-    }
-
-    /**
-     * Set district
-     *
-     * @param string $district
-     *
-     * @return Address
-     */
-    public function setDistrict($district)
-    {
-        $this->district = $district;
-
-        return $this;
-    }
-
-    /**
-     * Get district
-     *
-     * @return string
-     */
-    public function getDistrict()
-    {
-        return $this->district;
     }
 
     /**
@@ -256,37 +253,6 @@ class Address
     {
         return $this->name;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add user
-     *
-     * @param \Bemoove\AppBundle\Entity\User $user
-     *
-     * @return Address
-     */
-    public function addUser(\Bemoove\AppBundle\Entity\User $user)
-    {
-        $this->user[] = $user;
-
-        return $this;
-    }
-
-    /**
-     * Remove user
-     *
-     * @param \Bemoove\AppBundle\Entity\User $user
-     */
-    public function removeUser(\Bemoove\AppBundle\Entity\User $user)
-    {
-        $this->user->removeElement($user);
-    }
 
     /**
      * Get user
@@ -296,5 +262,67 @@ class Address
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set editable
+     *
+     * @param string $editable
+     *
+     * @return Address
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable
+     *
+     * @return string
+     */
+    public function getEditable()
+    {
+        return $this->editable;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Bemoove\AppBundle\Entity\User $user
+     *
+     * @return Address
+     */
+    public function setUser(\Bemoove\AppBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Set postalCode
+     *
+     * @param string $postalCode
+     *
+     * @return Address
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
+
+        return $this;
+    }
+
+    /**
+     * Get postalCode
+     *
+     * @return string
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
     }
 }

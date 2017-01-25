@@ -3,12 +3,16 @@
 namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Sport
  *
- * @ApiResource
+ * @ApiResource(attributes={"filters"={"sport.search"},
+ *          "denormalization_context"={"groups"={"post_workout"}},
+ *          "normalization_context"={"groups"={"workout"}}
+ *  })
  * @ORM\Table(name="sport")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\SportRepository")
  */
@@ -25,7 +29,7 @@ class Sport
 
     /**
      * @var string
-     *
+     * @Groups({"workout","post_workout"})
      * @ORM\Column(name="Name", type="string", length=255)
      */
     private $name;
@@ -33,7 +37,7 @@ class Sport
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="text")
+     * @ORM\Column(name="Description", type="text", nullable=true)
      */
     private $description;
 

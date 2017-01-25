@@ -4,6 +4,7 @@ namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * Image.
  *
- * @ApiResource
+ * @ApiResource(attributes={"normalization_context"={"groups"={"workout"}}})
  * @ORM\Table(name="image")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\ImageRepository")
  */
@@ -20,6 +21,7 @@ class Image
     /**
      * @var int
      *
+     * @Groups({"workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -29,7 +31,7 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      * @Assert\NotBlank
      */
     private $name;
@@ -64,6 +66,12 @@ class Image
      * @ORM\JoinColumn(nullable=true)
      */
     private $owner;
+
+    /**
+     * @var string
+     * @Groups({"workout"})
+     */
+    private $base64data;
 
     private $slug_name;
 
@@ -270,5 +278,29 @@ class Image
     public function getSlug_name()
     {
         return $this->slug_name;
+    }
+
+    /**
+     * Set slug_name.
+     *
+     * @param string $slug_name
+     *
+     * @return Image
+     */
+    public function setBase64data($base64data)
+    {
+        $this->base64data = $base64data;
+
+        return $this;
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return string
+     */
+    public function getBase64data()
+    {
+        return $this->base64data;
     }
 }

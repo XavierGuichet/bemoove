@@ -65,6 +65,9 @@ swiftmailer:
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
+    port:      "465"
+    encryption: "ssl"
+    auth_mode: "login"
     spool:     { type: memory }
 
 # Nelmio CORS
@@ -82,8 +85,22 @@ nelmio_cors:
 # API PLATFORM
 api_platform:
     formats:
-        json: ['application/json']
-        html: ['text/html']
+        json:
+            mime_types: ['application/json']
+        jsonld:
+            mime_types: ['application/ld+json']
+        html:
+            mime_types: ['text/html']
+
+        # ...
+
+    # The list of enabled error formats. The first one will be the default.
+    error_formats:
+        jsonproblem:
+            mime_types: ['application/problem+json']
+
+        jsonld:
+            mime_types: ['application/ld+json']
 
 # LEXIK JWT
 lexik_jwt_authentication:
@@ -91,3 +108,20 @@ lexik_jwt_authentication:
     public_key_path:  '%jwt_public_key_path%'
     pass_phrase:      '%jwt_key_pass_phrase%'
     token_ttl:        '%jwt_token_ttl%'
+    user_identity_field: username
+    token_extractors:
+        query_parameter:           # check token in query string parameter
+            enabled: false
+            name: bearer
+        authorization_header:      # look for a token as Authorization Header
+            enabled: true
+            prefix:  Bearer
+            name:    Authorization
+        cookie:                    # check token in a cookie
+            enabled: false
+
+
+#DUNGLAS Action
+dunglas_action:
+    directories: # List of directories relative to the kernel root directory containing classes to auto-register.
+        - '../src/Bemoove/AppBundle/{Controller,Action,Command,EventSubscriber}'

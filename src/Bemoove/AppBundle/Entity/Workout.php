@@ -3,13 +3,18 @@
 namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Workout
  *
- * @ApiResource(attributes={"filters"={"workout.search"}})
+ * @ApiResource(attributes={
+ *          "filters"={"workout.search"},
+ *          "denormalization_context"={"groups"={"post_workout"}},
+ *          "normalization_context"={"groups"={"workout"}}
+ *  })
  * @ORM\Table(name="workout")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\WorkoutRepository")
  */
@@ -18,6 +23,7 @@ class Workout
     /**
      * @var int
      *
+     * @Groups({"workout","post_workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,41 +31,46 @@ class Workout
     private $id;
 
     /**
+     * @Groups({"workout"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $coach;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=255)
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Name", type="string", length=255, nullable=true)
      */
     private $title;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Date", type="datetimetz")
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Startdate", type="datetimetz")
      */
-    private $date;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Sport")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sport;
-
+    private $startdate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Duration", type="time")
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Enddate", type="datetimetz")
      */
-    private $duration;
+    private $enddate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"})
+     * @Groups({"workout","post_workout"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Sport", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sport;
+
+    /**
+     * @Groups({"workout","post_workout"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"}, fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $address;
@@ -67,7 +78,8 @@ class Workout
     /**
      * @var int
      *
-     * @ORM\Column(name="Nb_Ticket_Available", type="smallint")
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Nb_Ticket_Available", type="smallint", nullable=true)
      */
     private $nbTicketAvailable;
 
@@ -81,26 +93,35 @@ class Workout
      */
     private $soldOut;
 
-
+    /**
+     * @var \DateTime
+     *
+     * @Groups({"workout","post_workout"})
+     */
+    private $duration;
 
     /**
      * @var string
      *
+     * @Groups({"workout","post_workout"})
      * @ORM\Column(name="Price", type="decimal", precision=7, scale=2)
      */
     private $price;
 
     /**
+     * @Groups({"workout","post_workout"})
      * @ORM\Column(name="Description", type="text")
      */
     protected $description;
 
     /**
+     * @Groups({"workout","post_workout"})
      * @ORM\ManyToMany(targetEntity="Bemoove\AppBundle\Entity\Tag", cascade={"persist"})
      */
     protected $tags;
 
     /**
+     * @Groups({"workout","post_workout"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
@@ -123,44 +144,6 @@ class Workout
     }
 
     /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return TrainingSession
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set duration
-     *
-     * @param \DateTime $duration
-     *
-     * @return TrainingSession
-     */
-    public function setDuration($duration)
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    /**
      * Get duration
      *
      * @return \DateTime
@@ -179,7 +162,7 @@ class Workout
      */
     public function setNbTicketAvailable($nbTicketAvailable)
     {
-        $this->nbTicketAvailable = $nbTicketAvailable;
+        $this->nbTicketAvailable = (int) $nbTicketAvailable;
 
         return $this;
     }
@@ -244,7 +227,7 @@ class Workout
      */
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = (int) $price;
 
         return $this;
     }
@@ -435,5 +418,53 @@ class Workout
     public function getPhoto()
     {
         return $this->photo;
+    }
+
+    /**
+     * Set startdate
+     *
+     * @param \DateTime $startdate
+     *
+     * @return Workout
+     */
+    public function setStartdate($startdate)
+    {
+        $this->startdate = $startdate;
+
+        return $this;
+    }
+
+    /**
+     * Get startdate
+     *
+     * @return \DateTime
+     */
+    public function getStartdate()
+    {
+        return $this->startdate;
+    }
+
+    /**
+     * Set enddate
+     *
+     * @param \DateTime $enddate
+     *
+     * @return Workout
+     */
+    public function setEnddate($enddate)
+    {
+        $this->enddate = $enddate;
+
+        return $this;
+    }
+
+    /**
+     * Get enddate
+     *
+     * @return \DateTime
+     */
+    public function getEnddate()
+    {
+        return $this->enddate;
     }
 }

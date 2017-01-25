@@ -12,6 +12,7 @@ security:
             encode_as_base64: true
 
     role_hierarchy:
+        ROLE_COACH: ROLE_COACH
         ROLE_READER: ROLE_USER
         ROLE_ADMIN: ROLE_READER
 
@@ -29,12 +30,20 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
 
+        notsecure:
+            pattern: ^/images
+            security: false
+
         main:
             pattern:   ^/
+            methods: [POST, PUT]
             provider: bemoove_sporty_user_provider
             stateless: true
             anonymous: true
             lexik_jwt: ~
+            # guard:
+            #     authenticators:
+            #         - lexik_jwt_authentication.jwt_token_authenticator
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -42,4 +51,7 @@ security:
 
     access_control:
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/, roles: [ ROLE_READER ] }
+        - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/addresses, roles: [ ROLE_COACH ], methods: [POST, PUT] }
+        - { path: ^/addresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }

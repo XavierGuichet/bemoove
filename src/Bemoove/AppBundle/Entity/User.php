@@ -3,6 +3,7 @@
 namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Bemoove\UserBundle\Entity\BaseUser as BaseUser;
 

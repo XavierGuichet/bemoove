@@ -13,6 +13,19 @@ services:
         arguments: [ '@request_stack', '@doctrine.orm.entity_manager' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    api.event.jwt_expired_listener:
+        class: Bemoove\AppBundle\EventListener\JWTExpiredListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
+    api.event.jwt_invalid_listener:
+        class: Bemoove\UserBundle\Services\JWTInvalidListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJWTInvalid }
+    api.event.jwt_notfound_listener:
+        class: Bemoove\UserBundle\Services\JWTNotFoundListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
+
 
     workout.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
@@ -22,6 +35,11 @@ services:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { user.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'address.search' }]
+    sport.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { name: 'partial' }]
+        tags: [ { name: 'api_platform.filter', id: 'sport.search' }]
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
