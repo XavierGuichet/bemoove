@@ -29,6 +29,4 @@ class ImageUpload
         return $data; // API Platform will automatically validate, persist (if you use Doctrine) and serialize an entity
                       // for you. If you prefer to do it yourself, return an instance of Symfony\Component\HttpFoundation\Response
     }
-
-
 }
