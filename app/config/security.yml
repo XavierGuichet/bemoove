@@ -34,6 +34,11 @@ security:
             pattern: ^/images
             security: false
 
+        notsecure2:
+            pattern: ^/users
+            methods: [POST]
+            security: false
+
         main:
             pattern:   ^/
             methods: [POST, PUT]
