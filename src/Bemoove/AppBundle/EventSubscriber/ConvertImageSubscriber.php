@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
-final class AddressUserSubscriber implements EventSubscriberInterface
+final class ConvertImageSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $securityTokenStorage;
@@ -27,27 +27,23 @@ final class AddressUserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['addUser', EventPriorities::PRE_WRITE]],
+            KernelEvents::VIEW => [['base64ToFile', EventPriorities::PRE_WRITE]],
         ];
     }
 
-    //Ajoute l'utilisateur courant au requete POST pour les Entités necessitant un user
-    public function addUser(GetResponseForControllerResultEvent $event)
+    //Transforme l'image en base64 en fichier
+    public function base64ToFile(GetResponseForControllerResultEvent $event)
     {
         $address = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
 
-        if (!$address instanceof Address || Request::METHOD_POST !== $method) {
+        if (!$image instanceof Image || Request::METHOD_POST !== $method) {
             return;
         }
 
+        var_dump($image);
+        die();
 
-        $user = $this->securityTokenStorage->getToken()->getUser();
-        if (!$user instanceof User) {
-            return;
-        }
-        $address->setUser($user);
     }
-
 }

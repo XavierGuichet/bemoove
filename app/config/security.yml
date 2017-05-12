@@ -12,9 +12,9 @@ security:
             encode_as_base64: true
 
     role_hierarchy:
+        ROLE_USER: ROLE_USER
         ROLE_COACH: ROLE_COACH
-        ROLE_READER: ROLE_USER
-        ROLE_ADMIN: ROLE_READER
+        ROLE_ADMIN: ROLE_ADMIN
 
     firewalls:
         login:
@@ -39,11 +39,10 @@ security:
             methods: [POST, PUT]
             provider: bemoove_sporty_user_provider
             stateless: true
-            anonymous: true
-            lexik_jwt: ~
-            # guard:
-            #     authenticators:
-            #         - lexik_jwt_authentication.jwt_token_authenticator
+            # lexik_jwt: ~
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -54,4 +53,4 @@ security:
         - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/addresses, roles: [ ROLE_COACH ], methods: [POST, PUT] }
-        - { path: ^/addresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/addresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }
