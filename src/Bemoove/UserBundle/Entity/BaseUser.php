@@ -58,7 +58,7 @@ class BaseUser implements UserInterface
 
     public function __construct() {
         // De base, on va attribuer au nouveau utilisateur, le rôle « ROLE_USER »
-        $this->setRoles(array("ROLE_USER"));
+        $this->setRoles(array("ROLE_COACH"));
 
         // Chaque utilisateur va se voir attribuer une clé permettant
         // de saler son mot de passe. Cela n'est pas obligatoire,
