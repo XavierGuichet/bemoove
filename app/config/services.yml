@@ -27,10 +27,18 @@ services:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
 
 
-    workout.search_filter:
+    workout.coach_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { coach.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'workout.search' }]
+        tags: [ { name: 'api_platform.filter', id: 'workout.coach' }]
+    workout.startdate_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { startdate: ~ }]
+        tags: [ { name: 'api_platform.filter', id: 'workout.startdate' }]
+    workout.enddate_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { enddate: ~ }]
+        tags: [ { name: 'api_platform.filter', id: 'workout.enddate' }]
     address.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { user.id: 'exact' }]

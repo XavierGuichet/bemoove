@@ -4,6 +4,7 @@ namespace Bemoove\AppBundle\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use Bemoove\AppBundle\Entity\Place\Address;
+use Bemoove\AppBundle\Entity\Workout;
 use Bemoove\AppBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,16 +35,17 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
     //Transforme l'image en base64 en fichier
     public function base64ToFile(GetResponseForControllerResultEvent $event)
     {
-        $address = $event->getControllerResult();
+        $workout = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
+        // var_dump($workout);
 
-
-        if (!$image instanceof Image || Request::METHOD_POST !== $method) {
+        if (!$workout instanceof Workout || Request::METHOD_POST !== $method) {
             return;
         }
 
-        var_dump($image);
-        die();
-
+        // $image = $workout->getPhoto();
+        // if(!$image->getBase64data()) {
+        //     $workout->setPhoto(null);
+        // }
     }
 }

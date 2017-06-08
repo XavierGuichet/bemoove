@@ -12,7 +12,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * Image.
  *
- * @ApiResource(attributes={"normalization_context"={"groups"={"workout"}}})
+ * @ApiResource(attributes={
+ *          "normalization_context"={"groups"={"workout"}}})
  * @ORM\Table(name="image")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\ImageRepository")
  */
@@ -21,7 +22,7 @@ class Image
     /**
      * @var int
      *
-     * @Groups({"workout"})
+     * @Groups({"post_workout","workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -69,7 +70,7 @@ class Image
 
     /**
      * @var string
-     * @Groups({"workout"})
+     * @Groups({"post_workout","workout"})
      */
     private $base64data;
 

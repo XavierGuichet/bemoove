@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Workout
  *
  * @ApiResource(attributes={
- *          "filters"={"workout.search"},
+ *          "filters"={"workout.coach","workout.startdate","workout.enddate"},
  *          "denormalization_context"={"groups"={"post_workout"}},
  *          "normalization_context"={"groups"={"workout"}}
  *  })
@@ -33,7 +33,7 @@ class Workout
     /**
      * @Groups({"workout"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $coach;
 
@@ -104,7 +104,7 @@ class Workout
      * @var string
      *
      * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Price", type="decimal", precision=7, scale=2)
+     * @ORM\Column(name="Price", type="integer")
      */
     private $price;
 

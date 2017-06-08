@@ -10,7 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Address
  *
- * @ApiResource(attributes={"filters"={"address.search"},"normalization_context"={"groups"={"address","workout"}}})
+ * @ApiResource(attributes={"filters"={"address.search"},
+ * "normalization_context"={"groups"={"address","workout"}}
+ * })
  * @ORM\Table(name="address")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\AddressRepository")
  */
@@ -28,21 +30,21 @@ class Address
 
     /**
      * @var string
-     * @Groups({"address","workout"})
+     * @Groups({"address","workout","post_workout"})
      * @ORM\Column(name="Name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
-     * @Groups({"address","workout"})
+     * @Groups({"address","workout","post_workout"})
      * @ORM\Column(name="Firstline", type="string", length=255)
      */
     private $firstline;
 
     /**
      * @var string
-     * @Groups({"address","workout"})
+     * @Groups({"post_workout","address","workout"})
      * @ORM\Column(name="Secondline", type="string", length=255, nullable=true)
      */
     private $secondline;
@@ -69,7 +71,6 @@ class Address
     /**
      * @var string
      *
-     * @Groups({"address","workout"})
      * @ORM\Column(name="Latitude", type="string", length=255, nullable=true)
      */
     private $latitude;

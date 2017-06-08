@@ -25,8 +25,10 @@ final class WorkoutSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['addCoach', EventPriorities::PRE_VALIDATE]],
-            KernelEvents::VIEW => [['addphoto', EventPriorities::PRE_VALIDATE]],
+            KernelEvents::VIEW => [
+                ['addCoach', EventPriorities::PRE_VALIDATE],
+                ['addphoto', EventPriorities::PRE_VALIDATE]
+            ]
         ];
     }
 
