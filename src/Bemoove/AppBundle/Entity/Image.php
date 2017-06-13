@@ -13,7 +13,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * Image.
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"workout"}}})
+ *          "normalization_context"={"groups"={"image","workout"}},
+ *          "denormalization_context"={"groups"={"post_image"}},
+ * })
  * @ORM\Table(name="image")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\ImageRepository")
  */
@@ -22,7 +24,7 @@ class Image
     /**
      * @var int
      *
-     * @Groups({"post_workout","workout"})
+     * @Groups({"image","workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -39,7 +41,7 @@ class Image
 
     /**
      * @var string
-     *
+     * @Groups({"workout"})
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
@@ -56,7 +58,7 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="kind", type="string", length=255)
+     * @ORM\Column(name="kind", type="string", length=255, nullable=true)
      */
     private $kind;
 
@@ -70,7 +72,7 @@ class Image
 
     /**
      * @var string
-     * @Groups({"post_workout","workout"})
+     * @Groups({"post_image","image"})
      */
     private $base64data;
 
@@ -148,7 +150,8 @@ class Image
             : $this->getUploadDir().'/'.$this->path;
     }
 
-    protected function getUploadRootDir()
+    // TODO : this has been changed to public, but it was protected
+    public function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
