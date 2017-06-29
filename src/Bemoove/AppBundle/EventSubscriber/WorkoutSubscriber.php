@@ -32,12 +32,6 @@ final class WorkoutSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function transform(GetResponseEvent $event) {
-        $object = $event->getRequest()->attributes->get('data');
-        // var_dump($object);
-
-    }
-
     //Ajoute l'utilisateur courant au requete POST pour les Entités necessitant un user
     public function addCoach(GetResponseForControllerResultEvent $event)
     {
@@ -52,15 +46,6 @@ final class WorkoutSubscriber implements EventSubscriberInterface
         //Ajoute le coach a partir du token
         $coach = $this->securityTokenStorage->getToken()->getUser();
         $object->setCoach($coach);
-
-        // $sport = $object->getSport();
-        // var_dump($object);
-
-        // var_dump($object->getAddress());
-        // die();
-        // $city = $object->getCity();
-        // var_dump($city);
-        // die($city);
     }
 
     public function addphoto(GetResponseForControllerResultEvent $event) {
@@ -70,9 +55,6 @@ final class WorkoutSubscriber implements EventSubscriberInterface
         if (!$object instanceof Workout || Request::METHOD_POST !== $method) {
             return;
         }
-
-        // var_dump($object);
-        // die();
     }
 
 }

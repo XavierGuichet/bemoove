@@ -27,11 +27,11 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['encodePWd', EventPriorities::PRE_WRITE]],
+            KernelEvents::VIEW => [['prepareNewUser', EventPriorities::PRE_WRITE]]
         ];
     }
 
-    public function encodePWd(GetResponseForControllerResultEvent $event)
+    public function prepareNewUser(GetResponseForControllerResultEvent $event)
     {
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
@@ -41,7 +41,11 @@ final class RegistrationSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->encodePWd($user);
+    }
 
+    public function encodePWd(User $user)
+    {
         $plainPassword = $user->getPassword();
         $encoder = $this->encoderFactory->getEncoder($user);
 

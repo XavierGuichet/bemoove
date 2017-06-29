@@ -10,7 +10,9 @@ use Bemoove\UserBundle\Entity\BaseUser as BaseUser;
 /**
  * Sporty
  *
- * @ApiResource
+ * @ApiResource(attributes={
+ * "normalization_context"={"groups"={"booking_with_user"}}
+ * })
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\UserRepository")
  */

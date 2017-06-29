@@ -4,6 +4,7 @@ namespace Bemoove\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * BaseUser
@@ -15,6 +16,7 @@ class BaseUser implements UserInterface
     /**
      * @var int
      *
+     * @Groups({"booking_with_user"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,6 +26,7 @@ class BaseUser implements UserInterface
     /**
      * @var string
      *
+     * @Groups({"booking_with_user"})
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
@@ -52,6 +55,7 @@ class BaseUser implements UserInterface
     /**
      * @var string
      *
+     * @Groups({"booking_with_user"})
      * @ORM\Column(name="Username", type="string", length=255)
      */
     private $username;
@@ -105,12 +109,15 @@ class BaseUser implements UserInterface
     /**
      * Set roles
      *
-     * @param array $roles
+     * @param array||string $roles
      *
      * @return User
      */
     public function setRoles($roles)
     {
+        if (!is_array($roles) && is_string($roles)) {
+            $roles = array($roles);
+        }
         $this->roles = serialize($roles);
 
         return $this;

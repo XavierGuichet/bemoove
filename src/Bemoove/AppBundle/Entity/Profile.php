@@ -4,11 +4,13 @@ namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Profile
  *
- * @ApiResource
+ * @ApiResource(attributes={
+ *          "filters"={"profile.user"}})
  * @ORM\Table(name="profile")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\ProfileRepository")
  */
@@ -31,41 +33,43 @@ class Profile
     /**
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=255)
+     * @ORM\Column(name="lastname", type="string", length=255, nullable=true)
      */
     private $lastname;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=255)
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      */
     private $firstname;
 
     /**
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Tel_home", type="string", length=255)
+     * @ORM\Column(name="Tel_home", type="string", length=255, nullable=true)
+     * @Assert\Regex("/^(0|\\+33|0033)[1-9][0-9]{8}?$/i")
      */
     private $telHome;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Tel_mobile", type="string", length=255)
+     * @ORM\Column(name="Tel_mobile", type="string", length=255, nullable=true)
+     * @Assert\Regex("/^(0|\\+33|0033)[1-9][0-9]{8}?$/i")
      */
     private $telMobile;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="ismale", type="boolean")
+     * @ORM\Column(name="ismale", type="boolean", nullable=true)
      */
     private $ismale;
 
@@ -77,9 +81,9 @@ class Profile
 
     /**
      * @var string
-     * @ORM\Column(name="Birthday", type="date", nullable=true)
+     * @ORM\Column(name="Birthdate", type="date", nullable=true)
      */
-    private $birthday;
+    private $birthdate;
 
     /**
      * @var string
@@ -292,30 +296,6 @@ class Profile
     }
 
     /**
-     * Set birthday
-     *
-     * @param \DateTime $birthday
-     *
-     * @return Profile
-     */
-    public function setBirthday($birthday)
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    /**
-     * Get birthday
-     *
-     * @return \DateTime
-     */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
-
-    /**
      * Set avatar
      *
      * @param \Bemoove\AppBundle\Entity\Image avatar
@@ -336,5 +316,29 @@ class Profile
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    /**
+     * Set birthdate
+     *
+     * @param \DateTime $birthdate
+     *
+     * @return Profile
+     */
+    public function setBirthdate($birthdate)
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthdate
+     *
+     * @return \DateTime
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
     }
 }
