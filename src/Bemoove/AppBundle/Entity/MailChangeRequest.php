@@ -25,9 +25,9 @@ class MailChangeRequest
 
     /**
      * @var int
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
      */
-    private $user;
+    private $account;
 
     /**
      * @var string
@@ -43,39 +43,14 @@ class MailChangeRequest
      */
     private $token;
 
-
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param integer $user
-     *
-     * @return MailChangeRequest
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return int
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**
@@ -124,5 +99,29 @@ class MailChangeRequest
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set account
+     *
+     * @param \Bemoove\AppBundle\Entity\Account $account
+     *
+     * @return MailChangeRequest
+     */
+    public function setAccount(\Bemoove\AppBundle\Entity\Account $account = null)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \Bemoove\AppBundle\Entity\Account
+     */
+    public function getAccount()
+    {
+        return $this->account;
     }
 }

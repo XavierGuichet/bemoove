@@ -2,18 +2,18 @@
 # http://symfony.com/doc/current/book/security.html
 security:
     providers:
-        bemoove_sporty_user_provider:
-            id: api.bemoove.user.provider
+        bemoove_sporty_account_provider:
+            id: api.bemoove.account.provider
 
     encoders:
-        Bemoove\AppBundle\Entity\User:
+        Bemoove\AppBundle\Entity\Account:
             algorithm: sha512
             iterations: 8666
             encode_as_base64: true
 
     role_hierarchy:
         ROLE_USER: ROLE_USER
-        ROLE_COACH: ROLE_COACH
+        ROLE_PARTNER: ROLE_PARTNER
         ROLE_ADMIN: ROLE_ADMIN
 
     firewalls:
@@ -21,7 +21,7 @@ security:
             pattern:  ^/login
             stateless: true
             anonymous: true
-            provider: bemoove_sporty_user_provider
+            provider: bemoove_sporty_account_provider
             form_login:
                 check_path: /login_check
                 username_parameter: email
@@ -35,14 +35,19 @@ security:
             security: false
 
         notsecure2:
-            pattern: ^/users
+            pattern: ^/accounts
+            methods: [POST]
+            security: false
+
+        notsecure3:
+            pattern: ^/registration_tokens
             methods: [POST]
             security: false
 
         main:
             pattern:   ^/
             methods: [POST, PUT]
-            provider: bemoove_sporty_user_provider
+            provider: bemoove_sporty_account_provider
             stateless: true
             # lexik_jwt: ~
             guard:
@@ -57,5 +62,5 @@ security:
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/addresses, roles: [ ROLE_COACH ], methods: [POST, PUT] }
+        - { path: ^/addresses, roles: [ ROLE_PARTNER, ROLE_USER ], methods: [POST, PUT] }
         # - { path: ^/addresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }

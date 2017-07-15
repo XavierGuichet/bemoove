@@ -6,7 +6,7 @@ namespace Bemoove\UserBundle\Services;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\ORM\EntityManager;
-use Bemoove\AppBundle\Entity\User;
+use Bemoove\AppBundle\Entity\Account;
 
 class JWTCreatedListener
 {
@@ -35,7 +35,7 @@ class JWTCreatedListener
         $request = $this->requestStack->getCurrentRequest();
 
         $payload       = $event->getData();
-        $userdata = $this->em->getRepository('BemooveAppBundle:User')->findOneByEmail($payload["username"]);
+        $userdata = $this->em->getRepository('BemooveAppBundle:Account')->findOneByEmail($payload["username"]);
         $payload['id'] = $userdata->getId();
         $payload['ip'] = $request->getClientIp();
 

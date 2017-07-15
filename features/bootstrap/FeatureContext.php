@@ -60,4 +60,17 @@ class FeatureContext implements Context, SnippetAcceptingContext
     {
         $this->schemaTool->dropSchema($this->classes);
     }
+
+    /** @Given /^some step with "([^"]*)" argument$/ */
+    public function theDatabaseIsClean($arg) {
+        $this->schemaTool->dropSchema($this->classes);
+        $this->createDatabase();
+    }
+
+    // public function thereAreUsers(TableNode $table)
+    // {
+    //     foreach ($table as $row) {
+    //         $this->createUser($row['email'],$row['password']);
+    //     }
+    // }
 }

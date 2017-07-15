@@ -26,14 +26,14 @@ final class WorkoutSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['addCoach', EventPriorities::PRE_VALIDATE],
+                ['addOwner', EventPriorities::PRE_VALIDATE],
                 ['addphoto', EventPriorities::PRE_VALIDATE]
             ]
         ];
     }
 
     //Ajoute l'utilisateur courant au requete POST pour les Entités necessitant un user
-    public function addCoach(GetResponseForControllerResultEvent $event)
+    public function addOwner(GetResponseForControllerResultEvent $event)
     {
         $method = $event->getRequest()->getMethod();
         $object = $event->getControllerResult();
@@ -44,8 +44,8 @@ final class WorkoutSubscriber implements EventSubscriberInterface
         // var_dump($object);
 
         //Ajoute le coach a partir du token
-        $coach = $this->securityTokenStorage->getToken()->getUser();
-        $object->setCoach($coach);
+        $account = $this->securityTokenStorage->getToken()->getUser();
+        $object->setOwner($account);
     }
 
     public function addphoto(GetResponseForControllerResultEvent $event) {

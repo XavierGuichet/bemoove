@@ -65,7 +65,7 @@ class Image
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
      * @ORM\JoinColumn(nullable=true)
      */
     private $owner;
@@ -212,8 +212,9 @@ class Image
         $this->file = null;
     }
 
+
     /**
-     * Set kind.
+     * Set kind
      *
      * @param string $kind
      *
@@ -227,7 +228,7 @@ class Image
     }
 
     /**
-     * Get kind.
+     * Get kind
      *
      * @return string
      */
@@ -237,13 +238,13 @@ class Image
     }
 
     /**
-     * Set owner.
+     * Set owner
      *
-     * @param \Bemoove\AppBundle\Entity\User $owner
+     * @param \Bemoove\AppBundle\Entity\Account $owner
      *
      * @return Image
      */
-    public function setOwner(\Bemoove\AppBundle\Entity\User $owner = null)
+    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner = null)
     {
         $this->owner = $owner;
 
@@ -251,9 +252,9 @@ class Image
     }
 
     /**
-     * Get owner.
+     * Get owner
      *
-     * @return \Bemoove\AppBundle\Entity\User
+     * @return \Bemoove\AppBundle\Entity\Account
      */
     public function getOwner()
     {
@@ -261,33 +262,9 @@ class Image
     }
 
     /**
-     * Set slug_name.
+     * Set kind
      *
-     * @param string $slug_name
-     *
-     * @return Image
-     */
-    public function setSlug_name($slug_name)
-    {
-        $this->slug_name = $slug_name;
-
-        return $this;
-    }
-
-    /**
-     * Get owner.
-     *
-     * @return string
-     */
-    public function getSlug_name()
-    {
-        return $this->slug_name;
-    }
-
-    /**
-     * Set slug_name.
-     *
-     * @param string $slug_name
+     * @param string $kind
      *
      * @return Image
      */
@@ -299,7 +276,7 @@ class Image
     }
 
     /**
-     * Get owner.
+     * Get kind
      *
      * @return string
      */

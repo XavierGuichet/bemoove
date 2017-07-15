@@ -4,7 +4,7 @@ parameters:
 #    parameter_name: value
 
 services:
-    api.bemoove.user.provider:
+    api.bemoove.account.provider:
         class: Bemoove\UserBundle\Services\BemooveSportyUserProvider
         arguments: ['@doctrine.orm.entity_manager']
 
@@ -29,8 +29,12 @@ services:
 
     address.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { user.id: 'exact' }]
+        arguments: [ { creator.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'address.search' }]
+    bankaccount.search_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { owner.id: 'exact' }]
+        tags: [ { name: 'api_platform.filter', id: 'bankaccount.search' }]
     workout.coach_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { coach.id: 'exact' }]

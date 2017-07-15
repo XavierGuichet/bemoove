@@ -32,10 +32,10 @@ class Workout
 
     /**
      * @Groups({"workout"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $coach;
+    private $business;
 
     /**
      * @var string
@@ -49,7 +49,7 @@ class Workout
      * @var \DateTime
      *
      * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Startdate", type="datetimetz")
+     * @ORM\Column(name="StartDate", type="datetimetz")
      */
     private $startdate;
 
@@ -57,7 +57,7 @@ class Workout
      * @var \DateTime
      *
      * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Enddate", type="datetimetz")
+     * @ORM\Column(name="EndDate", type="datetimetz")
      */
     private $enddate;
 
@@ -126,6 +126,14 @@ class Workout
      * @ORM\JoinColumn(nullable=true)
      */
     protected $photo;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $owner;
 
     public function __construct()
     {
@@ -242,29 +250,6 @@ class Workout
         return $this->price;
     }
 
-    /**
-     * Set coach
-     *
-     * @param \Bemoove\AppBundle\Entity\User $coach
-     *
-     * @return TrainingSession
-     */
-    public function setCoach(\Bemoove\AppBundle\Entity\User $coach)
-    {
-        $this->coach = $coach;
-
-        return $this;
-    }
-
-    /**
-     * Get coach
-     *
-     * @return \Bemoove\AppBundle\Entity\User
-     */
-    public function getCoach()
-    {
-        return $this->coach;
-    }
 
     /**
      * Set sport
@@ -466,5 +451,53 @@ class Workout
     public function getEnddate()
     {
         return $this->enddate;
+    }
+
+    /**
+     * Set business
+     *
+     * @param \Bemoove\AppBundle\Entity\Business $business
+     *
+     * @return Workout
+     */
+    public function setBusiness(\Bemoove\AppBundle\Entity\Business $business)
+    {
+        $this->business = $business;
+
+        return $this;
+    }
+
+    /**
+     * Get business
+     *
+     * @return \Bemoove\AppBundle\Entity\Business
+     */
+    public function getBusiness()
+    {
+        return $this->business;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Bemoove\AppBundle\Entity\Account $owner
+     *
+     * @return Workout
+     */
+    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Bemoove\AppBundle\Entity\Account
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

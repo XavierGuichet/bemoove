@@ -1,0 +1,7 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     bemoove_behat
+    database_user:     root
+    database_password: 9mft32h7

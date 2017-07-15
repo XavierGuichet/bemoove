@@ -5,6 +5,7 @@ namespace Bemoove\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BaseUser
@@ -28,6 +29,9 @@ class BaseUser implements UserInterface
      *
      * @Groups({"booking_with_user"})
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      */
     private $email;
 
@@ -62,7 +66,7 @@ class BaseUser implements UserInterface
 
     public function __construct() {
         // De base, on va attribuer au nouveau utilisateur, le rôle « ROLE_USER »
-        $this->setRoles(array("ROLE_COACH"));
+        $this->setRoles(array("ROLE_USER"));
 
         // Chaque utilisateur va se voir attribuer une clé permettant
         // de saler son mot de passe. Cela n'est pas obligatoire,

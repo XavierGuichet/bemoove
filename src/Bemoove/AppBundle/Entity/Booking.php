@@ -29,12 +29,12 @@ class Booking
 
     /**
      * @Groups({"booking_with_user"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\User", inversedBy="profile", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist"})
      */
-    private $user;
+    private $member;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Workout", inversedBy="workout")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Workout")
      */
     private $workout;
 
@@ -159,5 +159,29 @@ class Booking
     public function getNbBooking()
     {
         return $this->nbBooking;
+    }
+
+    /**
+     * Set member
+     *
+     * @param \Bemoove\AppBundle\Entity\Person $member
+     *
+     * @return Booking
+     */
+    public function setMember(\Bemoove\AppBundle\Entity\Person $member = null)
+    {
+        $this->member = $member;
+
+        return $this;
+    }
+
+    /**
+     * Get member
+     *
+     * @return \Bemoove\AppBundle\Entity\Person
+     */
+    public function getMember()
+    {
+        return $this->member;
     }
 }

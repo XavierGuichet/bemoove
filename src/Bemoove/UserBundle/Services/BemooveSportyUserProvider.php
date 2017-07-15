@@ -2,7 +2,7 @@
 // src/AppBundle/Security/User/WebserviceUserProvider.php
 
 namespace Bemoove\UserBundle\Services;
-use Bemoove\AppBundle\Entity\User;
+use Bemoove\AppBundle\Entity\Account;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use Doctrine\ORM\EntityManager;
@@ -72,7 +72,7 @@ class BemooveSportyUserProvider implements UserProviderInterface
 
     public function loadUserByUsername($email)
     {
-        $userData = $this->em->getRepository("BemooveAppBundle:User")->findOneByEmail($email);
+        $userData = $this->em->getRepository("BemooveAppBundle:Account")->findOneByEmail($email);
         if ($userData != null) {
             return $userData;
         }
