@@ -31,7 +31,7 @@ class BankAccount
     /**
      * @Groups({"bankAccount","post_bankAccount"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $address;
 
@@ -39,7 +39,7 @@ class BankAccount
      * @var string
      *
      * @Groups({"bankAccount","post_bankAccount"})
-     * @ORM\Column(name="OwnerName", type="string", length=255, nullable=false)
+     * @ORM\Column(name="OwnerName", type="string", length=255, nullable=true)
      */
     private $ownerName;
 
@@ -47,7 +47,7 @@ class BankAccount
      * @var \DateTime
      *
      * @Groups({"bankAccount","post_bankAccount"})
-     * @ORM\Column(name="IBAN", type="string", length=255, nullable=false)
+     * @ORM\Column(name="IBAN", type="string", length=255, nullable=true)
      */
     private $iban;
 

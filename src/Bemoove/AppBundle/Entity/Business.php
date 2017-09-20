@@ -4,11 +4,14 @@ namespace Bemoove\AppBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Business
  *
- * @ApiResource()
+ * @ApiResource(attributes={"filters"={"business.search"},
+ *          "normalization_context"={"groups"={"business"}}
+ * })
  * @ORM\Table(name="business")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\BusinessRepository")
  */
@@ -17,6 +20,7 @@ class Business
     /**
      * @var int
      *
+     * @Groups({"business"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,13 +30,15 @@ class Business
     /**
      * @var string
      *
-     * @ORM\Column(name="LegalName", type="string", length=255)
+     * @Groups({"business"})
+     * @ORM\Column(name="LegalName", type="string", length=255, nullable=true)
      */
     private $legalName;
 
     /**
      * @var string
      *
+     * @Groups({"business"})
      * @ORM\Column(name="CommonName", type="string", length=255, nullable=true)
      */
     private $commonName;
@@ -40,39 +46,47 @@ class Business
     /**
      * @var string
      *
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address")
+     * @Groups({"business"})
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"}, fetch="EAGER")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Mail", type="string", length=255)
+     * @Groups({"business"})
+     * @ORM\Column(name="Mail", type="string", length=255, nullable=true)
      */
     private $mail;
 
      /**
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person")
+      * @Groups({"business"})
+      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist"}, fetch="EAGER")
+      * @ORM\JoinColumn(nullable=true)
       */
     private $legalRepresentative;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="LegalStatus", type="string", length=255)
+     * @Groups({"business"})
+     * @ORM\Column(name="LegalStatus", type="string", length=255, nullable=true)
      */
     private $legalStatus;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Siret", type="string", length=255)
+     * @Groups({"business"})
+     * @ORM\Column(name="Siret", type="string", length=255, nullable=true)
      */
     private $siret;
 
     /**
      * @var float
      *
+     * @Groups({"business"})
      * @ORM\Column(name="ShareCapital", type="float", nullable=true)
      */
     private $shareCapital;
@@ -80,6 +94,7 @@ class Business
     /**
      * @var string
      *
+     * @Groups({"business"})
      * @ORM\Column(name="RCSNumber", type="string", length=255, nullable=true)
      */
     private $RCSNumber;
@@ -87,13 +102,7 @@ class Business
     /**
      * @var string
      *
-     * @ORM\Column(name="NAFCode", type="string", length=255, nullable=true)
-     */
-    private $NAFCode;
-
-    /**
-     * @var string
-     *
+     * @Groups({"business"})
      * @ORM\Column(name="APECode", type="string", length=255, nullable=true)
      */
     private $APECode;
@@ -101,16 +110,25 @@ class Business
     /**
      * @var string
      *
-     * @ORM\Column(name="TVANumber", type="string", length=255, nullable=true)
+     * @Groups({"business"})
+     * @ORM\Column(name="VATNumber", type="string", length=255, nullable=true)
      */
-    private $TVANumber;
+    private $vatNumber;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="TaxRate", type="float", nullable=true)
+     * @Groups({"business"})
+     * @ORM\Column(name="VATRate", type="float", nullable=true)
      */
-    private $taxRate;
+    private $vatRate;
+
+    /**
+     * @Groups({"business"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
 
     /**
      * Get id
@@ -291,30 +309,6 @@ class Business
     }
 
     /**
-     * Set nAFCode
-     *
-     * @param string $nAFCode
-     *
-     * @return Business
-     */
-    public function setNAFCode($nAFCode)
-    {
-        $this->NAFCode = $nAFCode;
-
-        return $this;
-    }
-
-    /**
-     * Get nAFCode
-     *
-     * @return string
-     */
-    public function getNAFCode()
-    {
-        return $this->NAFCode;
-    }
-
-    /**
      * Set aPECode
      *
      * @param string $aPECode
@@ -336,54 +330,6 @@ class Business
     public function getAPECode()
     {
         return $this->APECode;
-    }
-
-    /**
-     * Set tVANumber
-     *
-     * @param string $tVANumber
-     *
-     * @return Business
-     */
-    public function setTVANumber($tVANumber)
-    {
-        $this->TVANumber = $tVANumber;
-
-        return $this;
-    }
-
-    /**
-     * Get tVANumber
-     *
-     * @return string
-     */
-    public function getTVANumber()
-    {
-        return $this->TVANumber;
-    }
-
-    /**
-     * Set taxRate
-     *
-     * @param float $taxRate
-     *
-     * @return Business
-     */
-    public function setTaxRate($taxRate)
-    {
-        $this->taxRate = $taxRate;
-
-        return $this;
-    }
-
-    /**
-     * Get taxRate
-     *
-     * @return float
-     */
-    public function getTaxRate()
-    {
-        return $this->taxRate;
     }
 
     /**
@@ -432,5 +378,77 @@ class Business
     public function getLegalRepresentative()
     {
         return $this->legalRepresentative;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Bemoove\AppBundle\Entity\Account $owner
+     *
+     * @return Business
+     */
+    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Bemoove\AppBundle\Entity\Account
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set vatRate
+     *
+     * @param float $vatRate
+     *
+     * @return Business
+     */
+    public function setVatRate($vatRate)
+    {
+        $this->vatRate = $vatRate;
+
+        return $this;
+    }
+
+    /**
+     * Get vatRate
+     *
+     * @return float
+     */
+    public function getVatRate()
+    {
+        return $this->vatRate;
+    }
+
+    /**
+     * Set vatNumber
+     *
+     * @param string $vatNumber
+     *
+     * @return Business
+     */
+    public function setVatNumber($vatNumber)
+    {
+        $this->vatNumber = $vatNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get vatNumber
+     *
+     * @return string
+     */
+    public function getVatNumber()
+    {
+        return $this->vatNumber;
     }
 }

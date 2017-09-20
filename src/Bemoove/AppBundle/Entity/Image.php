@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * Image.
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"image","workout"}},
+ *          "normalization_context"={"groups"={"image","workout","profile"}},
  *          "denormalization_context"={"groups"={"post_image"}},
  * })
  * @ORM\Table(name="image")
@@ -24,7 +24,7 @@ class Image
     /**
      * @var int
      *
-     * @Groups({"image","workout"})
+     * @Groups({"image","workout","profile"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -41,7 +41,7 @@ class Image
 
     /**
      * @var string
-     * @Groups({"workout"})
+     * @Groups({"workout","profile"})
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;

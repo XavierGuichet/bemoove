@@ -13,6 +13,12 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Bemoove\AppBundle\Entity\Account;
 use Bemoove\AppBundle\Entity\RegistrationToken;
+use Bemoove\AppBundle\Entity\BankAccount;
+use Bemoove\AppBundle\Entity\Business;
+use Bemoove\AppBundle\Entity\Person;
+use Bemoove\AppBundle\Entity\Profile;
+use Bemoove\AppBundle\Entity\Place\Address;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -31,9 +37,33 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['prepareNewAccount', EventPriorities::PRE_WRITE]]
+            KernelEvents::VIEW => [
+                                  ['prepareNewAccount', EventPriorities::PRE_WRITE],
+                                  ['createEmptyPartnerData', EventPriorities::POST_WRITE],
+        ]
         ];
     }
+
+    /*
+     * After a partner account is created
+     * We create basic linked Entities
+     * So we create these :
+     * - Coordonnees de l'entreprise
+     * - Representant legal
+     * - Addresse de facturation
+     * - Taux de TVA
+     * - Forme Juridique de la societé
+     * - Business Information
+     * - Signature du mandat de facturation
+     * - profil
+     * - Partie accounting
+     */
+
+     /*
+     * Bank_account + adresse
+     * Businness
+     *
+     */
 
     public function prepareNewAccount(GetResponseForControllerResultEvent $event)
     {
@@ -61,6 +91,41 @@ final class RegistrationSubscriber implements EventSubscriberInterface
         }
 
         $this->encodePWd($account);
+    }
+
+    public function createEmptyPartnerData(GetResponseForControllerResultEvent $event) {
+        $account = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$account instanceof Account || Request::METHOD_POST !== $method) {
+            return;
+        }
+
+        $business = new Business();
+        $business->setOwner($account);
+        $businessAddress = new Address();
+        $businessAddress->setOwner($account);
+        $business->setAddress($businessAddress);
+        $businessLegalRepresentative = new Person();
+        $business->setLegalRepresentative($businessLegalRepresentative);
+        $this->em->persist($business);
+
+
+        $bankAccount = new BankAccount();
+        $bankAccount->setOwner($account);
+        $bankAccountAddress = new Address();
+        $bankAccountAddress->setOwner($account);
+        $bankAccount->setAddress($bankAccountAddress);
+        $this->em->persist($bankAccount);
+
+        $profile = new Profile();
+        $profile->setOwner($account);
+        $profileAddress = new Address();
+        $profile->setAddress($profileAddress);
+        $this->em->persist($profile);
+
+        $this->em->flush();
+
     }
 
     public function encodePWd(Account $account)

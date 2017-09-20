@@ -46,7 +46,7 @@ final class AddressUserSubscriber implements EventSubscriberInterface
         if (!$account instanceof Account) {
             return;
         }
-        $address->setCreator($account);
+        $address->setOwner($account);
     }
 
 }

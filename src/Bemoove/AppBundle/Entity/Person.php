@@ -22,7 +22,7 @@ class Person
     /**
      * @var int
      *
-     * @Groups({"person"})
+     * @Groups({"person","business"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -36,17 +36,24 @@ class Person
 
     /**
      * @var string
-     * @Groups({"workout","person","post_person"})
+     * @Groups({"workout","business","person","post_person"})
      * @ORM\Column(name="LastName", type="string", length=255, nullable=true)
      */
     private $lastname;
 
     /**
      * @var string
-     * @Groups({"workout","person","post_person"})
+     * @Groups({"workout","business","person","post_person"})
      * @ORM\Column(name="FirstName", type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private $firstname;
+
+    /**
+     * @var string
+     * @Groups({"workout","business","person","post_person"})
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
 
     /**
      * @Groups({"workout","person","post_person"})
@@ -81,7 +88,7 @@ class Person
 
     /**
      * @var string
-     * @Groups({"workout","person","post_person"})
+     * @Groups({"workout","business","person","post_person"})
      * @ORM\Column(name="Birthdate", type="date", nullable=true)
      */
     private $birthdate;
@@ -140,29 +147,6 @@ class Person
         return $this->lastname;
     }
 
-    /**
-     * Set firstName
-     *
-     * @param string $firstName
-     *
-     * @return Person
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * Get firstName
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
 
     /**
      * Set phoneNumber
@@ -378,5 +362,53 @@ class Person
     public function getPhoto()
     {
         return $this->photo;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Person
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     *
+     * @return Person
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
     }
 }

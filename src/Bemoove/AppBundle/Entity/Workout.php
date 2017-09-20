@@ -116,6 +116,18 @@ class Workout
 
     /**
      * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Notice", type="text")
+     */
+    protected $notice;
+
+    /**
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="Outfit", type="text")
+     */
+    protected $outfit;
+
+    /**
+     * @Groups({"workout","post_workout"})
      * @ORM\ManyToMany(targetEntity="Bemoove\AppBundle\Entity\Tag", cascade={"persist"})
      */
     protected $tags;
@@ -499,5 +511,53 @@ class Workout
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Set notice
+     *
+     * @param string $notice
+     *
+     * @return Workout
+     */
+    public function setNotice($notice)
+    {
+        $this->notice = $notice;
+
+        return $this;
+    }
+
+    /**
+     * Get notice
+     *
+     * @return string
+     */
+    public function getNotice()
+    {
+        return $this->notice;
+    }
+
+    /**
+     * Set outfit
+     *
+     * @param string $outfit
+     *
+     * @return Workout
+     */
+    public function setOutfit($outfit)
+    {
+        $this->outfit = $outfit;
+
+        return $this;
+    }
+
+    /**
+     * Get outfit
+     *
+     * @return string
+     */
+    public function getOutfit()
+    {
+        return $this->outfit;
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Address
  *
  * @ApiResource(attributes={"filters"={"address.search"},
- * "normalization_context"={"groups"={"address","workout","profile","bankAccount","post_bankAccount"}},
+ * "normalization_context"={"groups"={"address","business","workout","bankAccount","post_bankAccount"}},
  * })
  * @ORM\Table(name="address")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\Place\AddressRepository")
@@ -21,7 +21,7 @@ class Address
     /**
      * @var int
      *
-     * @Groups({"address","workout","profile","bankAccount"})
+     * @Groups({"address","business","workout","bankAccount"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,29 +30,28 @@ class Address
 
     /**
      * @var string
-     * @Groups({"address","workout","post_workout"})
+     * @Groups({"address","business","workout","post_workout"})
      * @ORM\Column(name="Name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
-     * @Groups({"address","workout","post_workout","profile","bankAccount"})
-     * @ORM\Column(name="Firstline", type="string", length=255)
+     * @Groups({"address","business","workout","post_workout","bankAccount"})
+     * @ORM\Column(name="Firstline", type="string", length=255, nullable=true)
      */
     private $firstline;
 
     /**
      * @var string
-     * @Groups({"post_workout","profile","bankAccount","address","workout"})
+     * @Groups({"post_workout","bankAccount","address","business","workout"})
      * @ORM\Column(name="Secondline", type="string", length=255, nullable=true)
      */
     private $secondline;
 
     /**
-     * @Groups({"address","workout","profile","bankAccount"})
-     * @ORM\Column(name="City", type="string", length=255)
-     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"address","business","workout","bankAccount"})
+     * @ORM\Column(name="City", type="string", length=255, nullable=true)
      * @Assert\NotBlank(groups={"address"})
      */
     private $city;
@@ -60,8 +59,8 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="PostalCode", type="string", length=255)
-     * @Groups({"address","workout","profile","bankAccount"})
+     * @ORM\Column(name="PostalCode", type="string", length=255, nullable=true)
+     * @Groups({"address","business","workout","bankAccount"})
      * @Assert\NotBlank(groups={"address"})
      * @Assert\Length(min=5,groups={"address"})
      * @Assert\Length(max=5,groups={"address"})
@@ -78,7 +77,7 @@ class Address
     /**
      * @var string
      *
-     * @Groups({"address","workout"})
+     * @Groups({"address","business","workout"})
      * @ORM\Column(name="Longitude", type="string", length=255, nullable=true)
      */
     private $longitude;
@@ -93,11 +92,11 @@ class Address
 
     /**
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account", cascade={"persist"})
-     * @Groups({"address","workout"})
+     * @Groups({"address","business","workout"})
      * @Assert\NotNull(groups={"address"})
      * @Assert\NotBlank(groups={"address"})
      */
-    private $creator;
+    private $owner;
 
 
 
@@ -335,5 +334,29 @@ class Address
     public function getCreator()
     {
         return $this->creator;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Bemoove\AppBundle\Entity\Account $owner
+     *
+     * @return Address
+     */
+    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Bemoove\AppBundle\Entity\Account
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }
