@@ -35,13 +35,12 @@ class Image
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @var string
-     * @Groups({"workout","profile"})
+     * @Groups({"image","workout","profile"})
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;

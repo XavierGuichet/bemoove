@@ -29,6 +29,13 @@ class Address
     private $id;
 
     /**
+     * @var boolean
+     * @Groups({"address","business","workout","post_workout"})
+     * @ORM\Column(name="isWorkoutLocation", type="boolean", nullable=true)
+     */
+    private $isWorkoutLocation;
+
+    /**
      * @var string
      * @Groups({"address","business","workout","post_workout"})
      * @ORM\Column(name="Name", type="string", length=255, nullable=true)
@@ -358,5 +365,29 @@ class Address
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Set isWorkoutLocation
+     *
+     * @param boolean $isWorkoutLocation
+     *
+     * @return Address
+     */
+    public function setIsWorkoutLocation($isWorkoutLocation)
+    {
+        $this->isWorkoutLocation = $isWorkoutLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get isWorkoutLocation
+     *
+     * @return boolean
+     */
+    public function getIsWorkoutLocation()
+    {
+        return $this->isWorkoutLocation;
     }
 }

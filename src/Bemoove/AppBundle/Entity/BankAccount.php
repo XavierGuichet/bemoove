@@ -53,10 +53,10 @@ class BankAccount
 
     /**
      * @Groups({"bankAccount"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    private $business;
 
     /**
      * Get id
@@ -123,7 +123,7 @@ class BankAccount
      *
      * @return BankAccount
      */
-    public function setAddress(\Bemoove\AppBundle\Entity\Place\Address $address)
+    public function setAddress(\Bemoove\AppBundle\Entity\Place\Address $address = null)
     {
         $this->address = $address;
 
@@ -141,26 +141,26 @@ class BankAccount
     }
 
     /**
-     * Set owner
+     * Set business
      *
-     * @param \Bemoove\AppBundle\Entity\Account $owner
+     * @param \Bemoove\AppBundle\Entity\Business $business
      *
      * @return BankAccount
      */
-    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner)
+    public function setBusiness(\Bemoove\AppBundle\Entity\Business $business)
     {
-        $this->owner = $owner;
+        $this->business = $business;
 
         return $this;
     }
 
     /**
-     * Get owner
+     * Get business
      *
-     * @return \Bemoove\AppBundle\Entity\Account
+     * @return \Bemoove\AppBundle\Entity\Business
      */
-    public function getOwner()
+    public function getBusiness()
     {
-        return $this->owner;
+        return $this->business;
     }
 }

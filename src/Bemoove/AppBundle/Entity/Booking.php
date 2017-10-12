@@ -34,9 +34,9 @@ class Booking
     private $member;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Workout")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\WorkoutInstance")
      */
-    private $workout;
+    private $workoutInstance;
 
     /**
      * @var \DateTime
@@ -54,63 +54,14 @@ class Booking
      */
     private $nbBooking;
 
-
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user
-     *
-     * @param integer $user
-     *
-     * @return Booking
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return int
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set workout
-     *
-     * @param integer $workout
-     *
-     * @return Booking
-     */
-    public function setWorkout($workout)
-    {
-        $this->workout = $workout;
-
-        return $this;
-    }
-
-    /**
-     * Get workout
-     *
-     * @return int
-     */
-    public function getWorkout()
-    {
-        return $this->workout;
     }
 
     /**
@@ -138,7 +89,7 @@ class Booking
     }
 
     /**
-     * Set nbPlace
+     * Set nbBooking
      *
      * @param integer $nbBooking
      *
@@ -152,9 +103,9 @@ class Booking
     }
 
     /**
-     * Get nbPlace
+     * Get nbBooking
      *
-     * @return int
+     * @return integer
      */
     public function getNbBooking()
     {
@@ -183,5 +134,29 @@ class Booking
     public function getMember()
     {
         return $this->member;
+    }
+
+    /**
+     * Set workoutInstance
+     *
+     * @param \Bemoove\AppBundle\Entity\WorkoutInstance $workoutInstance
+     *
+     * @return Booking
+     */
+    public function setWorkoutInstance(\Bemoove\AppBundle\Entity\WorkoutInstance $workoutInstance = null)
+    {
+        $this->workoutInstance = $workoutInstance;
+
+        return $this;
+    }
+
+    /**
+     * Get workoutInstance
+     *
+     * @return \Bemoove\AppBundle\Entity\WorkoutInstance
+     */
+    public function getWorkoutInstance()
+    {
+        return $this->workoutInstance;
     }
 }

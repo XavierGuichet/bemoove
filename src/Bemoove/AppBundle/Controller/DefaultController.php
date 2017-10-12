@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Bemoove\AppBundle\Entity\User;
-use Bemoove\AppBundle\Entity\Profile;
+// use Bemoove\AppBundle\Entity\Profile;
 use Bemoove\AppBundle\Form\Type\UserType;
 use Bemoove\AppBundle\Form\Type\TrainingSearchType;
 use Bemoove\AppBundle\Form\Type\FullRegistrationType;

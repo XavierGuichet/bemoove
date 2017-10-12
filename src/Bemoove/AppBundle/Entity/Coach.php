@@ -8,21 +8,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Person.
+ * Coach.
  *
  * @ApiResource(attributes={
- *          "filters"={"person.account"},
- *          "normalization_context"={"groups"={"person"}},
+ *          "filters"={"coach.search"},
+ *          "normalization_context"={"groups"={"person","image"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
- * @ORM\Table(name="person")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\PersonRepository")
+ * @ORM\Table(name="coach")
+ * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\CoachRepository")
  */
-class Person
+class Coach
 {
+    /**
+     * @Groups({"person","post_person"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business", inversedBy="coaches")
+     */
+    private $business;
+
     /**
      * @var int
      *
-     * @Groups({"person","business"})
+     * @Groups({"person","business","partial_coach"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -31,14 +37,14 @@ class Person
 
     /**
      * @var string
-     * @Groups({"workout","business","person","post_person"})
+     * @Groups({"workout","business","person","post_person","partial_coach"})
      * @ORM\Column(name="LastName", type="string", length=255, nullable=true)
      */
     private $lastname;
 
     /**
      * @var string
-     * @Groups({"workout","business","person","post_person"})
+     * @Groups({"workout","business","person","post_person","partial_coach"})
      * @ORM\Column(name="FirstName", type="string", length=255, nullable=true)
      */
     private $firstname;
@@ -77,9 +83,9 @@ class Person
     /**
      * @var string
      * @Groups({"workout","person","post_person"})
-     * @ORM\Column(name="Biography", type="text", length=1000, nullable=true)
+     * @ORM\Column(name="Description", type="text", length=1000, nullable=true)
      */
-    private $biography;
+    private $description;
 
     /**
      * @var string
@@ -89,7 +95,7 @@ class Person
     private $birthdate;
 
      /**
-      * @Groups({"workout","business","person"})
+      * @Groups({"workout","business","person","post_person","partial_coach"})
       * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
       * @ORM\JoinColumn(nullable=true)
       */
@@ -110,6 +116,30 @@ class Person
       private $nationality;
 
     /**
+     * Set business
+     *
+     * @param \Bemoove\AppBundle\Entity\Business $business
+     *
+     * @return Coach
+     */
+    public function setBusiness(\Bemoove\AppBundle\Entity\Business $business = null)
+    {
+        $this->business = $business;
+
+        return $this;
+    }
+
+    /**
+     * Get business
+     *
+     * @return \Bemoove\AppBundle\Entity\Business
+     */
+    public function getBusiness()
+    {
+        return $this->business;
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -124,7 +154,7 @@ class Person
      *
      * @param string $lastname
      *
-     * @return Person
+     * @return Coach
      */
     public function setLastname($lastname)
     {
@@ -143,13 +173,60 @@ class Person
         return $this->lastname;
     }
 
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     *
+     * @return Coach
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Coach
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
     /**
      * Set phoneNumber
      *
      * @param string $phoneNumber
      *
-     * @return Person
+     * @return Coach
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -173,7 +250,7 @@ class Person
      *
      * @param boolean $ismale
      *
-     * @return Person
+     * @return Coach
      */
     public function setIsmale($ismale)
     {
@@ -193,35 +270,11 @@ class Person
     }
 
     /**
-     * Set biography
-     *
-     * @param string $biography
-     *
-     * @return Person
-     */
-    public function setBiography($biography)
-    {
-        $this->biography = $biography;
-
-        return $this;
-    }
-
-    /**
-     * Get biography
-     *
-     * @return string
-     */
-    public function getBiography()
-    {
-        return $this->biography;
-    }
-
-    /**
      * Set birthdate
      *
      * @param \DateTime $birthdate
      *
-     * @return Person
+     * @return Coach
      */
     public function setBirthdate($birthdate)
     {
@@ -245,7 +298,7 @@ class Person
      *
      * @param \DateTime $countryOfResidence
      *
-     * @return Person
+     * @return Coach
      */
     public function setCountryOfResidence($countryOfResidence)
     {
@@ -269,7 +322,7 @@ class Person
      *
      * @param \DateTime $nationality
      *
-     * @return Person
+     * @return Coach
      */
     public function setNationality($nationality)
     {
@@ -289,35 +342,11 @@ class Person
     }
 
     /**
-     * Set account
-     *
-     * @param \Bemoove\AppBundle\Entity\Account $account
-     *
-     * @return Person
-     */
-    public function setAccount(\Bemoove\AppBundle\Entity\Account $account = null)
-    {
-        $this->account = $account;
-
-        return $this;
-    }
-
-    /**
-     * Get account
-     *
-     * @return \Bemoove\AppBundle\Entity\Account
-     */
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    /**
      * Set address
      *
      * @param \Bemoove\AppBundle\Entity\Place\Address $address
      *
-     * @return Person
+     * @return Coach
      */
     public function setAddress(\Bemoove\AppBundle\Entity\Place\Address $address = null)
     {
@@ -341,7 +370,7 @@ class Person
      *
      * @param \Bemoove\AppBundle\Entity\Image $photo
      *
-     * @return Person
+     * @return Coach
      */
     public function setPhoto(\Bemoove\AppBundle\Entity\Image $photo = null)
     {
@@ -361,50 +390,26 @@ class Person
     }
 
     /**
-     * Set email
+     * Set description
      *
-     * @param string $email
+     * @param string $description
      *
-     * @return Person
+     * @return Coach
      */
-    public function setEmail($email)
+    public function setDescription($description)
     {
-        $this->email = $email;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get email
+     * Get description
      *
      * @return string
      */
-    public function getEmail()
+    public function getDescription()
     {
-        return $this->email;
-    }
-
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     *
-     * @return Person
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    /**
-     * Get firstname
-     *
-     * @return string
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
+        return $this->description;
     }
 }

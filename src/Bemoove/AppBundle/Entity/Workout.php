@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Workout
  *
  * @ApiResource(attributes={
- *          "filters"={"workout.coach","workout.startdate","workout.enddate"},
+ *          "filters"={"workout.coach","workout.owner"},
  *          "denormalization_context"={"groups"={"post_workout"}},
  *          "normalization_context"={"groups"={"workout"}}
  *  })
@@ -23,7 +23,7 @@ class Workout
     /**
      * @var int
      *
-     * @Groups({"workout","post_workout"})
+     * @Groups({"workout","post_workout","partial_workout"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -32,37 +32,21 @@ class Workout
 
     /**
      * @Groups({"workout"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Coach")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $business;
+    private $coach;
 
     /**
      * @var string
      *
-     * @Groups({"workout","post_workout"})
+     * @Groups({"workout","post_workout","partial_workout"})
      * @ORM\Column(name="Name", type="string", length=255, nullable=true)
      */
     private $title;
 
     /**
-     * @var \DateTime
-     *
-     * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="StartDate", type="datetimetz")
-     */
-    private $startdate;
-
-    /**
-     * @var \DateTime
-     *
-     * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="EndDate", type="datetimetz")
-     */
-    private $enddate;
-
-    /**
-     * @Groups({"workout","post_workout"})
+     * @Groups({"workout","post_workout","partial_workout"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Sport", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -76,27 +60,10 @@ class Workout
     private $address;
 
     /**
-     * @var int
-     *
-     * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Nb_Ticket_Available", type="smallint", nullable=true)
-     */
-    private $nbTicketAvailable;
-
-    /**
-     * @var int
-     */
-    private $nbTicketBooked;
-
-    /**
-     * @var boolean
-     */
-    private $soldOut;
-
-    /**
      * @var \DateTime
      *
-     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="duration", type="integer")
+     * @Groups({"workout","post_workout","partial_workout"})
      */
     private $duration;
 
@@ -171,71 +138,6 @@ class Workout
     public function getDuration()
     {
         return $this->duration;
-    }
-
-    /**
-     * Set nbTicketAvailable
-     *
-     * @param integer $nbTicketAvailable
-     *
-     * @return TrainingSession
-     */
-    public function setNbTicketAvailable($nbTicketAvailable)
-    {
-        $this->nbTicketAvailable = (int) $nbTicketAvailable;
-
-        return $this;
-    }
-
-    /**
-     * Get nbTicketAvailable
-     *
-     * @return int
-     */
-    public function getNbTicketAvailable()
-    {
-        return $this->nbTicketAvailable;
-    }
-
-    /**
-     * Set nbTicketBooked
-     *
-     * @param integer $nbTicketBooked
-     *
-     * @return TrainingSession
-     */
-    public function setNbTicketBooked($nbTicketBooked)
-    {
-        $this->nbTicketBooked = $nbTicketBooked;
-
-        if($this->nbTicketBooked >= $this->nbTicketAvailable) {
-            $this->soldOut = true;
-        }
-        else {
-            $this->soldOut = false;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get nbTicketBooked
-     *
-     * @return int
-     */
-    public function getNbTicketBooked()
-    {
-        return $this->nbTicketBooked;
-    }
-
-    /**
-     * Get soldOut
-     *
-     * @return boolean
-     */
-    public function getsoldOut()
-    {
-        return $this->soldOut;
     }
 
     /**
@@ -336,45 +238,11 @@ class Workout
     }
 
     /**
-     * Add tag
-     *
-     * @param \Bemoove\AppBundle\Entity\Tag $tag
-     *
-     * @return TrainingSession
-     */
-    public function addTag(\Bemoove\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param \Bemoove\AppBundle\Entity\Tag $tag
-     */
-    public function removeTag(\Bemoove\AppBundle\Entity\Tag $tag)
-    {
-        $this->tags->removeElement($tag);
-    }
-
-    /**
-     * Get tags
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
-
-    /**
      * Set title
      *
      * @param string $title
      *
-     * @return TrainingSession
+     * @return Workout
      */
     public function setTitle($title)
     {
@@ -391,126 +259,6 @@ class Workout
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param \Bemoove\AppBundle\Entity\Image $photo
-     *
-     * @return TrainingSession
-     */
-    public function setPhoto(\Bemoove\AppBundle\Entity\Image $photo = null)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return \Bemoove\AppBundle\Entity\Image
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    /**
-     * Set startdate
-     *
-     * @param \DateTime $startdate
-     *
-     * @return Workout
-     */
-    public function setStartdate($startdate)
-    {
-        $this->startdate = $startdate;
-
-        return $this;
-    }
-
-    /**
-     * Get startdate
-     *
-     * @return \DateTime
-     */
-    public function getStartdate()
-    {
-        return $this->startdate;
-    }
-
-    /**
-     * Set enddate
-     *
-     * @param \DateTime $enddate
-     *
-     * @return Workout
-     */
-    public function setEnddate($enddate)
-    {
-        $this->enddate = $enddate;
-
-        return $this;
-    }
-
-    /**
-     * Get enddate
-     *
-     * @return \DateTime
-     */
-    public function getEnddate()
-    {
-        return $this->enddate;
-    }
-
-    /**
-     * Set business
-     *
-     * @param \Bemoove\AppBundle\Entity\Business $business
-     *
-     * @return Workout
-     */
-    public function setBusiness(\Bemoove\AppBundle\Entity\Business $business)
-    {
-        $this->business = $business;
-
-        return $this;
-    }
-
-    /**
-     * Get business
-     *
-     * @return \Bemoove\AppBundle\Entity\Business
-     */
-    public function getBusiness()
-    {
-        return $this->business;
-    }
-
-    /**
-     * Set owner
-     *
-     * @param \Bemoove\AppBundle\Entity\Account $owner
-     *
-     * @return Workout
-     */
-    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner = null)
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
-     * Get owner
-     *
-     * @return \Bemoove\AppBundle\Entity\Account
-     */
-    public function getOwner()
-    {
-        return $this->owner;
     }
 
     /**
@@ -559,5 +307,125 @@ class Workout
     public function getOutfit()
     {
         return $this->outfit;
+    }
+
+    /**
+     * Set coach
+     *
+     * @param \Bemoove\AppBundle\Entity\Coach $coach
+     *
+     * @return Workout
+     */
+    public function setCoach(\Bemoove\AppBundle\Entity\Coach $coach = null)
+    {
+        $this->coach = $coach;
+
+        return $this;
+    }
+
+    /**
+     * Get coach
+     *
+     * @return \Bemoove\AppBundle\Entity\Coach
+     */
+    public function getCoach()
+    {
+        return $this->coach;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param \Bemoove\AppBundle\Entity\Tag $tag
+     *
+     * @return Workout
+     */
+    public function addTag(\Bemoove\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \Bemoove\AppBundle\Entity\Tag $tag
+     */
+    public function removeTag(\Bemoove\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param \Bemoove\AppBundle\Entity\Image $photo
+     *
+     * @return Workout
+     */
+    public function setPhoto(\Bemoove\AppBundle\Entity\Image $photo = null)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return \Bemoove\AppBundle\Entity\Image
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Bemoove\AppBundle\Entity\Account $owner
+     *
+     * @return Workout
+     */
+    public function setOwner(\Bemoove\AppBundle\Entity\Account $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Bemoove\AppBundle\Entity\Account
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param integer $duration
+     *
+     * @return Workout
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
     }
 }

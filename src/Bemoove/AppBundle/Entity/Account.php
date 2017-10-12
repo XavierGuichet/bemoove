@@ -2,7 +2,9 @@
 
 namespace Bemoove\AppBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Bemoove\UserBundle\Entity\BaseUser as BaseUser;
@@ -20,11 +22,12 @@ class Account extends BaseUser
 {
     /**
      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", mappedBy="account", cascade={"persist", "merge"}))
+     * @ORM\JoinColumn(nullable=true)
      */
     private $person;
 
     /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Business", mappedBy="account", cascade={"persist", "merge"}))
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Business", mappedBy="owner", cascade={"persist", "merge"}))
      * @ORM\JoinColumn(nullable=true)
      */
     private $business;

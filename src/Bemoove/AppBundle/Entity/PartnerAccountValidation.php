@@ -249,4 +249,3 @@ class PartnerAccountValidation
         return $this->billingMandate;
     }
 }
-

@@ -4,6 +4,25 @@ parameters:
 #    parameter_name: value
 
 services:
+       # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+    Bemoove\AppBundle\EventSubscriber\:
+        resource: '../../src/Bemoove/AppBundle/EventSubscriber'
+
+
+    Bemoove\AppBundle\Action\:
+        resource: '../../src/Bemoove/AppBundle/Action'
+        public: true
+        tags: ['controller.service_arguments']
+
     api.bemoove.account.provider:
         class: Bemoove\UserBundle\Services\BemooveSportyUserProvider
         arguments: ['@doctrine.orm.entity_manager']
@@ -27,38 +46,7 @@ services:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
 
 
-    address.search_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { creator.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'address.search' }]
-    bankaccount.search_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { owner.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'bankaccount.search' }]
-    business.search_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { owner.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'business.search' }]
-    workout.coach_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { coach.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'workout.coach' }]
-    workout.startdate_filter:
-        parent: 'api_platform.doctrine.orm.date_filter'
-        arguments: [ { startdate: ~ }]
-        tags: [ { name: 'api_platform.filter', id: 'workout.startdate' }]
-    workout.enddate_filter:
-        parent: 'api_platform.doctrine.orm.date_filter'
-        arguments: [ { enddate: ~ }]
-        tags: [ { name: 'api_platform.filter', id: 'workout.enddate' }]
-    profile.search_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { owner.id: 'exact' }]
-        tags: [ { name: 'api_platform.filter', id: 'profile.search' }]
-    sport.search_filter:
-        parent: 'api_platform.doctrine.orm.search_filter'
-        arguments: [ { name: 'partial' }]
-        tags: [ { name: 'api_platform.filter', id: 'sport.search' }]
+
 
 #    service_name:
 #        class: AppBundle\Directory\ClassName

@@ -9,3 +9,27 @@ app:
 bemoove_user:
     resource: "@BemooveUserBundle/Resources/config/routing.yml"
     prefix:   /
+
+bemoove_appbundle:
+    resource: "@BemooveAppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+get_my_business:
+    resource: "@BemooveAppBundle/Action/GetMyBusiness.php"
+    prefix:   /
+    type:     annotation
+
+get_my_workouts:
+    resource: "@BemooveAppBundle/Action/GetMyWorkouts.php"
+    prefix:   /
+    type:     annotation
+
+get_my_coaches:
+    resource: "@BemooveAppBundle/Action/GetMyCoaches.php"
+    prefix:   /
+    type:     annotation
+
+get_my_bank_account:
+    resource: "@BemooveAppBundle/Action/GetMyBankAccount.php"
+    prefix:   /
+    type:     annotation

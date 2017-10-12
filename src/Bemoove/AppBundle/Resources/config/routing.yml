@@ -1,7 +1,7 @@
-# bemoove_front:
-#     resource: "@BemooveAppBundle/Resources/config/routing-front.yml"
-#     prefix:   /
-#
-# bemoove_app_coach_profile:
-#     path:     /profile
-#     defaults: { _controller: BemooveAppBundle:Coach:profile }
+# getMyBusiness:
+#     path: /getMyBusiness/
+#     methods: ['GET']
+#     defaults:
+#         _controller: 'BemooveAppBundle:ACtion:GetMyBusiness'
+#         _api_resource_class: 'Bemoove\AppBundle\Entity\Business'
+#         _api_collection_operation_name: 'BemooveAppBundle:getMyBusiness'

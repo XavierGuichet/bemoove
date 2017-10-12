@@ -47,8 +47,7 @@ class Business
      * @var string
      *
      * @Groups({"business"})
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist","remove"}, fetch="EAGER")
      */
     private $address;
 
@@ -62,8 +61,7 @@ class Business
 
      /**
       * @Groups({"business"})
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist"}, fetch="EAGER")
-      * @ORM\JoinColumn(nullable=true)
+      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist","remove"}, fetch="EAGER")
       */
     private $legalRepresentative;
 
@@ -125,7 +123,13 @@ class Business
 
     /**
      * @Groups({"business"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
+     * @ORM\OneToMany(targetEntity="Bemoove\AppBundle\Entity\Coach", mappedBy="business")
+     */
+    private $coaches;
+
+    /**
+     * @Groups({"business"})
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Account", inversedBy="business")
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
@@ -450,5 +454,46 @@ class Business
     public function getVatNumber()
     {
         return $this->vatNumber;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->coaches = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add coach
+     *
+     * @param \Bemoove\AppBundle\Entity\Coach $coach
+     *
+     * @return Business
+     */
+    public function addCoach(\Bemoove\AppBundle\Entity\Coach $coach)
+    {
+        $this->coaches[] = $coach;
+
+        return $this;
+    }
+
+    /**
+     * Remove coach
+     *
+     * @param \Bemoove\AppBundle\Entity\Coach $coach
+     */
+    public function removeCoach(\Bemoove\AppBundle\Entity\Coach $coach)
+    {
+        $this->coaches->removeElement($coach);
+    }
+
+    /**
+     * Get coaches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCoaches()
+    {
+        return $this->coaches;
     }
 }

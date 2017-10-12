@@ -16,9 +16,9 @@ use Bemoove\AppBundle\Entity\RegistrationToken;
 use Bemoove\AppBundle\Entity\BankAccount;
 use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
-use Bemoove\AppBundle\Entity\Profile;
 use Bemoove\AppBundle\Entity\Place\Address;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -27,11 +27,13 @@ final class RegistrationSubscriber implements EventSubscriberInterface
 {
     private $encoderFactory;
     private $em;
+    private $jwtManager;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManager $em)
+    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManager $em, JWTManager $jwtManager)
     {
         $this->encoderFactory = $encoderFactory;
         $this->em = $em;
+        $this->jwtManager = $jwtManager;
     }
 
     public static function getSubscribedEvents()
@@ -94,12 +96,25 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     }
 
     public function createEmptyPartnerData(GetResponseForControllerResultEvent $event) {
+
+
         $account = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
         if (!$account instanceof Account || Request::METHOD_POST !== $method) {
             return;
         }
+
+
+        // TODO look at these ressource before doing
+        // https://stackoverflow.com/questions/26739167/jwt-json-web-token-automatic-prolongation-of-expiration?rq=1
+        // https://stackoverflow.com/questions/40519705/symfony-3-jwt-authentication-on-user-registration
+        // http://blog.wong2.me/2017/02/20/refresh-auth0-token-in-spa/
+        // $token = $this->jwtManager->create($account);
+        //
+        // var_dump($token);
+
+        return; // This function may be removed in a close future
 
         $business = new Business();
         $business->setOwner($account);
@@ -118,14 +133,7 @@ final class RegistrationSubscriber implements EventSubscriberInterface
         $bankAccount->setAddress($bankAccountAddress);
         $this->em->persist($bankAccount);
 
-        $profile = new Profile();
-        $profile->setOwner($account);
-        $profileAddress = new Address();
-        $profile->setAddress($profileAddress);
-        $this->em->persist($profile);
-
         $this->em->flush();
-
     }
 
     public function encodePWd(Account $account)
@@ -151,11 +159,8 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     {
         $tokenRepo = $this->em->getRepository('BemooveAppBundle:RegistrationToken');
         $registrationToken = $tokenRepo->findOneByToken($token);
-        // var_dump($token);
-        // var_dump("post findONy");
-        // var_dump($registrationToken);
+
         if ( $registrationToken ) {
-            // var_dump($registrationToken);
             if ($registrationToken->getDateUsed() !== NULL) {
                 return false;
             }

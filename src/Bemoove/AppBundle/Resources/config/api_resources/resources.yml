@@ -1,0 +1,50 @@
+Bemoove\AppBundle\Entity\Account:
+    collectionOperations:
+        post:
+            method: 'POST'
+    itemOperations:
+        get:
+            method: 'GET'
+
+Bemoove\AppBundle\Entity\BankAccount:
+    collectionOperations:
+        getMyBankAccount:
+            route_name: 'getMyBankAccount'
+    itemOperations:
+        get:
+            method: 'GET'
+        put:
+            method: 'PUT'
+
+Bemoove\AppBundle\Entity\Business:
+    collectionOperations:
+        getMyBusiness:
+            route_name: 'getMyBusiness'
+    itemOperations:
+        get:
+            method: 'GET'
+        put:
+            method: 'PUT'
+
+Bemoove\AppBundle\Entity\Coach:
+    collectionOperations:
+        getMyCoaches:
+            route_name: 'getMyCoaches'
+        post:
+            method: 'POST'
+
+Bemoove\AppBundle\Entity\RegistrationToken:
+    collectionOperations:
+        get:
+            method: 'GET'
+        post:
+            method: 'POST'
+
+Bemoove\AppBundle\Entity\Workout:
+    collectionOperations:
+        getMyWorkouts:
+            route_name: 'getMyWorkouts'
+        get:
+            method: 'GET'
+        post:
+            method: 'POST'
