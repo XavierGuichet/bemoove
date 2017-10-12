@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -19,7 +19,7 @@ final class WorkoutSubscriber implements EventSubscriberInterface
     private $securityTokenStorage;
     private $em;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManager $em)
+    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em)
     {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;

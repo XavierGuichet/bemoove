@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,7 +19,7 @@ class GetMyCoaches
     private $securityTokenStorage;
     private $em;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManager $em)
+    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em)
     {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;

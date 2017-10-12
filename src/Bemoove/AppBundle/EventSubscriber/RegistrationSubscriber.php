@@ -18,7 +18,8 @@ use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
 use Bemoove\AppBundle\Entity\Place\Address;
 use Doctrine\ORM\EntityManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
+
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -29,7 +30,7 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     private $em;
     private $jwtManager;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManager $em, JWTManager $jwtManager)
+    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, JWTTokenManagerInterface $jwtManager)
     {
         $this->encoderFactory = $encoderFactory;
         $this->em = $em;
