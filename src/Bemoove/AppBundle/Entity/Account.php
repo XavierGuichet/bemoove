@@ -21,7 +21,7 @@ use Bemoove\UserBundle\Entity\BaseUser as BaseUser;
 class Account extends BaseUser
 {
     /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", mappedBy="account", cascade={"persist", "merge"}))
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist", "merge"}))
      * @ORM\JoinColumn(nullable=true)
      */
     private $person;
