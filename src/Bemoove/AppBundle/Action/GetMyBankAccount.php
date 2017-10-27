@@ -63,7 +63,7 @@ class GetMyBankAccount
             $bankAccount = new BankAccount();
             $bankAccount->setBusiness($business);
             $bankAccount->setAddress(new Address());
-            $this->em->persist($business);
+            $this->em->persist($bankAccount);
             $this->em->flush();
         }
 
