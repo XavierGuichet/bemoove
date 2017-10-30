@@ -33,3 +33,8 @@ get_my_bank_account:
     resource: "@BemooveAppBundle/Action/GetMyBankAccount.php"
     prefix:   /
     type:     annotation
+
+get_my_workout_address:
+    resource: "@BemooveAppBundle/Action/GetMyWorkoutAddress.php"
+    prefix:   /
+    type:     annotation

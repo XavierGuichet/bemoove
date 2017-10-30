@@ -6,6 +6,20 @@ Bemoove\AppBundle\Entity\Account:
         get:
             method: 'GET'
 
+Bemoove\AppBundle\Entity\Place\Address:
+    collectionOperations:
+        getMyWorkoutAddress:
+            route_name: 'getMyWorkoutAddress'
+        post:
+            method: 'POST'
+        get:
+            method: 'GET'
+    itemOperations:
+        get:
+            method: 'GET'
+        put:
+            method: 'PUT'
+
 Bemoove\AppBundle\Entity\BankAccount:
     collectionOperations:
         getMyBankAccount:

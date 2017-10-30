@@ -83,13 +83,13 @@ class Workout
 
     /**
      * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Notice", type="text")
+     * @ORM\Column(name="Notice", type="text", nullable=true)
      */
     protected $notice;
 
     /**
      * @Groups({"workout","post_workout"})
-     * @ORM\Column(name="Outfit", type="text")
+     * @ORM\Column(name="Outfit", type="text", nullable=true)
      */
     protected $outfit;
 
@@ -104,7 +104,14 @@ class Workout
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
-    protected $photo;
+    protected $photoWide;
+
+    /**
+     * @Groups({"workout","post_workout"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    protected $photoSquare;
 
     /**
      * @var string
@@ -427,5 +434,53 @@ class Workout
         $this->duration = $duration;
 
         return $this;
+    }
+
+    /**
+     * Set photoWide
+     *
+     * @param \Bemoove\AppBundle\Entity\Image $photoWide
+     *
+     * @return Workout
+     */
+    public function setPhotoWide(\Bemoove\AppBundle\Entity\Image $photoWide = null)
+    {
+        $this->photoWide = $photoWide;
+
+        return $this;
+    }
+
+    /**
+     * Get photoWide
+     *
+     * @return \Bemoove\AppBundle\Entity\Image
+     */
+    public function getPhotoWide()
+    {
+        return $this->photoWide;
+    }
+
+    /**
+     * Set photoSquare
+     *
+     * @param \Bemoove\AppBundle\Entity\Image $photoSquare
+     *
+     * @return Workout
+     */
+    public function setPhotoSquare(\Bemoove\AppBundle\Entity\Image $photoSquare = null)
+    {
+        $this->photoSquare = $photoSquare;
+
+        return $this;
+    }
+
+    /**
+     * Get photoSquare
+     *
+     * @return \Bemoove\AppBundle\Entity\Image
+     */
+    public function getPhotoSquare()
+    {
+        return $this->photoSquare;
     }
 }
