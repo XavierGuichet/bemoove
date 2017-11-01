@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ApiResource(attributes={
  *          "filters"={"workoutinstance.workout","workoutinstance.coach","workoutinstance.startdate","workoutinstance.enddate"},
- *          "normalization_context"={"groups"={"full_workoutinstance","partial_coach","partial_workout"}},})
+ *          "normalization_context"={"groups"={"full_workoutinstance","partial_coach","partial_workout","workout","image"}},})
  * @ORM\Table(name="workout_instance")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\WorkoutInstanceRepository")
  */
