@@ -114,6 +114,14 @@ class Workout
     protected $photoSquare;
 
     /**
+     * @var bool
+     *
+     * @Groups({"workout","post_workout"})
+     * @ORM\Column(name="editable", type="boolean", nullable=true)
+     */
+    private $editable = 1;
+
+    /**
      * @var string
      *
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Account")
@@ -482,5 +490,29 @@ class Workout
     public function getPhotoSquare()
     {
         return $this->photoSquare;
+    }
+
+    /**
+     * Set editable
+     *
+     * @param boolean $editable
+     *
+     * @return Workout
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
     }
 }
