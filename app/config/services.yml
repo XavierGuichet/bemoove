@@ -14,9 +14,12 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
+    mymail:
+        class: Bemoove\AppBundle\Services\MyMail
+        public: true
+
     Bemoove\AppBundle\EventSubscriber\:
         resource: '../../src/Bemoove/AppBundle/EventSubscriber'
-
 
     Bemoove\AppBundle\Action\:
         resource: '../../src/Bemoove/AppBundle/Action'

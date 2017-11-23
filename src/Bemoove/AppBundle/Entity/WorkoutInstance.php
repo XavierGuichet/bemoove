@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * WorkoutInstance
  *
  * @ApiResource(attributes={
+ *          "order"={"startdate": "ASC"},
  *          "filters"={"workoutinstance.workout","workoutinstance.coach","workoutinstance.startdate","workoutinstance.enddate"},
  *          "normalization_context"={"groups"={"full_workoutinstance","partial_coach","partial_workout","workout","image"}},})
  * @ORM\Table(name="workout_instance")

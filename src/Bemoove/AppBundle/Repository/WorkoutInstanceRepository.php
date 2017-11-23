@@ -2,6 +2,13 @@
 
 namespace Bemoove\AppBundle\Repository;
 
+
+use Doctrine\ORM\EntityRepository;
+
+// N'oubliez pas ce use
+
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * WorkoutInstanceRepository
  *
@@ -10,4 +17,25 @@ namespace Bemoove\AppBundle\Repository;
  */
 class WorkoutInstanceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findBookableByWorkout($id_workout) {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->where('a.workout = :workout')
+            ->setParameter('workout', $id_workout)
+            ->andWhere('a.soldOut = 0')
+            ;
+
+        $this->whereBookable($qb);
+
+        $qb->orderBy('a.startdate', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function whereBookable(QueryBuilder $qb) {
+        $qb
+            ->andWhere('a.startdate > :start')
+            ->setParameter('start', new \DateTime('tomorrow'));
+    }
 }

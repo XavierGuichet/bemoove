@@ -30,6 +30,18 @@ Bemoove\AppBundle\Entity\BankAccount:
         put:
             method: 'PUT'
 
+Bemoove\AppBundle\Entity\BillingMandate:
+    collectionOperations:
+        checkBillingMandate:
+            route_name: 'checkBillingMandate'
+        signBillingMandate:
+            route_name: 'signBillingMandate'
+    itemOperations:
+        get:
+            method: 'GET'
+        put:
+            method: 'PUT'
+
 Bemoove\AppBundle\Entity\Business:
     collectionOperations:
         getMyBusiness:
@@ -58,6 +70,15 @@ Bemoove\AppBundle\Entity\Workout:
     collectionOperations:
         getMyWorkouts:
             route_name: 'getMyWorkouts'
+        get:
+            method: 'GET'
+        post:
+            method: 'POST'
+
+Bemoove\AppBundle\Entity\WorkoutInstance:
+    collectionOperations:
+        getBookableWorkoutInstance:
+            route_name: 'getBookableWorkoutInstance'
         get:
             method: 'GET'
         post:

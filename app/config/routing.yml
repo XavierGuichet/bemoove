@@ -38,3 +38,18 @@ get_my_workout_address:
     resource: "@BemooveAppBundle/Action/GetMyWorkoutAddress.php"
     prefix:   /
     type:     annotation
+
+get_bookable_workout_instance:
+    resource: "@BemooveAppBundle/Action/GetBookableWorkoutInstance.php"
+    prefix:   /
+    type:     annotation
+
+check_Billing_Mandate:
+    resource: "@BemooveAppBundle/Action/CheckBillingMandate.php"
+    prefix:   /
+    type:     annotation
+
+sign_Billing_Mandate:
+    resource: "@BemooveAppBundle/Action/SignBillingMandate.php"
+    prefix:   /
+    type:     annotation

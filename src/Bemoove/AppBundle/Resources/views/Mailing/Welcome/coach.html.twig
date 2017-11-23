@@ -1,0 +1,170 @@
+{% extends "::baseMail.html.twig" %}
+
+{% set titleMail = "Bienvenue" %}
+
+{% block title %}
+    {{ parent() }}
+    -
+    {{ titleMail }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include 'BemooveAppBundle:Mailing:Welcome/_welcome.css.twig' %}
+{% endblock %}
+
+{% block body %}
+    <table class="spacer float-center">
+        <tbody>
+            <tr>
+                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container header float-center">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                        <tr>
+                                            <th>
+                                                <h1 class="text-center">Bienvenue dans l’équipe !</h1>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container body-border float-center">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                        <tr>
+                                            <th>
+                                                <table class="spacer">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td height="32px" style="font-size:32px;line-height:32px;">&#xA0;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <center data-parsed="">
+                                                    <img src="http://placehold.it/200x200" align="center" class="float-center">
+                                                </center>
+                                                <table class="spacer">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <h4>An exciting future of terrorizing sailors awaits you at Kraken Academy.
+                                                    <em>(j'aime la tournure de cette phrase, je l'ai laissé pour y penser)</em>
+                                                </h4>
+                                                <p>
+                                                    <strong>Enfin presque !</strong>
+                                                    Nous avons bien pris en compte votre demande d’inscription. Pour des raisons de sécurité et pour garantir à nos clients la «crème de la crème» des professionnels du sport nous prenons contact avec tous les coachs afin de valider leurs profils.</p>
+                                                <p>
+                                                    <strong>Nous allons prendre contact avec vous dans les plus brefs délais</strong>
+                                                    via les informations de contact que vous avez renseignés afin de valider votre profil et d’activer votre compte sur Bemoove.</p>
+                                                <center data-parsed="">
+                                                    <table class="button button">
+                                                        <tr>
+                                                            <td>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="#">Primary Action</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </center>
+                                                <center data-parsed="">
+                                                    <table align="center" class="menu float-center">
+                                                        <tr>
+                                                            <td>
+                                                                <table>
+                                                                    <tr>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://bemoove.fr/">bemoove.fr</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://www.facebook.com/Bemoove.fr/">Facebook</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://twitter.com/Bemoove">Twitter</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://www.instagram.com/bemoovefr/">Instagram</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="#">(408)-555-0123</a>
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </center>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="spacer">
+                        <tbody>
+                            <tr>
+                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container footer float-center">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                        <tr>
+                                            <th class="secondary">
+                                                <p class="secondary">Pour rappel, nous demandons à nos coachs d’être titulaire d’une carte professionnelle pour être référencé en tant que Becoach sur Bemoove.fr : d’après l’article L212-1: « Seuls peuvent, contre rémunération, enseigner, animer ou encadrer une activité physique ou sportive ou entraîner ses pratiquants, à titre d’occupation principale ou secondaire, de façon habituelle, saisonnière ou occasionnelle, sous réserve des dispositions du quatrième alinéa du présent article et de l’article L. 212-2 du présent code, les titulaires d’un diplôme, titre à finalité professionnelle ou certificat de qualification »</p>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

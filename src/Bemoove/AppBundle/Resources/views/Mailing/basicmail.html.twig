@@ -1,0 +1,33 @@
+{% extends "::baseMail.html.twig" %}
+
+{% set titleMail = "Idée enregistrée" %}
+
+{% block title %}
+    {{ parent() }}
+    -
+    {{ titleMail }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include 'BemooveAppBundle:Mailing:_stylesheet.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="BGtable" bgcolor="#ffffff">
+        <tr>
+            <td align="center">
+                {% include 'BemooveAppBundle:Mailing:_top_header.html.twig' with { 'titleMail' : titleMail }%}
+                {% include 'BemooveAppBundle:Mailing:_header.html.twig' %}
+                <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0" style="margin: auto !important;" bgcolor="#DDDDDD">
+                    <tr>
+                        <td>
+                            Contenu reel
+                        </td>
+                    </tr>
+                </table>
+                {% include 'BemooveAppBundle:Mailing:_footer.html.twig' %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
