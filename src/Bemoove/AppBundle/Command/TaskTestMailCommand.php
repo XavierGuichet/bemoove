@@ -52,6 +52,13 @@ class TaskTestMailCommand extends ContainerAwareCommand
                 else $output->writeln('<error>ERROR!</error>');
             }
 
+            if (!$template || $template === 'welcomemember') {
+                $output->write('<comment>Mail : welcome Member = </comment>');
+                $result = $this->getContainer()->get('mymail')->sendWelcomeMemberEmail($dest);
+                if($result) $output->writeln('<info>SUCCESS</info>');
+                else $output->writeln('<error>ERROR!</error>');
+            }
+
         } catch (\Exception $e) {
             $output->writeln('<error>ERROR</error>'.$e->getMessage());
         }

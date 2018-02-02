@@ -1,0 +1,143 @@
+{% extends "::baseMail.html.twig" %}
+
+{% set titleMail = "Bienvenue" %}
+
+{% block title %}
+    {{ parent() }}
+    -
+    {{ titleMail }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include 'BemooveAppBundle:Mailing:Welcome/_welcome.css.twig' %}
+{% endblock %}
+
+{% block body %}
+    <table class="spacer float-center">
+        <tbody>
+            <tr>
+                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container header float-center">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                        <tr>
+                                            <th>
+                                                <h1 class="text-center">Bienvenue dans l’équipe !</h1>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table align="center" class="container body-border float-center">
+        <tbody>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th class="small-12 large-12 columns first last">
+                                    <table>
+                                        <tr>
+                                            <th>
+                                                <table class="spacer">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td height="32px" style="font-size:32px;line-height:32px;">&#xA0;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <center data-parsed="">
+                                                    <img src="http://placehold.it/200x200" align="center" class="float-center">
+                                                </center>
+                                                <table class="spacer">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <h4>An exciting future of terrorizing sailors awaits you at Kraken Academy.
+                                                    <em>(j'aime la tournure de cette phrase, je l'ai laissé pour y penser)</em>
+                                                </h4>
+                                                <p>
+                                                    Votre inscription a bien été prise en compte. Vous pouvez dès à présent vous connecter sur bemoove.fr
+                                                </p>
+                                                <center data-parsed="">
+                                                    <table class="button button">
+                                                        <tr>
+                                                            <td>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="#">Primary Action</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </center>
+                                                <center data-parsed="">
+                                                    <table align="center" class="menu float-center">
+                                                        <tr>
+                                                            <td>
+                                                                <table>
+                                                                    <tr>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://bemoove.fr/">bemoove.fr</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://www.facebook.com/Bemoove.fr/">Facebook</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://twitter.com/Bemoove">Twitter</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="https://www.instagram.com/bemoovefr/">Instagram</a>
+                                                                        </th>
+                                                                        <th class="menu-item float-center">
+                                                                            <a href="#">(408)-555-0123</a>
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </center>
+                                            </th>
+                                            <th class="expander"></th>
+                                        </tr>
+                                    </table>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="spacer">
+                        <tbody>
+                            <tr>
+                                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
