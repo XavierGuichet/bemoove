@@ -17,6 +17,8 @@ services:
     mymail:
         class: Bemoove\AppBundle\Services\MyMail
         public: true
+        arguments:
+            $environment: '%kernel.environment%'
 
     Bemoove\AppBundle\EventSubscriber\:
         resource: '../../src/Bemoove/AppBundle/EventSubscriber'

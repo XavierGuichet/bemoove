@@ -13,14 +13,17 @@ class MyMail {
     protected $router;
     protected $templating;
 
+    private $environment;
+
     private $from = "hello@bemoove.fr";
     private $reply = "hello@bemoove.fr";
     private $name = "Bemoove";
 
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, RouterInterface $router) {
+    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, RouterInterface $router, string $environment) {
         $this->mailer = $mailer;
         $this->router = $router;
         $this->templating = $templating;
+        $this->environment = $environment;
     }
 
     public function sendBasicEmail($to) {
@@ -30,7 +33,20 @@ class MyMail {
             return false;
 
         // sujet
-        $subject = "[Test Mail] Basic";
+        $subject = "Bienvenue sur Bemoove";
+
+        return $this->sendMail($subject, $view, $to);
+    }
+
+    public function sendWelcomeMemberEmail($to) {
+        print($this->environment);
+        $view = null;
+        $view = $this->templating->render('BemooveAppBundle:Mailing:Welcome/member.html.twig', array());
+        if (!$view)
+            return false;
+
+        // sujet
+        $subject = "Bienvenue sur Bemoove";
 
         return $this->sendMail($subject, $view, $to);
     }
@@ -42,7 +58,7 @@ class MyMail {
             return false;
 
         // sujet
-        $subject = "[Test Mail] Bienvenue sur Bemoove";
+        $subject = "Bienvenue sur Bemoove";
 
         return $this->sendMail($subject, $view, $to);
     }
@@ -50,9 +66,11 @@ class MyMail {
     private function sendMail($subject, $view, $to){
         // TODO $view = $this->createOnlineVersion($view);
 
-        // pour utiliser la fonction php mail à la place du smtp
-        //$transport = \Swift_MailTransport::newInstance();
-        //$this->mailer = \Swift_Mailer::newInstance($transport);
+        //Do Not send mail during behat test
+        if($this->environment === 'behat') {
+            print 'nomail send';
+            return true;
+        }
 
         $mail = \Swift_Message::newInstance()
                 ->setSubject($subject)
