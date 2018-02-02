@@ -2,7 +2,6 @@ imports:
     - { resource: config.yml }
     - { resource: parameters_behat.yml }
 
-
 monolog:
     handlers:
         main:
