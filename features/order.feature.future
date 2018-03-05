@@ -1,0 +1,71 @@
+Feature: Make an order
+    As a user, i should be able to make a reservation of a workoutInstance
+
+    Scenario:
+        Given There is a workout with parameters
+        And There are two workoutInstances
+        And I am logged as a user
+        And As a User all my Personnal Information are Good
+        When I add "Content-Type" header equal to "application/ld+json"
+        And I add "Accept" header equal to "application/ld+json"
+        And I send a "POST" request to "/bookAWorkout" with body:
+            """
+            {
+                "workoutInstance" : 1
+            }
+            """
+        Then the response status code should be "200"
+        And the response should be in JSON
+        And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+        And the response should contain "Reservation done"
+
+    Scenario:
+        Given There is a workout with parameters
+        And There are two workoutInstances
+        But I am not Logged
+        When I add "Content-Type" header equal to "application/ld+json"
+        And I add "Accept" header equal to "application/ld+json"
+        And I send a "POST" request to "/bookAWorkout" with body:
+            """
+            {
+                "workoutInstance" : 1
+            }
+            """
+        Then the response status code should be "401"
+        And the response should be in JSON
+        And the response should contain "Require authentification"
+
+    Scenario:
+        Given There is a workout with parameters
+        And There are two workoutInstances
+        And I am logged as a user
+        But As a User all my Personnal Information are not Set
+        When I add "Content-Type" header equal to "application/ld+json"
+        And I add "Accept" header equal to "application/ld+json"
+        And I send a "POST" request to "/bookAWorkout" with body:
+            """
+            {
+                "workoutInstance" : 1
+            }
+            """
+        Then the response status code should be "200"
+        And the response should be in JSON
+        And the response should contain "Missing personnal data"
+
+    Scenario:
+        Given There is a workout with parameters
+        And There are two workoutInstances
+        And I am logged as a user
+        And As a User all my Personnal Information are Good
+        But There are no more place for this Instance
+        When I add "Content-Type" header equal to "application/ld+json"
+        And I add "Accept" header equal to "application/ld+json"
+        And I send a "POST" request to "/bookAWorkout" with body:
+            """
+            {
+                "workoutInstance" : 1
+            }
+            """
+        Then the response status code should be "200"
+        And the response should be in JSON
+        And the response should contain "Sorry this workout is soldOut"

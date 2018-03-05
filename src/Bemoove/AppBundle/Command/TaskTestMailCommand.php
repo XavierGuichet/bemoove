@@ -59,6 +59,13 @@ class TaskTestMailCommand extends ContainerAwareCommand
                 else $output->writeln('<error>ERROR!</error>');
             }
 
+            if (!$template || $template === 'recoverpassword') {
+                $output->write('<comment>Mail : Recover Password = </comment>');
+                $result = $this->getContainer()->get('mymail')->sendForgottenPasswordTokenMail($dest);
+                if($result) $output->writeln('<info>SUCCESS</info>');
+                else $output->writeln('<error>ERROR!</error>');
+            }
+
         } catch (\Exception $e) {
             $output->writeln('<error>ERROR</error>'.$e->getMessage());
         }

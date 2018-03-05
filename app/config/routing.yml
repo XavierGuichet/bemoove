@@ -44,6 +44,16 @@ get_bookable_workout_instance:
     prefix:   /
     type:     annotation
 
+get_my_person:
+    resource: "@BemooveAppBundle/Action/GetMyPerson.php"
+    prefix:   /
+    type:     annotation
+
+get_my_reservations:
+    resource: "@BemooveAppBundle/Action/GetMyReservations.php"
+    prefix:   /
+    type:     annotation
+
 check_Billing_Mandate:
     resource: "@BemooveAppBundle/Action/CheckBillingMandate.php"
     prefix:   /
@@ -51,5 +61,15 @@ check_Billing_Mandate:
 
 sign_Billing_Mandate:
     resource: "@BemooveAppBundle/Action/SignBillingMandate.php"
+    prefix:   /
+    type:     annotation
+
+send_forgotten_password_token:
+    resource: "@BemooveAppBundle/Action/SendForgottenPasswordToken.php"
+    prefix:   /
+    type:     annotation
+
+change_forgotten_password:
+    resource: "@BemooveAppBundle/Action/ChangeForgottenPassword.php"
     prefix:   /
     type:     annotation

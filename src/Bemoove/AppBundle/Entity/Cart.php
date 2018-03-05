@@ -7,20 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Booking
+ * Cart
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"booking_with_user"}}
+ *          "normalization_context"={"groups"={"cart"}}
  *  })
- * @ORM\Table(name="booking")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\BookingRepository")
+ * @ORM\Table(name="cart")
+ * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\CartRepository")
  */
-class Booking
+class Cart
 {
     /**
      * @var int
      *
-     * @Groups({"booking_with_user"})
+     * @Groups({"cart"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,8 +28,15 @@ class Booking
     private $id;
 
     /**
-     * @Groups({"booking_with_user"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist"})
+     * @Groups({"cart"})
+     * @ORM\Column(name="originIp", type="string", length=255, nullable=true)
+     */
+    private $originIp;
+
+    /**
+     * @Groups({"cart"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Person")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $member;
 
@@ -41,7 +48,7 @@ class Booking
     /**
      * @var \DateTime
      *
-     * @Groups({"booking_with_user"})
+     * @Groups({"cart"})
      * @ORM\Column(name="date_add", type="datetimetz")
      */
     private $dateAdd;
@@ -49,10 +56,18 @@ class Booking
     /**
      * @var int
      *
-     * @Groups({"booking_with_user"})
+     * @Groups({"cart"})
      * @ORM\Column(name="nb_booking", type="smallint")
      */
     private $nbBooking;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setDateAdd(new \DateTime());
+    }
 
     /**
      * Get id
@@ -158,5 +173,29 @@ class Booking
     public function getWorkoutInstance()
     {
         return $this->workoutInstance;
+    }
+
+    /**
+     * Set originIp
+     *
+     * @param string $originIp
+     *
+     * @return Cart
+     */
+    public function setOriginIp($originIp)
+    {
+        $this->originIp = $originIp;
+
+        return $this;
+    }
+
+    /**
+     * Get originIp
+     *
+     * @return string
+     */
+    public function getOriginIp()
+    {
+        return $this->originIp;
     }
 }

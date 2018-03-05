@@ -83,3 +83,32 @@ Bemoove\AppBundle\Entity\WorkoutInstance:
             method: 'GET'
         post:
             method: 'POST'
+
+Bemoove\AppBundle\Entity\Person:
+    collectionOperations:
+        getMyPerson:
+            route_name: 'getMyPerson'
+    itemOperations:
+        get:
+            method: 'GET'
+        put:
+            method: 'PUT'
+
+Bemoove\AppBundle\Entity\Reservation:
+    collectionOperations:
+        getMyReservations:
+            route_name: 'getMyReservations'
+        get:
+            method: 'GET'
+        post:
+            method: 'POST'
+    itemOperations:
+        get:
+            method: 'GET'
+
+Bemoove\AppBundle\Entity\ForgottenPasswordToken:
+    collectionOperations:
+        sendForgottenPasswordToken:
+            route_name: 'sendForgottenPasswordToken'
+        changeForgottenPassword:
+            route_name: 'changeForgottenPassword'

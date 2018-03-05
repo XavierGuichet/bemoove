@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(attributes={
  *          "filters"={"person.account"},
- *          "normalization_context"={"groups"={"person"}},
+ *          "normalization_context"={"groups"={"person","address"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
  * @ORM\Table(name="person")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\PersonRepository")
@@ -88,26 +88,26 @@ class Person
      */
     private $birthdate;
 
-     /**
-      * @Groups({"workout","business","person"})
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
-      * @ORM\JoinColumn(nullable=true)
-      */
-     private $photo;
+    /**
+     * @Groups({"workout","business","person"})
+     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $photo;
 
-      /**
-       * @var string
-       * @Groups({"workout","person","post_person"})
-       * @ORM\Column(name="CountryOfResidence", type="date", nullable=true)
-       */
-      private $countryOfResidence;
+    /**
+     * @var string
+     * @Groups({"workout","person","post_person"})
+     * @ORM\Column(name="CountryOfResidence", type="string", nullable=true)
+     */
+    private $countryOfResidence;
 
-      /**
-       * @var string
-       * @Groups({"workout","person","post_person"})
-       * @ORM\Column(name="Nationality", type="date", nullable=true)
-       */
-      private $nationality;
+    /**
+     * @var string
+     * @Groups({"workout","person","post_person"})
+     * @ORM\Column(name="Nationality", type="string", nullable=true)
+     */
+    private $nationality;
 
     /**
      * Get id

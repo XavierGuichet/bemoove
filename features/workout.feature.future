@@ -1,0 +1,32 @@
+Feature: Manage workout
+    As a partner, i should be able to create new workout
+
+    Scenario:
+        Given I am logged as a partner
+        When I add "Content-Type" header equal to "application/ld+json"
+        And I add "Accept" header equal to "application/ld+json"
+        And I send a "POST" request to "/workouts" with body:
+            """
+            {
+                "title" : "Titre du workout",
+                "sport" : idsport,
+                "address" : idaddress,
+                "duration" : "90",
+                "price" : "10",
+                "description" : "lorem ipsum",
+                "notice" : "lorem ipsum",
+                "outfit" : "lorem ipsum",
+                "tags" : [idtag1, idtag2],
+                "photoWide" : "idphotoWide",
+                "photoSquare" : "idphotoSquare"
+            }
+            """
+        Then the response status code should be "200"
+        And the response should be in JSON
+        And the header "Content-Type" should be equal to "application/ld+json; charset=utf-8"
+        And the response shoud be :
+        """
+        {
+
+        }
+        """

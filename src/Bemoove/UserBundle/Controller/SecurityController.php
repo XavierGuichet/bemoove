@@ -6,12 +6,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Bemoove\UserBundle\Entity\BaseUser;
 use Bemoove\UserBundle\Form\Type\BaseUserType;
 
+use Symfony\Component\Routing\Annotation\Route;
 use Bemoove\AppBundle\Entity\User;
 
 class SecurityController extends Controller
 {
+    /**
+     * @Route("/login_test", name="login_test")
+     */
+    public function login_checkAction(Request $request)
+    {
+    }
 
-    public function loginAction(Request $request)
+    public function login_formAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 

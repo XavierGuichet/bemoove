@@ -42,6 +42,8 @@
         "behat/mink-extension": "^2.2",
         "behat/symfony2-extension": "^2.1",
         "behatch/contexts": "^2.5",
+        "imbo/behat-api-extension": "^2.1",
+        "phpunit/phpunit": "^6.5",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },

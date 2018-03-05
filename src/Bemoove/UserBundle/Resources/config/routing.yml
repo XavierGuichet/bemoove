@@ -1,10 +1,11 @@
 login_check:
     path:   /login_check
+    defaults: { _controller: BemooveUserBundle:Security:login_check }
     methods: POST
 
-user_login:
+login_form:
     path:     /login
-    defaults: { _controller: BemooveUserBundle:Security:login }
+    defaults: { _controller: BemooveUserBundle:Security:login_form }
     methods: GET
 
 logout:

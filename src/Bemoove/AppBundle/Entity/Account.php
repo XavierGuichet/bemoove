@@ -40,6 +40,12 @@ class Account extends BaseUser
     private $creationToken;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="isCoach", type="boolean", nullable=true)
+     */
+    private $isCoach = false;
+
+    /**
      * Set person
      *
      * @param \Bemoove\AppBundle\Entity\Person $person
@@ -109,5 +115,29 @@ class Account extends BaseUser
     public function getCreationToken()
     {
         return $this->creationToken;
+    }
+
+    /**
+     * Set isCoach
+     *
+     * @param boolean $isCoach
+     *
+     * @return Account
+     */
+    public function setIsCoach($isCoach)
+    {
+        $this->isCoach = $isCoach;
+
+        return $this;
+    }
+
+    /**
+     * Get isCoach
+     *
+     * @return boolean
+     */
+    public function getIsCoach()
+    {
+        return $this->isCoach;
     }
 }
