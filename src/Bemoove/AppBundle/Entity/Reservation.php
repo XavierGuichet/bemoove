@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Reservation
  *
  * @ApiResource(attributes={
- *          "filters"={"person.account", "workoutinstance"},
+ *          "filters"={"person.account", "reservation.workoutinstance"},
  *          "normalization_context"={"groups"={"reservation","person","workout","full_workoutinstance"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
  * @ORM\Table(name="reservation")

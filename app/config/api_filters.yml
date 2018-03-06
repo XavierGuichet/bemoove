@@ -6,18 +6,27 @@ services:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { owner.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'address.search' }]
+
     bankaccount.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { owner.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'bankaccount.search' }]
+
     business.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { owner.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'business.search' }]
+
     coach.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { business.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'coach.search' }]
+
+    reservation.workoutinstance_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { workoutInstance.id: 'exact' }]
+        tags: [ { name: 'api_platform.filter', id: 'reservation.workoutinstance'} ]
+
     workout.coach_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { coach.id: 'exact' }]
@@ -34,6 +43,7 @@ services:
         parent: 'api_platform.doctrine.orm.date_filter'
         arguments: [ { enddate: ~ }]
         tags: [ { name: 'api_platform.filter', id: 'workout.enddate' }]
+
     workoutinstance.workout_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { workout.id: 'exact' }]
@@ -50,6 +60,7 @@ services:
         parent: 'api_platform.doctrine.orm.date_filter'
         arguments: [ { enddate: ~ }]
         tags: [ { name: 'api_platform.filter', id: 'workoutinstance.enddate' }]
+
     sport.search_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { name: 'partial' }]
