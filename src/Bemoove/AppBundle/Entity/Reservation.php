@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Reservation
  *
  * @ApiResource(attributes={
- *          "filters"={"person.account", "reservation.workoutinstance"},
+ *          "filters"={"reservation.futureworkoutinstance", "reservation.person_filter", "reservation.workoutinstance"},
  *          "normalization_context"={"groups"={"reservation","person","workout","full_workoutinstance"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
  * @ORM\Table(name="reservation")
@@ -30,7 +30,7 @@ class Reservation
 
     /**
      * @Groups({"reservation"})
-     * @ORM\Column(name="order_id", type="string", length=8)
+     * @ORM\Column(name="order_id", type="string", length=8, nullable=true)
      */
     private $order;
     //@ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Order", inversedBy="reservation")

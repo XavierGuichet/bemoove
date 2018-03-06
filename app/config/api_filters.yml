@@ -26,6 +26,14 @@ services:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { workoutInstance.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'reservation.workoutinstance'} ]
+    reservation.person_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { person.id: 'exact' }]
+        tags: [ { name: 'api_platform.filter', id: 'reservation.person_filter' }]
+    reservation.futureworkoutinstance_filter:
+        parent: 'api_platform.doctrine.orm.date_filter'
+        arguments: [ { workoutInstance.startdate: ~ }]
+        tags: [ { name: 'api_platform.filter', id: 'reservation.futureworkoutinstance'} ]
 
     workout.coach_filter:
         parent: 'api_platform.doctrine.orm.search_filter'
