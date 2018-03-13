@@ -17,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-final class HideWorkoutInstanceExtensionExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class HideWorkoutInstanceExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityTokenStorage;
     private $authorizationChecker;
