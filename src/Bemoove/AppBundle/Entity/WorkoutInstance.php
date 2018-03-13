@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(attributes={
  *          "order"={"startdate": "ASC"},
  *          "filters"={"workoutinstance.workout","workoutinstance.coach","workoutinstance.startdate","workoutinstance.enddate"},
- *          "normalization_context"={"groups"={"full_workoutinstance","partial_coach","partial_workout","workout","image"}},})
+ *          "normalization_context"={"groups"={"full_workoutinstance","partial_coach","partial_workout","workout","image", "business_valid"}},})
  * @ORM\Table(name="workout_instance")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\WorkoutInstanceRepository")
  */

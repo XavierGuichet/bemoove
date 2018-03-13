@@ -39,6 +39,16 @@ security:
             methods: [POST]
             security: false
 
+        workout_instances:
+            pattern: ^/workout_instances
+            methods: [GET]
+            provider: bemoove_sporty_account_provider
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         notsecure4:
             pattern: ^/carts
             methods: [POST]

@@ -31,7 +31,7 @@ class Workout
     private $id;
 
     /**
-     * @Groups({"workout"})
+     * @Groups({"workout","business_valid"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Coach")
      * @ORM\JoinColumn(nullable=true)
      */

@@ -128,6 +128,13 @@ class Business
     private $coaches;
 
     /**
+     * @var boolean
+     * @Groups({"business","business_valid"})
+     * @ORM\Column(name="isValid", type="boolean", nullable=true)
+     */
+    private $isValid = false;
+
+    /**
      * @Groups({"business"})
      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Account", inversedBy="business")
      * @ORM\JoinColumn(nullable=false)
@@ -495,5 +502,29 @@ class Business
     public function getCoaches()
     {
         return $this->coaches;
+    }
+
+    /**
+     * Set isValid
+     *
+     * @param boolean $isValid
+     *
+     * @return Business
+     */
+    public function setIsValid($isValid)
+    {
+        $this->isValid = $isValid;
+
+        return $this;
+    }
+
+    /**
+     * Get isValid
+     *
+     * @return boolean
+     */
+    public function getIsValid()
+    {
+        return $this->isValid;
     }
 }

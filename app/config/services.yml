@@ -21,6 +21,11 @@ services:
             $environment: '%kernel.environment%'
             $client_front_url: '%client_front_url%'
 
+    Bemoove\AppBundle\Doctrine\HideWorkoutInstanceExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
     Bemoove\AppBundle\EventSubscriber\:
         resource: '../../src/Bemoove/AppBundle/EventSubscriber'
 

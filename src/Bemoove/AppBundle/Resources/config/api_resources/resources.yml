@@ -1,10 +1,19 @@
 Bemoove\AppBundle\Entity\Account:
     collectionOperations:
         post:
-            method: 'POST'
+          method: 'POST'
     itemOperations:
         get:
             method: 'GET'
+            access_control: "is_granted('IS_AUTHENTICATED_FULLY') and object == user"
+            access_control_message: "Sorry, but you are not the business owner."
+    properties:
+      business:
+        subresource:
+          resourceClass: 'Bemoove\AppBundle\Entity\Business'
+          collection: false
+          access_control: "is_granted('ROLE_PARTNER') and object.getOwner() == user"
+          access_control_message: "Sorry, but you are not the business owner."
 
 Bemoove\AppBundle\Entity\Place\Address:
     collectionOperations:
@@ -44,13 +53,18 @@ Bemoove\AppBundle\Entity\BillingMandate:
 
 Bemoove\AppBundle\Entity\Business:
     collectionOperations:
-        getMyBusiness:
-            route_name: 'getMyBusiness'
+          get:
+            method: 'GET'
+    #     getMyBusiness:
+    #         route_name: 'getMyBusiness'
     itemOperations:
         get:
             method: 'GET'
+            access_control: "is_granted('ROLE_PARTNER') and object.getOwner() == user"
+            access_control_message: "Sorry, but you are not the business owner."
         put:
             method: 'PUT'
+            access_control: "is_granted('ROLE_PARTNER') and object.getOwner() == user"
 
 Bemoove\AppBundle\Entity\Coach:
     collectionOperations:

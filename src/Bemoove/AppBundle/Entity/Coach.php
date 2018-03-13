@@ -20,12 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Coach
 {
     /**
-     * @Groups({"person","post_person"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business", inversedBy="coaches")
-     */
-    private $business;
-
-    /**
      * @var int
      *
      * @Groups({"person","business","partial_coach"})
@@ -34,6 +28,12 @@ class Coach
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @Groups({"person","post_person","business_valid"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business", inversedBy="coaches")
+     */
+    private $business;
 
     /**
      * @var string
