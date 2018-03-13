@@ -34,13 +34,8 @@ security:
             pattern: ^/images
             security: false
 
-        notsecure2:
-            pattern: ^/accounts
-            methods: [POST]
-            security: false
-
-        notsecure3:
-            pattern: ^/registration_tokens
+        account_unsec:
+            pattern: ^/(accounts|registration_tokens|send_forgotten_password_token|change_forgotten_password)
             methods: [POST]
             security: false
 
@@ -49,15 +44,15 @@ security:
             methods: [POST]
             security: false
 
-        notsecure5:
-            pattern: ^/send_forgotten_password_token
-            methods: [POST]
-            security: false
-
-        notsecure6:
-            pattern: ^/change_forgotten_password
-            methods: [POST]
-            security: false
+        securedget:
+            pattern:   ^/(accounts|businesses|getMy)
+            methods: [GET]
+            provider: bemoove_sporty_account_provider
+            stateless: true
+            # lexik_jwt: ~
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         main:
             pattern:   ^/
@@ -69,28 +64,8 @@ security:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
-        main22:
-            pattern:   ^/getMy
-            methods: [GET]
-            provider: bemoove_sporty_account_provider
-            stateless: true
-            # lexik_jwt: ~
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
-        main23:
-            pattern:   ^/checkBillingMandate
-            methods: [GET]
-            provider: bemoove_sporty_account_provider
-            stateless: true
-            # lexik_jwt: ~
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
-        main24:
-            pattern:   ^/signBillingMandate
+        billing_mandate:
+            pattern:   ^/(checkBillingMandate|signBillingMandate)
             methods: [GET]
             provider: bemoove_sporty_account_provider
             stateless: true
@@ -104,8 +79,6 @@ security:
             security: false
 
     access_control:
-        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/addresses, roles: [ ROLE_PARTNER, ROLE_USER ], methods: [POST, PUT] }
-        # - { path: ^/addresses, roles: IS_AUTHENTICATED_ANONYMOUSLY }
