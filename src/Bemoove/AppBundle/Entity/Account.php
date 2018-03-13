@@ -23,12 +23,16 @@ class Account extends BaseUser
     /**
      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person", cascade={"persist", "merge"}))
      * @ORM\JoinColumn(nullable=true)
+     * @ApiSubresource
+     * @Groups({"booking_with_user"})
      */
     private $person;
 
     /**
      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Business", mappedBy="owner", cascade={"persist", "merge"}))
      * @ORM\JoinColumn(nullable=true)
+     * @ApiSubresource
+     * @Groups({"booking_with_user"})
      */
     private $business;
 
