@@ -1,13 +1,13 @@
 <?php
 // src/AppBundle/DataFixtures/ORM/LoadQuestionnaire.php
-namespace OC\PlatformBundle\DataFixtures\ORM;
+namespace Bemoove\AppBundle\DataFixtures\ORM;
 
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Bemoove\AppBundle\Entity\Sport;
 
-class LoadSport implements FixtureInterface
+class LoadSport implements ORMFixtureInterface
 {
     public function load(ObjectManager $em)
     {
