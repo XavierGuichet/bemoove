@@ -30,6 +30,14 @@ class Person
     private $id;
 
     /**
+     * @var int
+     *
+     * @Groups({"person","business"})
+     * @ORM\Column(name="mangopayid", type="integer", nullable=true)
+     */
+    private $mangoPayId;
+
+    /**
      * @var string
      * @Groups({"workout","business","person","post_person"})
      * @ORM\Column(name="LastName", type="string", length=255, nullable=true)
@@ -406,5 +414,29 @@ class Person
     public function getFirstname()
     {
         return $this->firstname;
+    }
+
+    /**
+     * Set mangoPayId
+     *
+     * @param integer $mangoPayId
+     *
+     * @return Person
+     */
+    public function setMangoPayId($mangoPayId)
+    {
+        $this->mangoPayId = $mangoPayId;
+
+        return $this;
+    }
+
+    /**
+     * Get mangoPayId
+     *
+     * @return integer
+     */
+    public function getMangoPayId()
+    {
+        return $this->mangoPayId;
     }
 }

@@ -28,6 +28,13 @@ class Business
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="mangopayid", type="integer", nullable=true)
+     */
+    private $mangoPayId;
+
+    /**
      * @var string
      *
      * @Groups({"business"})
@@ -116,7 +123,7 @@ class Business
     /**
      * @var float
      *
-     * @Groups({"business"})
+     * @Groups({"business", "business_vatrate"})
      * @ORM\Column(name="VATRate", type="float", nullable=true)
      */
     private $vatRate;
@@ -526,5 +533,29 @@ class Business
     public function getIsValid()
     {
         return $this->isValid;
+    }
+
+    /**
+     * Set mangoPayId
+     *
+     * @param integer $mangoPayId
+     *
+     * @return Business
+     */
+    public function setMangoPayId($mangoPayId)
+    {
+        $this->mangoPayId = $mangoPayId;
+
+        return $this;
+    }
+
+    /**
+     * Get mangoPayId
+     *
+     * @return integer
+     */
+    public function getMangoPayId()
+    {
+        return $this->mangoPayId;
     }
 }
