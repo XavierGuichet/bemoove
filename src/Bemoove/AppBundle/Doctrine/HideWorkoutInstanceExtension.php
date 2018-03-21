@@ -51,10 +51,14 @@ final class HideWorkoutInstanceExtension implements QueryCollectionExtensionInte
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass)
     {
+        // Don't know why $resourceClass can be the resource on cart Post
         if (WorkoutInstance::class === $resourceClass) {
             $allAlias = $queryBuilder->getAllAliases();
             $businessAlias = preg_grep('/^business.*/', $allAlias);
             sort($businessAlias);
+            if(count($businessAlias) < 1) {
+              return;
+            }
             $ofValidBusiness = sprintf('%s.isValid = true', $businessAlias[0]);
 
             //si pas log, ne peut voir que des valid
@@ -69,7 +73,10 @@ final class HideWorkoutInstanceExtension implements QueryCollectionExtensionInte
                 $queryBuilder->andWhere($ofValidBusiness.' OR '.sprintf('%s.id = :businessid', $businessAlias[0]));
                 $queryBuilder->setParameter('businessid', $business->getId());
             } else {
+                $rootAlias = $queryBuilder->getRootAliases()[0];
+                $notSoldOutBusiness = sprintf('%s.soldOut = 0', $rootAlias);
                 $queryBuilder->andWhere($ofValidBusiness);
+                $queryBuilder->andWhere($notSoldOutBusiness);
             }
         }
     }
