@@ -40,7 +40,7 @@ security:
             security: false
 
         workout_instances:
-            pattern: ^/workout_instances
+            pattern: ^/(workout_instances|getBookableWorkoutInstance)
             methods: [GET]
             provider: bemoove_sporty_account_provider
             anonymous: true
@@ -58,6 +58,8 @@ security:
             pattern:   ^/(accounts|businesses|getMy)
             methods: [GET]
             provider: bemoove_sporty_account_provider
+            # stateless may be the response to remove AuthenticationListener called everytime
+            # http://symfony.com/doc/current/security/api_key_authentication.html#storing-authentication-in-the-session
             stateless: true
             # lexik_jwt: ~
             guard:

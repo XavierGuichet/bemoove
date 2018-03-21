@@ -26,3 +26,5 @@ parameters:
     jwt_token_ttl:        3600
 
     app_front_url: "http://localhost:8888"
+    client_front_url: "http://localhost:3000"
+    mangopay_tmp_path: "%kernel.root_dir%/../var/mangopay"

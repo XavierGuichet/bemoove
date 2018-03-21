@@ -30,10 +30,10 @@ class Reservation
 
     /**
      * @Groups({"reservation"})
-     * @ORM\Column(name="order_id", type="string", length=8, nullable=true)
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Order")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $order;
-    //@ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Order", inversedBy="reservation")
+    // private $order;
 
     /**
      * @Groups({"reservation"})
@@ -63,11 +63,13 @@ class Reservation
      * @ORM\Column(name="nb_booking", type="smallint")
      */
     private $nbBooking;
+
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->setDateAdd(new \DateTime());
         // $this->person = new \Doctrine\Common\Collections\ArrayCollection();
         // $this->workoutInstance = new \Doctrine\Common\Collections\ArrayCollection();
     }

@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Cart
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"cart"}}
+ *          "normalization_context"={"groups"={"cart","full_workoutinstance", "coach", "business_vatrate", "workout"}}
  *  })
  * @ORM\Table(name="cart")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\CartRepository")
@@ -41,6 +41,7 @@ class Cart
     private $member;
 
     /**
+     * @Groups({"cart"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\WorkoutInstance")
      */
     private $workoutInstance;

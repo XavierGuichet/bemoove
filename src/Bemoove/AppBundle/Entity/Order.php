@@ -10,297 +10,390 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Order
  *
  * @ApiResource()
- * @ORM\Table(name="order")
+ * @ORM\Table(name="orders")
  * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\OrderRepository")
  */
-class Order
-{
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+ class Order
+ {
+     /**
+      * @var int
+      *
+      * @ORM\Column(name="id", type="integer")
+      * @ORM\Id
+      * @ORM\GeneratedValue(strategy="AUTO")
+      */
+     private $id;
 
-    /**
-     * @var string
-     * @ORM\Column(name="order_number", type="string", length=255, nullable=false)
-     */
-    private $orderNumber;
+     /**
+      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Cart")
+      */
+     private $cart;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Person")
-     */
-    private $customer;
+     /**
+      * @var string
+      * @ORM\Column(name="order_number", type="string", length=255)
+      */
+     private $orderNumber;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
-     */
-    private $seller;
+     /**
+      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Person")
+      */
+     private $customer;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\OrderStatus")
-     */
-    private $status;
+     /**
+      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
+      */
+     private $seller;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="order_date", type="integer")
-     */
-    private $orderDate;
+     /**
+      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\OrderStatus")
+      * @ORM\JoinColumn(nullable=true)
+      */
+     private $status;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Payment")
-     */
-    private $payment;
+     /**
+      * @var \DateTime
+      *
+      * @ORM\Column(name="order_date", type="datetimetz")
+      */
+     private $orderDate;
 
-    /**
+     /**
+      * @ORM\Column(name="payment", type="string", length=255)
+      */
+     private $payment;
+
+     /**
+      * @var float
+      *
+      * @ORM\Column(name="total_amount_tax_incl", type="float")
+      */
+     private $totalAmountTaxIncl;
+
+     /**
+      * @var float
+      *
+      * @ORM\Column(name="total_amount_tax_excl", type="float")
+      */
+     private $totalAmountTaxExcl;
+
+     /**
      * @var float
      *
-     * @ORM\Column(name="total_amount_tax_incl", type="float")
+     * @ORM\Column(name="tax_rate", type="float")
      */
-    private $totalAmountTaxIncl;
+     private $taxRate;
 
-    /**
-    * @var float
-    *
-    * @ORM\Column(name="total_amount_tax_excl", type="float")
-    */
-    private $totalAmountTaxExcl;
+     /**
+      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Invoice")
+      * @ORM\JoinColumn(nullable=true)
+      */
+     private $invoice;
 
-    /**
-    * @var float
-    *
-    * @ORM\Column(name="tax_rate", type="float")
-    */
-    private $taxRate;
+     /**
+      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Reservation")
+      * @ORM\JoinColumn(nullable=true)
+      */
+     private $reservation;
 
-    private $invoice;
-    /**
-     * @ORM\OneToMany(targetEntity="Bemoove\AppBundle\Entity\Reservation", mappedBy="order")
-     */
-    private $reservation;
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservation = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+     /**
+      * Constructor
+      */
+     public function __construct()
+     {
+         // $this->reservation = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->setOrderNumber(uniqid());
+         $this->setOrderDate(new \DateTime());
+     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+     /**
+      * Get id
+      *
+      * @return integer
+      */
+     public function getId()
+     {
+         return $this->id;
+     }
 
-    /**
-     * Set orderNumber
-     *
-     * @param string $orderNumber
-     *
-     * @return Order
-     */
-    public function setOrderNumber($orderNumber)
-    {
-        $this->orderNumber = $orderNumber;
+     /**
+      * Set orderNumber
+      *
+      * @param string $orderNumber
+      *
+      * @return Order
+      */
+     public function setOrderNumber($orderNumber)
+     {
+         $this->orderNumber = $orderNumber;
 
-        return $this;
-    }
+         return $this;
+     }
 
-    /**
-     * Get orderNumber
-     *
-     * @return string
-     */
-    public function getOrderNumber()
-    {
-        return $this->orderNumber;
-    }
+     /**
+      * Get orderNumber
+      *
+      * @return string
+      */
+     public function getOrderNumber()
+     {
+         return $this->orderNumber;
+     }
 
-    /**
-     * Set orderDate
-     *
-     * @param integer $orderDate
-     *
-     * @return Order
-     */
-    public function setOrderDate($orderDate)
-    {
-        $this->orderDate = $orderDate;
+     /**
+      * Set orderDate
+      *
+      * @param integer $orderDate
+      *
+      * @return Order
+      */
+     public function setOrderDate($orderDate)
+     {
+         $this->orderDate = $orderDate;
 
-        return $this;
-    }
+         return $this;
+     }
 
-    /**
-     * Get orderDate
-     *
-     * @return integer
-     */
-    public function getOrderDate()
-    {
-        return $this->orderDate;
-    }
+     /**
+      * Get orderDate
+      *
+      * @return integer
+      */
+     public function getOrderDate()
+     {
+         return $this->orderDate;
+     }
 
-    /**
-     * Set totalAmountTaxIncl
-     *
-     * @param float $totalAmountTaxIncl
-     *
-     * @return Order
-     */
-    public function setTotalAmountTaxIncl($totalAmountTaxIncl)
-    {
-        $this->totalAmountTaxIncl = $totalAmountTaxIncl;
+     /**
+      * Set totalAmountTaxIncl
+      *
+      * @param float $totalAmountTaxIncl
+      *
+      * @return Order
+      */
+     public function setTotalAmountTaxIncl($totalAmountTaxIncl)
+     {
+         $this->totalAmountTaxIncl = $totalAmountTaxIncl;
 
-        return $this;
-    }
+         return $this;
+     }
 
-    /**
-     * Get totalAmountTaxIncl
-     *
-     * @return float
-     */
-    public function getTotalAmountTaxIncl()
-    {
-        return $this->totalAmountTaxIncl;
-    }
+     /**
+      * Get totalAmountTaxIncl
+      *
+      * @return float
+      */
+     public function getTotalAmountTaxIncl()
+     {
+         return $this->totalAmountTaxIncl;
+     }
 
-    /**
-     * Set totalAmountTaxExcl
-     *
-     * @param float $totalAmountTaxExcl
-     *
-     * @return Order
-     */
-    public function setTotalAmountTaxExcl($totalAmountTaxExcl)
-    {
-        $this->totalAmountTaxExcl = $totalAmountTaxExcl;
+     /**
+      * Set totalAmountTaxExcl
+      *
+      * @param float $totalAmountTaxExcl
+      *
+      * @return Order
+      */
+     public function setTotalAmountTaxExcl($totalAmountTaxExcl)
+     {
+         $this->totalAmountTaxExcl = $totalAmountTaxExcl;
 
-        return $this;
-    }
+         if (!is_float($this->taxRate)) {
+           throw new \Exception("Tax Rate is not set", 1);
+         }
+         $totalAmountTaxIncl = $this->totalAmountTaxExcl * (1 + $this->taxRate / 100);
+         $this->totalAmountTaxIncl = $totalAmountTaxIncl;
 
-    /**
-     * Get totalAmountTaxExcl
-     *
-     * @return float
-     */
-    public function getTotalAmountTaxExcl()
-    {
-        return $this->totalAmountTaxExcl;
-    }
+         return $this;
+     }
 
-    /**
-     * Set taxRate
-     *
-     * @param float $taxRate
-     *
-     * @return Order
-     */
-    public function setTaxRate($taxRate)
-    {
-        $this->taxRate = $taxRate;
+     /**
+      * Get totalAmountTaxExcl
+      *
+      * @return float
+      */
+     public function getTotalAmountTaxExcl()
+     {
+         return $this->totalAmountTaxExcl;
+     }
 
-        return $this;
-    }
+     /**
+      * Set taxRate
+      *
+      * @param float $taxRate
+      *
+      * @return Order
+      */
+     public function setTaxRate($taxRate)
+     {
+         $this->taxRate = $taxRate;
 
-    /**
-     * Get taxRate
-     *
-     * @return float
-     */
-    public function getTaxRate()
-    {
-        return $this->taxRate;
-    }
+         return $this;
+     }
 
-    /**
-     * Set customer
-     *
-     * @param \Bemoove\AppBundle\Entity\Person $customer
-     *
-     * @return Order
-     */
-    public function setCustomer(\Bemoove\AppBundle\Entity\Person $customer = null)
-    {
-        $this->customer = $customer;
+     /**
+      * Get taxRate
+      *
+      * @return float
+      */
+     public function getTaxRate()
+     {
+         return $this->taxRate;
+     }
 
-        return $this;
-    }
+     /**
+      * Set customer
+      *
+      * @param \Bemoove\AppBundle\Entity\Person $customer
+      *
+      * @return Order
+      */
+     public function setCustomer(\Bemoove\AppBundle\Entity\Person $customer = null)
+     {
+         $this->customer = $customer;
 
-    /**
-     * Get customer
-     *
-     * @return \Bemoove\AppBundle\Entity\Person
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
+         return $this;
+     }
 
-    /**
-     * Set seller
-     *
-     * @param \Bemoove\AppBundle\Entity\Business $seller
-     *
-     * @return Order
-     */
-    public function setSeller(\Bemoove\AppBundle\Entity\Business $seller = null)
-    {
-        $this->seller = $seller;
+     /**
+      * Get customer
+      *
+      * @return \Bemoove\AppBundle\Entity\Person
+      */
+     public function getCustomer()
+     {
+         return $this->customer;
+     }
 
-        return $this;
-    }
+     /**
+      * Set seller
+      *
+      * @param \Bemoove\AppBundle\Entity\Business $seller
+      *
+      * @return Order
+      */
+     public function setSeller(\Bemoove\AppBundle\Entity\Business $seller = null)
+     {
+         $this->seller = $seller;
 
-    /**
-     * Get seller
-     *
-     * @return \Bemoove\AppBundle\Entity\Business
-     */
-    public function getSeller()
-    {
-        return $this->seller;
-    }
+         return $this;
+     }
 
-    /**
-     * Set status
-     *
-     * @param \Bemoove\AppBundle\Entity\OrderStatus $status
-     *
-     * @return Order
-     */
-    public function setStatus(\Bemoove\AppBundle\Entity\OrderStatus $status = null)
-    {
-        $this->status = $status;
+     /**
+      * Get seller
+      *
+      * @return \Bemoove\AppBundle\Entity\Business
+      */
+     public function getSeller()
+     {
+         return $this->seller;
+     }
 
-        return $this;
-    }
+     /**
+      * Set status
+      *
+      * @param \Bemoove\AppBundle\Entity\OrderStatus $status
+      *
+      * @return Order
+      */
+     public function setStatus(\Bemoove\AppBundle\Entity\OrderStatus $status = null)
+     {
+         $this->status = $status;
 
-    /**
-     * Get status
-     *
-     * @return \Bemoove\AppBundle\Entity\OrderStatus
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+         return $this;
+     }
+
+     /**
+      * Get status
+      *
+      * @return \Bemoove\AppBundle\Entity\OrderStatus
+      */
+     public function getStatus()
+     {
+         return $this->status;
+     }
+
+     /**
+      * Get reservation
+      *
+      * @return \Doctrine\Common\Collections\Collection
+      */
+     public function getReservation()
+     {
+         return $this->reservation;
+     }
+
+     /**
+      * Set cart
+      *
+      * @param \Bemoove\AppBundle\Entity\Cart $cart
+      *
+      * @return Order
+      */
+     public function setCart(\Bemoove\AppBundle\Entity\Cart $cart = null)
+     {
+         $this->cart = $cart;
+
+         return $this;
+     }
+
+     /**
+      * Get cart
+      *
+      * @return \Bemoove\AppBundle\Entity\Cart
+      */
+     public function getCart()
+     {
+         return $this->cart;
+     }
+
+     /**
+      * Set invoice
+      *
+      * @param \Bemoove\AppBundle\Entity\Invoice $invoice
+      *
+      * @return Order
+      */
+     public function setInvoice(\Bemoove\AppBundle\Entity\Invoice $invoice)
+     {
+         $this->invoice = $invoice;
+
+         return $this;
+     }
+
+     /**
+      * Get invoice
+      *
+      * @return \Bemoove\AppBundle\Entity\Invoice
+      */
+     public function getInvoice()
+     {
+         return $this->invoice;
+     }
+
+     /**
+      * Set reservation
+      *
+      * @param \Bemoove\AppBundle\Entity\Reservation $reservation
+      *
+      * @return Order
+      */
+     public function setReservation(\Bemoove\AppBundle\Entity\Reservation $reservation = null)
+     {
+         $this->reservation = $reservation;
+
+         return $this;
+     }
 
     /**
      * Set payment
      *
-     * @param \Bemoove\AppBundle\Entity\Payment $payment
+     * @param string $payment
      *
      * @return Order
      */
-    public function setPayment(\Bemoove\AppBundle\Entity\Payment $payment = null)
+    public function setPayment($payment)
     {
         $this->payment = $payment;
 
@@ -310,44 +403,10 @@ class Order
     /**
      * Get payment
      *
-     * @return \Bemoove\AppBundle\Entity\Payment
+     * @return string
      */
     public function getPayment()
     {
         return $this->payment;
-    }
-
-    /**
-     * Add reservation
-     *
-     * @param \Bemoove\AppBundle\Entity\Reservation $reservation
-     *
-     * @return Order
-     */
-    public function addReservation(\Bemoove\AppBundle\Entity\Reservation $reservation)
-    {
-        $this->reservation[] = $reservation;
-
-        return $this;
-    }
-
-    /**
-     * Remove reservation
-     *
-     * @param \Bemoove\AppBundle\Entity\Reservation $reservation
-     */
-    public function removeReservation(\Bemoove\AppBundle\Entity\Reservation $reservation)
-    {
-        $this->reservation->removeElement($reservation);
-    }
-
-    /**
-     * Get reservation
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReservation()
-    {
-        return $this->reservation;
     }
 }

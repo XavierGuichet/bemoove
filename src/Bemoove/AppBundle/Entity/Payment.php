@@ -24,7 +24,6 @@ class Payment
      */
     private $id;
 
-
     /**
      * Get id
      *

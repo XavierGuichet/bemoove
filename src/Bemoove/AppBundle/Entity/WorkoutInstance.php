@@ -154,6 +154,29 @@ class WorkoutInstance
     }
 
     /**
+     * Set nbTicketBooked
+     *
+     * @param integer $nbTicketBooked
+     *
+     * @return WorkoutInstance
+     */
+    public function addTicketBooked($nbTicketToAdd)
+    {
+        $this->nbTicketBooked += $nbTicketToAdd;
+        $this->nbTicketAvailable -= $nbTicketToAdd;
+
+        if($this->nbTicketAvailable < 0) {
+          throw new \Exception("Over booking", 1);
+        }
+
+        if($this->nbTicketAvailable === 0) {
+          $this->soldOut = true;
+        }
+
+        return $this;
+    }
+
+    /**
      * Get nbTicketBooked
      *
      * @return int

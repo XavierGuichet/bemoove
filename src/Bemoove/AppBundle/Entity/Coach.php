@@ -22,7 +22,7 @@ class Coach
     /**
      * @var int
      *
-     * @Groups({"person","business","partial_coach"})
+     * @Groups({"coach", "person","business","partial_coach"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,7 +30,7 @@ class Coach
     private $id;
 
     /**
-     * @Groups({"person","post_person","business_valid"})
+     * @Groups({"coach", "person","post_person","business_valid"})
      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business", inversedBy="coaches")
      */
     private $business;

@@ -71,6 +71,9 @@ final class CheckPartnerValidity implements EventSubscriberInterface
 
         $currentValidity = $business->getIsValid();
 
+        // TODO :
+        // Check Token
+
         $isBillingMandateSigned = $this->checkBillingMandate($business);
 
         $areBusinessInfoCompleted = $this->checkBusinessInfo($business);

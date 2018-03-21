@@ -21,6 +21,12 @@ services:
             $environment: '%kernel.environment%'
             $client_front_url: '%client_front_url%'
 
+    mangopay:
+        class: Bemoove\AppBundle\Services\MangoPayService
+        public: true
+        arguments:
+            $mangopay_tmp_path: '%mangopay_tmp_path%'
+
     Bemoove\AppBundle\Doctrine\HideWorkoutInstanceExtension:
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
@@ -33,6 +39,11 @@ services:
         resource: '../../src/Bemoove/AppBundle/Action'
         public: true
         tags: ['controller.service_arguments']
+
+    api.bemoove.authentication_listener:
+        class: Bemoove\AppBundle\EventListener\AuthenticationListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
 
     api.bemoove.account.provider:
         class: Bemoove\UserBundle\Services\BemooveSportyUserProvider

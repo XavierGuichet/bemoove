@@ -14,6 +14,11 @@ bemoove_appbundle:
     resource: "@BemooveAppBundle/Resources/config/routing.yml"
     prefix:   /
 
+create_order_from_cart:
+    resource: "@BemooveAppBundle/Action/CreateOrderFromCart.php"
+    prefix:   /
+    type:     annotation
+
 get_my_business:
     resource: "@BemooveAppBundle/Action/GetMyBusiness.php"
     prefix:   /
@@ -26,6 +31,11 @@ get_my_workouts:
 
 get_my_coaches:
     resource: "@BemooveAppBundle/Action/GetMyCoaches.php"
+    prefix:   /
+    type:     annotation
+
+get_my_current_cart:
+    resource: "@BemooveAppBundle/Action/GetMyCurrentCart.php"
     prefix:   /
     type:     annotation
 
