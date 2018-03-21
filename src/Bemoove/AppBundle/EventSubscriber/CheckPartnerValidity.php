@@ -208,7 +208,7 @@ final class CheckPartnerValidity implements EventSubscriberInterface
       $legalStatus = $business->getLegalStatus();
 
       if (!array_key_exists($legalStatus , $invoiceLegalNoticeRequirement )) {
-        throw new \Exception("Legal Status Requirement not set", 1);
+        return false;
       }
       $requirements = $invoiceLegalNoticeRequirement[$legalStatus];
 
