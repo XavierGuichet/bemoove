@@ -64,11 +64,14 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
 
        $account = $AccountRepository->findOneByPerson($object);
 
-       if($account) {
-         if (Request::METHOD_POST === $method) {
+       if($account && $this->checkNaturalUserIsReady($object)) {
+         if(!$object->getMangoPayId()) {
            $mangoUser = $this->mangopay->createNaturalUser($object);
+           $object->setMangoPayId($mangoUser->Id);
+           $this->em->persist($object);
+           $this->em->flush();
          }
-         if (Request::METHOD_PUT === $method) {
+         if($object->getMangoPayId()) {
            $mangoUser = $this->mangopay->updateNaturalUser($object);
          }
        }
@@ -76,5 +79,27 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
      //Si c'est une personne ont check qu'il est lié à un Account
 
      //Si c'est un business, c'est tjrs good
+  }
+
+  private function checkNaturalUserIsReady($person) {
+    if(!$person->getFirstname()) {
+      return false;
+    }
+    if(!$person->getLastname()) {
+      return false;
+    }
+    if(!$person->getBirthdate()->getTimestamp()) {
+      return false;
+    }
+    if(!$person->getNationality()) {
+      return false;
+    }
+    if(!$person->getCountryOfResidence()) {
+      return false;
+    }
+    if(!$person->getEmail()) {
+      return false;
+    }
+    return true;
   }
 }
