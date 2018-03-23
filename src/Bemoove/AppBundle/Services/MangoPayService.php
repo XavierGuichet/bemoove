@@ -50,7 +50,7 @@ class MangoPayService
         if(!$mangoPayId = $person->getMangoPayId()) {
           throw new \Exception("NaturalUser doesn't exists", 1);
         }
-        $mangoUser = $this->mangoPayApi->GetNatural($mangoPayId);
+        $mangoUser = $this->mangoPayApi->Users->GetNatural($mangoPayId);
 
         $mangoUser->FirstName = $person->getFirstname();
         $mangoUser->LastName = $person->getLastname();
