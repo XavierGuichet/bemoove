@@ -44,13 +44,6 @@ class GetMyWorkouts
 
         $workouts = $WorkoutRepo->findByOwner($account);
 
-        // if($business === null) {
-        //     $business = new Business();
-        //     $business->setOwner($account);
-        //     $this->em->persist($business);
-        //     $this->em->flush();
-        // }
-
         return $workouts;
     }
 }
