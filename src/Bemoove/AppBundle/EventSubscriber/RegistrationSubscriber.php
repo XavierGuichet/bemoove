@@ -20,9 +20,7 @@ use Bemoove\AppBundle\Entity\BankAccount;
 use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
 use Bemoove\AppBundle\Entity\Place\Address;
-use Doctrine\ORM\EntityManagerInterface;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Bemoove\AppBundle\Services\MyMail;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,14 +30,10 @@ final class RegistrationSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $encoderFactory;
-    private $em;
-    private $jwtManager;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, JWTTokenManagerInterface $jwtManager, MyMail $mailer)
+    public function __construct(EncoderFactoryInterface $encoderFactory,  MyMail $mailer)
     {
         $this->encoderFactory = $encoderFactory;
-        $this->em = $em;
-        $this->jwtManager = $jwtManager;
         $this->mailer = $mailer;
     }
 

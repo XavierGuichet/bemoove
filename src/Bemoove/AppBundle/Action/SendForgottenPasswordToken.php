@@ -9,7 +9,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Bemoove\AppBundle\Services\MyMail;
@@ -23,12 +22,10 @@ use Symfony\Component\HttpFoundation\Response;
 class SendForgottenPasswordToken
 {
     private $mailer;
-    private $securityTokenStorage;
     private $em;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em, MyMail $mailer)
+    public function __construct(EntityManagerInterface $em, MyMail $mailer)
     {
-        $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;
         $this->mailer = $mailer;
     }

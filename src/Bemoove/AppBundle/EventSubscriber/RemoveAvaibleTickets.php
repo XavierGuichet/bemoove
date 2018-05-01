@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,12 +18,10 @@ use Bemoove\AppBundle\Entity\WorkoutInstance;
 
 final class RemoveAvaibleTickets implements EventSubscriberInterface
 {
-    private $encoderFactory;
     private $em;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->encoderFactory = $encoderFactory;
         $this->em = $em;
     }
 

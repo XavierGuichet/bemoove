@@ -10,19 +10,16 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GetBookableWorkoutInstance
 {
-    private $securityTokenStorage;
     private $em;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;
     }
 

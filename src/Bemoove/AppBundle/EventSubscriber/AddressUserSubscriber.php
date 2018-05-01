@@ -15,12 +15,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class AddressUserSubscriber implements EventSubscriberInterface
 {
-    private $mailer;
     private $securityTokenStorage;
 
-    public function __construct(\Swift_Mailer $mailer, TokenStorageInterface $securityTokenStorage)
+    public function __construct(TokenStorageInterface $securityTokenStorage)
     {
-        $this->mailer = $mailer;
         $this->securityTokenStorage = $securityTokenStorage;
     }
 

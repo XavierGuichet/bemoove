@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
@@ -19,12 +18,10 @@ use Bemoove\AppBundle\Entity\User;
 final class ConvertImageSubscriber implements EventSubscriberInterface
 {
     const FILE_EXT = '.jpg';
-    private $securityTokenStorage;
     private $fs;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage)
+    public function __construct()
     {
-        $this->securityTokenStorage = $securityTokenStorage;
     }
 
     public static function getSubscribedEvents()

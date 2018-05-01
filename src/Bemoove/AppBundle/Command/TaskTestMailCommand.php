@@ -36,8 +36,6 @@ class TaskTestMailCommand extends ContainerAwareCommand
 
 
         try {
-            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
             if (!$template || $template === 'basic') {
                 $output->write('<comment>Mail : basic = </comment>');
                 $result = $this->getContainer()->get('mymail')->sendBasicEmail($dest);

@@ -10,22 +10,16 @@ use OrderBundle\Entity\Payment;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CheckOrderPayment {
-  private $securityTokenStorage;
   private $em;
   private $mangoPayService;
-  private $mangoPayValidation;
 
-  public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ValidationService $mangoPayValidation, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangoPayService)
+  public function __construct(EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangoPayService)
   {
-      $this->securityTokenStorage = $securityTokenStorage;
       $this->em = $em;
-
       $this->mangoPayService = $mangoPayService;
-      $this->mangoPayValidation = $mangoPayValidation;
   }
 
   /**

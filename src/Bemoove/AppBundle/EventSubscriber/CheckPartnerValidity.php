@@ -53,9 +53,6 @@ final class CheckPartnerValidity implements EventSubscriberInterface
             return;
         }
 
-
-        $BusinessRepository = $this->em->getRepository('BemooveAppBundle:Business');
-
         $business = $account->getBusiness();
 
         if(!$business instanceof Business) { //business not found

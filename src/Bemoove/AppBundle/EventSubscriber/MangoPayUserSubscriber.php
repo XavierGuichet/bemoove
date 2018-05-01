@@ -67,7 +67,7 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
        // Si une person est lié à un account, c'est que c'est un sporty
        if($account) {
          $object->setEmail($account->getEmail());
-         $this->syncMangoPayNaturalUser($object);         
+         $this->syncMangoPayNaturalUser($object);
        } else {
          $businessRepository = $this->em->getRepository('BemooveAppBundle:Business');
          $business = $businessRepository->findOneByLegalRepresentative($object);
@@ -88,7 +88,7 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
         $person->setMangoPayId($mangoUser->Id);
         $this->em->persist($person);
         $this->em->flush();
-        $mangoWallet = $this->mangopay->createWallet($mangoUser);
+        $this->mangopay->createWallet($mangoUser);
       } else {
         $mangoUser = $this->mangopay->updateNaturalUser($person);
       }
@@ -102,7 +102,7 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
         $business->setMangoPayId($mangoUser->Id);
         $this->em->persist($business);
         $this->em->flush();
-        $mangoWallet = $this->mangopay->createWallet($mangoUser);
+        $this->mangopay->createWallet($mangoUser);
       } else {
         $mangoUser = $this->mangopay->updateLegalUser($business);
       }

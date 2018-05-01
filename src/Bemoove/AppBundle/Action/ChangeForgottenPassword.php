@@ -10,7 +10,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,13 +24,11 @@ class ChangeForgottenPassword
 {
     private $encoderFactory;
     private $mailer;
-    private $securityTokenStorage;
     private $em;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em, MyMail $mailer)
+    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, MyMail $mailer)
     {
         $this->encoderFactory = $encoderFactory;
-        $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;
         $this->mailer = $mailer;
     }
