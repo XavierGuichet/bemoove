@@ -15,4 +15,5 @@
 /vendor/
 /web/bundles/
 /web/uploads/
+/web/config.php
 /**/*.php~
