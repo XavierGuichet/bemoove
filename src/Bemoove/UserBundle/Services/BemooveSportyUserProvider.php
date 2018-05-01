@@ -53,7 +53,6 @@ class BemooveSportyUserProvider implements UserProviderInterface
         $user = $this->findUser(array("email" => $userEmail));
         // if null just create new user and set it properties
         if (null === $user) {
-            die();
             $email = $response->getEmail();
             $user = new User();
             $user->setEmail($email);
@@ -72,7 +71,7 @@ class BemooveSportyUserProvider implements UserProviderInterface
     public function loadUserByUsername($email)
     {
         $userData = $this->em->getRepository("BemooveAppBundle:Account")->findOneByEmail($email);
-        if ($userData != null) {
+        if ($userData !== null) {
             return $userData;
         }
         throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $email));
@@ -83,7 +82,6 @@ class BemooveSportyUserProvider implements UserProviderInterface
     }
 
     public function supportsClass($class) {
-        die("support class launched");
         return WebserviceUser::class === $class;
     }
 }
