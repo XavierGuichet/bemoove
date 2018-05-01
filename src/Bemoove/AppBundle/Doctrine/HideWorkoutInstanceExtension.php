@@ -64,7 +64,6 @@ final class HideWorkoutInstanceExtension implements QueryCollectionExtensionInte
             //si pas log, ne peut voir que des valid
             if (!$token = $this->securityTokenStorage->getToken()) {
                 throw new \Exception("No anonymous token find", 1);
-                return null;
             }
 
             $account = $token->getUser();
