@@ -33,6 +33,6 @@ class BemooveSportyUserProvider implements UserProviderInterface
     }
 
     public function supportsClass($class) {
-        return WebserviceUser::class === $class;
+        return Account::class === $class;
     }
 }
