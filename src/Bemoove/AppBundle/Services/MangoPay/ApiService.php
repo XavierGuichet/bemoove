@@ -12,14 +12,16 @@ use MangoPay;
 class ApiService
 {
     private $mangoPayApi;
+    private $client_front_url;
 
-    public function __construct(string $mangopay_tmp_path)
+    public function __construct(string $mangopay_tmp_path, string $client_front_url)
     {
         $this->mangoPayApi = new MangoPay\MangoPayApi();
         $this->mangoPayApi->Config->ClientId = 'bemoove';
         $this->mangoPayApi->Config->ClientPassword = 'XS0gE5Lz7TZKXMbLS77GSNdut5heXBVbvWu4G2R9oBVVdUBoYn';
         $this->mangoPayApi->Config->TemporaryFolder = $mangopay_tmp_path;
         $this->mangoPayApi->Config->BaseUrl = 'https://api.sandbox.mangopay.com';
+        $this->client_front_url = $client_front_url;
     }
 
     /**
@@ -161,7 +163,7 @@ class ApiService
          $webPayIn->Fees->Amount = 0;
 
          //Where to go after
-         $webPayIn->ReturnURL = "http://localhost:3000/order/checkout/step/validation/".$order->getId();
+         $webPayIn->ReturnURL = $this->client_front_url."/order/checkout/step/validation/".$order->getId();
 
 
 
@@ -174,7 +176,7 @@ class ApiService
 
           $webPayIn->ExecutionType = "WEB";
           $webPayIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsWeb();
-          $webPayIn->ExecutionDetails->ReturnURL = "http://localhost:3000/order/checkout/step/validation/".$order->getId();
+          $webPayIn->ExecutionDetails->ReturnURL = $this->client_front_url."/order/checkout/step/validation/".$order->getId();
           $webPayIn->ExecutionDetails->CultureCode = "EN";
 
           $result = $this->mangoPayApi->PayIns->Create($webPayIn);

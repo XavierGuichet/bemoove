@@ -34,6 +34,7 @@ services:
         public: true
         arguments:
             $mangopay_tmp_path: '%mangopay_tmp_path%'
+            $app_front_url: '%client_front_url%'
 
     Bemoove\AppBundle\Services\MangoPay\ValidationService:
         class: Bemoove\AppBundle\Services\MangoPay\ValidationService
