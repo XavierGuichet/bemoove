@@ -42,7 +42,7 @@ class SignBillingMandate
         $business = $BusinessRepo->findOneByOwner($account);
 
         if($business !== null) {
-            $fromIp = $this->get_client_ip();
+            $fromIp = $this->getClientIp();
             if('UNKNOWN' !== $fromIp) {
                 $billingMandate = new BillingMandate();
                 $billingMandate->setBusiness($business);
@@ -56,7 +56,7 @@ class SignBillingMandate
         return false;
     }
 
-    private function get_client_ip() {
+    private function getClientIp() {
         $ipaddress = '';
         if (getenv('HTTP_CLIENT_IP'))
             $ipaddress = getenv('HTTP_CLIENT_IP');

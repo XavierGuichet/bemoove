@@ -14,11 +14,11 @@ class SecurityController extends Controller
     /**
      * @Route("/login_test", name="login_test")
      */
-    public function login_checkAction(Request $request)
+    public function loginCheckAction(Request $request)
     {
     }
 
-    public function login_formAction(Request $request)
+    public function loginFormAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 

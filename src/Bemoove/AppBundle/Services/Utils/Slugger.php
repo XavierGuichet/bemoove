@@ -4,13 +4,13 @@ namespace Bemoove\AppBundle\Services\Utils;
 
 
 class Slugger {
-    public function slug_it($str, $replace = array(), $delimiter = '-')
+    public function slugIt($str, $replace = array(), $delimiter = '-')
     {
         if (!empty($replace)) {
             $str = str_replace((array) $replace, ' ', $str);
         }
 
-        $clean = $this->remove_accents($str);
+        $clean = $this->removeAccents($str);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
@@ -18,12 +18,12 @@ class Slugger {
         return $clean;
     }
 
-    private function remove_accents($string)
+    private function removeAccents($string)
     {
         if (!preg_match('/[\x80-\xff]/', $string)) {
             return $string;
         }
-        if ($this->seems_utf8($string)) {
+        if ($this->seemsUtf8($string)) {
             $chars = array(
       // Decompositions for Latin-1 Supplement
       chr(195).chr(128) => 'A', chr(195).chr(129) => 'A',
@@ -155,7 +155,7 @@ class Slugger {
      *
      * @return bool True if $Str fits a UTF-8 model, false otherwise.
      */
-    private function seems_utf8($Str)
+    private function seemsUtf8($Str)
     { # by bmorel at ssi dot fr
      $length = strlen($Str);
         for ($i = 0; $i < $length; ++$i) {
