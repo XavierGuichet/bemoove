@@ -1,9 +1,10 @@
 <?php
 
-namespace Bemoove\AppBundle\EventSubscriber;
+namespace OrderBundle\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use Bemoove\AppBundle\Entity\Cart;
+use Bemoove\AppBundle\Entity\Account;
+use OrderBundle\Entity\Cart;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -11,11 +12,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-
 final class CartSubscriber implements EventSubscriberInterface
 {
-    public function __construct()
+    private $securityTokenStorage;
+
+    public function __construct(TokenStorageInterface $securityTokenStorage)
     {
+        $this->securityTokenStorage = $securityTokenStorage;
     }
 
     public static function getSubscribedEvents()
@@ -25,7 +28,8 @@ final class CartSubscriber implements EventSubscriberInterface
         ];
     }
 
-    //Ajoute l'ip du client à l'objet Cart
+    // Ajoute l'ip du client à l'objet Cart
+    // Ajoute la personne de l'utilisateur connecté si possible
     public function addOriginIp(GetResponseForControllerResultEvent $event)
     {
         $cart = $event->getControllerResult();
@@ -38,5 +42,22 @@ final class CartSubscriber implements EventSubscriberInterface
         $originIp = $event->getRequest()->getClientIp();
 
         $cart->setOriginIp($originIp);
+
+        dump($cart);
+
+        $securityToken = $this->securityTokenStorage->getToken();
+        if(!$securityToken) {
+          dump('no token');
+          return;
+        }
+        $account = $securityToken->getUser();
+        dump($account);
+        if (!$account instanceof Account) {
+            dump('no account');
+            return;
+        }
+        $person = $account->getPerson();
+        $cart->setMember($person);
+        dump($cart);
     }
 }

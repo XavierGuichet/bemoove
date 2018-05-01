@@ -37,7 +37,7 @@ class Business
     /**
      * @var string
      *
-     * @Groups({"business"})
+     * @Groups({"business","business_cart"})
      * @ORM\Column(name="LegalName", type="string", length=255, nullable=true)
      */
     private $legalName;
@@ -53,7 +53,7 @@ class Business
     /**
      * @var string
      *
-     * @Groups({"business"})
+     * @Groups({"business","business_cart"})
      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Place\Address", cascade={"persist","remove"}, fetch="EAGER")
      */
     private $address;
@@ -123,7 +123,7 @@ class Business
     /**
      * @var float
      *
-     * @Groups({"business", "business_vatrate"})
+     * @Groups({"business","business_cart"})
      * @ORM\Column(name="VATRate", type="float", nullable=true)
      */
     private $vatRate;

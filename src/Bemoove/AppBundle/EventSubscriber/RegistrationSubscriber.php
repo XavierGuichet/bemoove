@@ -22,7 +22,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Bemoove\AppBundle\Services\MyMail;
-use Bemoove\AppBundle\Services\MangoPayService;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -33,11 +32,9 @@ final class RegistrationSubscriber implements EventSubscriberInterface
     private $encoderFactory;
     private $em;
     private $jwtManager;
-    private $mangopay;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, JWTTokenManagerInterface $jwtManager, MyMail $mailer, MangoPayService $mangopay)
+    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, JWTTokenManagerInterface $jwtManager, MyMail $mailer)
     {
-        $this->mangopay = $mangopay;
         $this->encoderFactory = $encoderFactory;
         $this->em = $em;
         $this->jwtManager = $jwtManager;

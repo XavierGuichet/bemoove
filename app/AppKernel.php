@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new Bemoove\UserBundle\BemooveUserBundle(),
             new Bemoove\AppBundle\BemooveAppBundle(),
+            new OrderBundle\OrderBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bemoove\AppBundle\Entity;
+namespace OrderBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,10 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Cart
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"cart","full_workoutinstance", "coach", "business_vatrate", "workout"}}
+ *          "normalization_context"={"groups"={"cart", "person", "full_workoutinstance", "coach", "business_cart", "workout"}}
  *  })
  * @ORM\Table(name="cart")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\CartRepository")
+ * @ORM\Entity(repositoryClass="OrderBundle\Repository\CartRepository")
  */
 class Cart
 {

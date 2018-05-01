@@ -73,7 +73,7 @@ Bemoove\AppBundle\Entity\Coach:
         post:
             method: 'POST'
 
-Bemoove\AppBundle\Entity\Cart:
+OrderBundle\Entity\Cart:
     collectionOperations:
         post:
             method: 'POST'
@@ -92,11 +92,13 @@ Bemoove\AppBundle\Entity\ForgottenPasswordToken:
         changeForgottenPassword:
             route_name: 'changeForgottenPassword'
 
-Bemoove\AppBundle\Entity\Order:
+OrderBundle\Entity\Order:
     collectionOperations:
         createOrderFromCart:
             route_name: 'createOrderFromCart'
     itemOperations:
+        checkOrderPayment:
+            route_name: 'checkOrderPayment'
         get:
             method: 'GET'
         put:

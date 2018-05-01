@@ -15,16 +15,19 @@ use Bemoove\AppBundle\Entity\Account;
 use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
 
+use Bemoove\AppBundle\Services\MangoPay\ValidationService;
 use Bemoove\AppBundle\Services\MangoPayService;
 
 final class MangoPayUserSubscriber implements EventSubscriberInterface
 {
   private $em;
+  private $mangopayValidation;
   private $mangopay;
 
-  public function __construct(EntityManagerInterface $em, MangoPayService $mangopay)
+  public function __construct(EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ValidationService $mangopayValidation, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangopay)
   {
     $this->em = $em;
+    $this->mangopayValidation = $mangopayValidation;
     $this->mangopay = $mangopay;
   }
 
@@ -57,49 +60,52 @@ final class MangoPayUserSubscriber implements EventSubscriberInterface
      * Les créer s'il n'existent pas encore
      * Les updates s'il existent
      */
-
-     //Si c'est une personne ont check que ce n'est pas un legal users
      if($object instanceof Person) {
        $AccountRepository = $this->em->getRepository('BemooveAppBundle:Account');
-
        $account = $AccountRepository->findOneByPerson($object);
 
-       if($account && $this->checkNaturalUserIsReady($object)) {
-         if(!$object->getMangoPayId()) {
-           $mangoUser = $this->mangopay->createNaturalUser($object);
-           $object->setMangoPayId($mangoUser->Id);
-           $this->em->persist($object);
-           $this->em->flush();
-         }
-         if($object->getMangoPayId()) {
-           $mangoUser = $this->mangopay->updateNaturalUser($object);
+       // Si une person est lié à un account, c'est que c'est un sporty
+       if($account) {
+         $object->setEmail($account->getEmail());
+         $this->syncMangoPayNaturalUser($object);         
+       } else {
+         $businessRepository = $this->em->getRepository('BemooveAppBundle:Business');
+         $business = $businessRepository->findOneByLegalRepresentative($object);
+
+         if($business) {
+           $this->syncMangoPayLegalUser($business);
          }
        }
+     } elseif($object instanceof Business) { //Si c'est un business, il n'y a pas besoin de differencié
+       $this->syncMangoPayLegalUser($object);
      }
-     //Si c'est une personne ont check qu'il est lié à un Account
-
-     //Si c'est un business, c'est tjrs good
   }
 
-  private function checkNaturalUserIsReady($person) {
-    if(!$person->getFirstname()) {
-      return false;
+  private function syncMangoPayNaturalUser(Person $person) {
+    if($this->mangopayValidation->checkNaturalUserIsReady($person)) {
+      if(!$person->getMangoPayId()) {
+        $mangoUser = $this->mangopay->createNaturalUser($person);
+        $person->setMangoPayId($mangoUser->Id);
+        $this->em->persist($person);
+        $this->em->flush();
+        $mangoWallet = $this->mangopay->createWallet($mangoUser);
+      } else {
+        $mangoUser = $this->mangopay->updateNaturalUser($person);
+      }
     }
-    if(!$person->getLastname()) {
-      return false;
+  }
+
+  private function syncMangoPayLegalUser(Business $business) {
+    if($this->mangopayValidation->checkLegalUserIsReady($business)) {
+      if(!$business->getMangoPayId()) {
+        $mangoUser = $this->mangopay->createLegalUser($business);
+        $business->setMangoPayId($mangoUser->Id);
+        $this->em->persist($business);
+        $this->em->flush();
+        $mangoWallet = $this->mangopay->createWallet($mangoUser);
+      } else {
+        $mangoUser = $this->mangopay->updateLegalUser($business);
+      }
     }
-    if(!$person->getBirthdate()->getTimestamp()) {
-      return false;
-    }
-    if(!$person->getNationality()) {
-      return false;
-    }
-    if(!$person->getCountryOfResidence()) {
-      return false;
-    }
-    if(!$person->getEmail()) {
-      return false;
-    }
-    return true;
   }
 }

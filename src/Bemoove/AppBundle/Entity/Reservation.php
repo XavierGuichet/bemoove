@@ -30,7 +30,7 @@ class Reservation
 
     /**
      * @Groups({"reservation"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="OrderBundle\Entity\Order")
      * @ORM\JoinColumn(nullable=false)
      */
     // private $order;
@@ -60,9 +60,20 @@ class Reservation
     /**
      * @var int
      *
+     * @Groups({"reservation"})
      * @ORM\Column(name="nb_booking", type="smallint")
      */
     private $nbBooking;
+
+    /**
+     * @var float
+     *
+     * @Groups({"reservation"})
+     * @ORM\Column(name="unit_price_tax_excl", type="float")
+     */
+    private $unitPriceTaxExcl;
+
+
 
     /**
      * Constructor
@@ -203,5 +214,29 @@ class Reservation
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set unitPriceTaxExcl
+     *
+     * @param float $unitPriceTaxExcl
+     *
+     * @return Reservation
+     */
+    public function setUnitPriceTaxExcl($unitPriceTaxExcl)
+    {
+        $this->unitPriceTaxExcl = $unitPriceTaxExcl;
+
+        return $this;
+    }
+
+    /**
+     * Get unitPriceTaxExcl
+     *
+     * @return float
+     */
+    public function getUnitPriceTaxExcl()
+    {
+        return $this->unitPriceTaxExcl;
     }
 }

@@ -4,7 +4,7 @@
 namespace Bemoove\AppBundle\EventListener;
 
 use Bemoove\AppBundle\Entity\Account;
-use Bemoove\AppBundle\Entity\Cart;
+use OrderBundle\Entity\Cart;
 
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -39,7 +39,7 @@ class AuthenticationListener
 
       $originIp = $event->getRequest()->getClientIp();
 
-      $cartRepository = $this->em->getRepository('BemooveAppBundle:Cart');
+      $cartRepository = $this->em->getRepository('OrderBundle:Cart');
 
       $cart = $cartRepository->findOneBy(
                           array('originIp' => $originIp,

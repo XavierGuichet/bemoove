@@ -1,23 +1,26 @@
 <?php
 
-namespace Bemoove\AppBundle\Entity;
+namespace OrderBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Order
  *
- * @ApiResource()
+ * @ApiResource(attributes={
+ *          "normalization_context"={"groups"={"order","payment","order_history", "order_status"}}})
  * @ORM\Table(name="orders")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\OrderRepository")
+ * @ORM\Entity(repositoryClass="OrderBundle\Repository\OrderRepository")
  */
  class Order
  {
      /**
       * @var int
       *
+      * @Groups({"order"})
       * @ORM\Column(name="id", type="integer")
       * @ORM\Id
       * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,47 +28,54 @@ use Symfony\Component\Serializer\Annotation\Groups;
      private $id;
 
      /**
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Cart")
+      * @ORM\OneToOne(targetEntity="OrderBundle\Entity\Cart")
       */
      private $cart;
 
      /**
       * @var string
+      * @Groups({"order"})
       * @ORM\Column(name="order_number", type="string", length=255)
       */
      private $orderNumber;
 
      /**
+      * @Groups({"order"})
       * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Person")
       */
      private $customer;
 
      /**
+      * @Groups({"order"})
       * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
       */
      private $seller;
 
      /**
-      * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\OrderStatus")
+      * @Groups({"order"})
+      * @ORM\OneToMany(targetEntity="OrderBundle\Entity\OrderHistory", mappedBy="order", cascade={"persist"})
       * @ORM\JoinColumn(nullable=true)
       */
-     private $status;
+     private $statusHistory;
 
      /**
       * @var \DateTime
       *
+      * @Groups({"order"})
       * @ORM\Column(name="order_date", type="datetimetz")
       */
      private $orderDate;
 
      /**
-      * @ORM\Column(name="payment", type="string", length=255)
+      * @Groups({"order"})
+      * @ORM\OneToOne(targetEntity="OrderBundle\Entity\Payment")
       */
      private $payment;
 
      /**
       * @var float
       *
+      * @Groups({"order"})
       * @ORM\Column(name="total_amount_tax_incl", type="float")
       */
      private $totalAmountTaxIncl;
@@ -73,6 +83,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
       * @var float
       *
+      * @Groups({"order"})
       * @ORM\Column(name="total_amount_tax_excl", type="float")
       */
      private $totalAmountTaxExcl;
@@ -80,17 +91,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
      * @var float
      *
+     * @Groups({"order"})
      * @ORM\Column(name="tax_rate", type="float")
      */
      private $taxRate;
 
      /**
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Invoice")
+      * @Groups({"order"})
+      * @ORM\OneToOne(targetEntity="OrderBundle\Entity\Invoice")
       * @ORM\JoinColumn(nullable=true)
       */
      private $invoice;
 
      /**
+      * @Groups({"order"})
       * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Reservation")
       * @ORM\JoinColumn(nullable=true)
       */
@@ -101,9 +115,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
       */
      public function __construct()
      {
-         // $this->reservation = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->statusHistory = new ArrayCollection();
          $this->setOrderNumber(uniqid());
          $this->setOrderDate(new \DateTime());
+     }
+
+     public function updateOrderTotalAmounts() {
+       $reservationTotalTaxExcl = $this->reservation->getUnitPriceTaxExcl() * $this->reservation->getNbBooking();
+       $this->setTotalAmountTaxExcl($reservationTotalTaxExcl);
+
+       return $this;
      }
 
      /**
@@ -204,7 +225,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
          }
          $totalAmountTaxIncl = $this->totalAmountTaxExcl * (1 + $this->taxRate / 100);
          $this->totalAmountTaxIncl = $totalAmountTaxIncl;
-
          return $this;
      }
 
@@ -291,30 +311,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
      }
 
      /**
-      * Set status
-      *
-      * @param \Bemoove\AppBundle\Entity\OrderStatus $status
-      *
-      * @return Order
-      */
-     public function setStatus(\Bemoove\AppBundle\Entity\OrderStatus $status = null)
-     {
-         $this->status = $status;
-
-         return $this;
-     }
-
-     /**
-      * Get status
-      *
-      * @return \Bemoove\AppBundle\Entity\OrderStatus
-      */
-     public function getStatus()
-     {
-         return $this->status;
-     }
-
-     /**
       * Get reservation
       *
       * @return \Doctrine\Common\Collections\Collection
@@ -327,11 +323,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
       * Set cart
       *
-      * @param \Bemoove\AppBundle\Entity\Cart $cart
+      * @param \OrderBundle\Entity\Cart $cart
       *
       * @return Order
       */
-     public function setCart(\Bemoove\AppBundle\Entity\Cart $cart = null)
+     public function setCart(\OrderBundle\Entity\Cart $cart = null)
      {
          $this->cart = $cart;
 
@@ -341,7 +337,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
       * Get cart
       *
-      * @return \Bemoove\AppBundle\Entity\Cart
+      * @return \OrderBundle\Entity\Cart
       */
      public function getCart()
      {
@@ -351,11 +347,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
       * Set invoice
       *
-      * @param \Bemoove\AppBundle\Entity\Invoice $invoice
+      * @param \OrderBundle\Entity\Invoice $invoice
       *
       * @return Order
       */
-     public function setInvoice(\Bemoove\AppBundle\Entity\Invoice $invoice)
+     public function setInvoice(\OrderBundle\Entity\Invoice $invoice)
      {
          $this->invoice = $invoice;
 
@@ -365,7 +361,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
      /**
       * Get invoice
       *
-      * @return \Bemoove\AppBundle\Entity\Invoice
+      * @return \OrderBundle\Entity\Invoice
       */
      public function getInvoice()
      {
@@ -408,5 +404,53 @@ use Symfony\Component\Serializer\Annotation\Groups;
     public function getPayment()
     {
         return $this->payment;
+    }
+
+    /**
+     * Get Current status
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCurrentStatus()
+    {
+        $statusHistory = $this->getStatusHistory()->toArray();
+        usort($statusHistory, function($a, $b) {
+          return $b->getDateAdd()->getTimestamp() - $a->getDateAdd()->getTimestamp();
+        });
+        return $statusHistory[0];
+    }
+
+    /**
+     * Add statusHistory
+     *
+     * @param \OrderBundle\Entity\OrderHistory $statusHistory
+     *
+     * @return Order
+     */
+    public function addStatusHistory(\OrderBundle\Entity\OrderHistory $statusHistory)
+    {
+        $this->statusHistory[] = $statusHistory;
+
+        return $this;
+    }
+
+    /**
+     * Remove statusHistory
+     *
+     * @param \OrderBundle\Entity\OrderHistory $statusHistory
+     */
+    public function removeStatusHistory(\OrderBundle\Entity\OrderHistory $statusHistory)
+    {
+        $this->statusHistory->removeElement($statusHistory);
+    }
+
+    /**
+     * Get statusHistory
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStatusHistory()
+    {
+        return $this->statusHistory;
     }
 }

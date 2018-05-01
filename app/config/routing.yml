@@ -14,55 +14,9 @@ bemoove_appbundle:
     resource: "@BemooveAppBundle/Resources/config/routing.yml"
     prefix:   /
 
-create_order_from_cart:
-    resource: "@BemooveAppBundle/Action/CreateOrderFromCart.php"
+order:
+    resource: "@OrderBundle/Resources/config/routing.yml"
     prefix:   /
-    type:     annotation
-
-get_my_business:
-    resource: "@BemooveAppBundle/Action/GetMyBusiness.php"
-    prefix:   /
-    type:     annotation
-
-get_my_workouts:
-    resource: "@BemooveAppBundle/Action/GetMyWorkouts.php"
-    prefix:   /
-    type:     annotation
-
-get_my_coaches:
-    resource: "@BemooveAppBundle/Action/GetMyCoaches.php"
-    prefix:   /
-    type:     annotation
-
-get_my_current_cart:
-    resource: "@BemooveAppBundle/Action/GetMyCurrentCart.php"
-    prefix:   /
-    type:     annotation
-
-get_my_bank_account:
-    resource: "@BemooveAppBundle/Action/GetMyBankAccount.php"
-    prefix:   /
-    type:     annotation
-
-get_my_workout_address:
-    resource: "@BemooveAppBundle/Action/GetMyWorkoutAddress.php"
-    prefix:   /
-    type:     annotation
-
-get_bookable_workout_instance:
-    resource: "@BemooveAppBundle/Action/GetBookableWorkoutInstance.php"
-    prefix:   /
-    type:     annotation
-
-get_my_person:
-    resource: "@BemooveAppBundle/Action/GetMyPerson.php"
-    prefix:   /
-    type:     annotation
-
-get_my_reservations:
-    resource: "@BemooveAppBundle/Action/GetMyReservations.php"
-    prefix:   /
-    type:     annotation
 
 check_Billing_Mandate:
     resource: "@BemooveAppBundle/Action/CheckBillingMandate.php"

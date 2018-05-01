@@ -52,7 +52,23 @@ security:
         notsecure4:
             pattern: ^/carts
             methods: [POST]
-            security: false
+            provider: bemoove_sporty_account_provider
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+        notsecure5:
+            pattern:   ^/getMyCurrentCart
+            methods: [GET]
+            provider: bemoove_sporty_account_provider
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
 
         securedget:
             pattern:   ^/(accounts|businesses|getMy)

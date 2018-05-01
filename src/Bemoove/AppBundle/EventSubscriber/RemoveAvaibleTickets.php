@@ -13,32 +13,19 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
-use Bemoove\AppBundle\Entity\Order;
+use OrderBundle\Entity\Order;
 use Bemoove\AppBundle\Entity\Reservation;
 use Bemoove\AppBundle\Entity\WorkoutInstance;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Bemoove\AppBundle\Services\MyMail;
-use Bemoove\AppBundle\Services\MangoPayService;
-
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-
 final class RemoveAvaibleTickets implements EventSubscriberInterface
 {
-    private $mailer;
     private $encoderFactory;
     private $em;
-    private $jwtManager;
-    private $mangopay;
 
-    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em, JWTTokenManagerInterface $jwtManager, MyMail $mailer, MangoPayService $mangopay)
+    public function __construct(EncoderFactoryInterface $encoderFactory, EntityManagerInterface $em)
     {
-        $this->mangopay = $mangopay;
         $this->encoderFactory = $encoderFactory;
         $this->em = $em;
-        $this->jwtManager = $jwtManager;
-        $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
@@ -55,9 +42,6 @@ final class RemoveAvaibleTickets implements EventSubscriberInterface
         $order = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        dump($order);
-        dump($method);
-
         if (!$order instanceof Order || Request::METHOD_POST !== $method) {
             return;
         }
@@ -67,8 +51,6 @@ final class RemoveAvaibleTickets implements EventSubscriberInterface
         $workoutInstance = $reservation->getWorkoutInstance();
 
         $workoutInstance->addTicketBooked($reservation->getNbBooking());
-
-        dump($workoutInstance);
 
         $this->em->persist($workoutInstance);
         $this->em->flush();

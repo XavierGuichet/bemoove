@@ -1,14 +1,15 @@
 <?php
 
-namespace Bemoove\AppBundle\Services;
+namespace Bemoove\AppBundle\Services\MangoPay;
 
 
 use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
+use OrderBundle\Entity\Order;
 
 use MangoPay;
 
-class MangoPayService
+class ApiService
 {
     private $mangoPayApi;
 
@@ -64,6 +65,10 @@ class MangoPayService
         return $mangoUser;
      }
 
+     public function getNatural($mangoPayId) {
+       return $this->mangoPayApi->Users->GetNatural($mangoPayId);
+     }
+
      /**
       * Create Legal User
       * @return MangoPayUser $mangoUser
@@ -75,7 +80,7 @@ class MangoPayService
         $mangoUser = new \MangoPay\UserLegal();
 
         $mangoUser->Name = $business->getLegalName();
-        $mangoUser->Email = $business->getEmail();
+        $mangoUser->Email = $business->getMail();
         $mangoUser->LegalPersonType = 'BUSINESS';
 
         $legalRepresentative = $business->getLegalRepresentative();
@@ -98,10 +103,10 @@ class MangoPayService
           if(!$mangoPayId = $business->getMangoPayId()) {
             throw new \Exception("LegalUser doesn't exists", 1);
           }
-          $mangoUser = $this->mangoPayApi->GetLegal($mangoPayId);
+          $mangoUser = $this->mangoPayApi->Users->GetLegal($mangoPayId);
 
           $mangoUser->Name = $business->getLegalName();
-          $mangoUser->Email = $business->getEmail();
+          $mangoUser->Email = $business->getMail();
           $mangoUser->LegalPersonType = 'BUSINESS';
 
           $legalRepresentative = $business->getLegalRepresentative();
@@ -114,5 +119,72 @@ class MangoPayService
           $mangoUser = $this->mangoPayApi->Users->Update($mangoUser);
 
           return $mangoUser;
+       }
+
+       public function createWallet(\MangoPay\User $mangoUser) {
+         $wallet = new \MangoPay\Wallet();
+         $wallet->Owners = array($mangoUser->Id);
+         $wallet->Description = 'Sporty';
+         $wallet->Currency = 'EUR';
+
+         $mangoWallet = $this->mangoPayApi->Wallets->Create($wallet);
+
+         return $mangoWallet;
+       }
+
+       public function getWalletOfUser(\MangoPay\User $mangoUser) {
+         $mangoPayUserWallets = $this->mangoPayApi->Users->getWallets($mangoUser->Id);
+
+         if(count($mangoPayUserWallets) === 0) {
+           return $this->createWallet($mangoUser);
+         }
+
+         return $mangoPayUserWallets[0];
+       }
+
+       public function createCardWebPayIn(Order $order, $creditedWallet, $mangoUser) {
+         $webPayIn = new \MangoPay\PayIn();
+
+         $webPayIn->Tag = "Order ".$order->getOrderNumber();
+         //Who
+         $webPayIn->AuthorId = $mangoUser->Id;
+         $webPayIn->CreditedWalletId = $creditedWallet->Id;
+
+         //How Much
+         $webPayIn->DebitedFunds = new \MangoPay\Money();
+         $webPayIn->DebitedFunds->Currency = "EUR";
+         $webPayIn->DebitedFunds->Amount = (int) $order->getTotalAmountTaxIncl() * 100;
+
+         //How much take Bemoove
+         $webPayIn->Fees = new \MangoPay\Money();
+         $webPayIn->Fees->Currency = "EUR";
+         $webPayIn->Fees->Amount = 0;
+
+         //Where to go after
+         $webPayIn->ReturnURL = "http://localhost:3000/order/checkout/step/validation/".$order->getId();
+
+
+
+          $webPayIn->CardType = "CB_VISA_MASTERCARD";
+          $webPayIn->Culture = "EN";
+
+          $webPayIn->PaymentType = "CARD";
+          $webPayIn->PaymentDetails = new \MangoPay\PayInPaymentDetailsCard();
+          $webPayIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
+
+          $webPayIn->ExecutionType = "WEB";
+          $webPayIn->ExecutionDetails = new \MangoPay\PayInExecutionDetailsWeb();
+          $webPayIn->ExecutionDetails->ReturnURL = "http://localhost:3000/order/checkout/step/validation/".$order->getId();
+          $webPayIn->ExecutionDetails->CultureCode = "EN";
+
+          $result = $this->mangoPayApi->PayIns->Create($webPayIn);
+
+          return $result;
+       }
+
+       public function getPayIn($transaction_id) {
+         $payIn = $this->mangoPayApi->PayIns->Get($transaction_id);
+
+         return $payIn;
        }
 }

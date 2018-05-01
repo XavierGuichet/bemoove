@@ -1,19 +1,19 @@
 <?php
 
-namespace Bemoove\AppBundle\Entity;
+namespace OrderBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Payment
+ * Invoice
  *
  * @ApiResource()
- * @ORM\Table(name="payment")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\OrderRepository")
+ * @ORM\Table(name="invoice")
+ * @ORM\Entity(repositoryClass="OrderBundle\Repository\InvoiceRepository")
  */
-class Payment
+class Invoice
 {
     /**
      * @var int

@@ -1,0 +1,14 @@
+create_order_from_cart:
+    resource: "@OrderBundle/Action/CreateOrderFromCart.php"
+    prefix:   /
+    type:     annotation
+
+check_order_payment:
+    resource: "@OrderBundle/Action/CheckOrderPayment.php"
+    prefix:   /
+    type:     annotation
+
+get_my_current_cart:
+    resource: "@OrderBundle/Action/GetMyCurrentCart.php"
+    prefix:   /
+    type:     annotation

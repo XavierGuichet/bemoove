@@ -18,18 +18,26 @@ services:
       resource: '../../src/Bemoove/AppBundle/DataFixtures/ORM'
       tags: ['doctrine:fixtures.orm']
 
-    mymail:
+    OrderBundle\DataFixtures\ORM\:
+      resource: '../../src/OrderBundle/DataFixtures/ORM'
+      tags: ['doctrine:fixtures.orm']
+
+    Bemoove\AppBundle\Services\MyMail:
         class: Bemoove\AppBundle\Services\MyMail
         public: true
         arguments:
             $environment: '%kernel.environment%'
             $client_front_url: '%client_front_url%'
 
-    mangopay:
-        class: Bemoove\AppBundle\Services\MangoPayService
+    Bemoove\AppBundle\Services\MangoPay\ApiService:
+        class: Bemoove\AppBundle\Services\MangoPay\ApiService
         public: true
         arguments:
             $mangopay_tmp_path: '%mangopay_tmp_path%'
+
+    Bemoove\AppBundle\Services\MangoPay\ValidationService:
+        class: Bemoove\AppBundle\Services\MangoPay\ValidationService
+        public: true
 
     Bemoove\AppBundle\Doctrine\HideWorkoutInstanceExtension:
         tags:
@@ -41,6 +49,14 @@ services:
 
     Bemoove\AppBundle\Action\:
         resource: '../../src/Bemoove/AppBundle/Action'
+        public: true
+        tags: ['controller.service_arguments']
+
+    OrderBundle\EventSubscriber\:
+        resource: '../../src/OrderBundle/EventSubscriber'
+
+    OrderBundle\Action\:
+        resource: '../../src/OrderBundle/Action'
         public: true
         tags: ['controller.service_arguments']
 
