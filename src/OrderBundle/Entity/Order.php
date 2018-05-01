@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
+use OrderBundle\Entity\OrderHistory;
 
 /**
  * Order
@@ -414,7 +415,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function getCurrentStatus()
     {
         $statusHistory = $this->getStatusHistory()->toArray();
-        usort($statusHistory, function($a, $b) {
+        usort($statusHistory, function(OrderHistory $a, OrderHistory $b) {
           return $b->getDateAdd()->getTimestamp() - $a->getDateAdd()->getTimestamp();
         });
         return $statusHistory[0];
