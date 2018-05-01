@@ -31,7 +31,6 @@ class AuthenticationListener
      */
     public function onAuthenticationSuccess( InteractiveLoginEvent $event)
     {
-      dump('interactive login listener launched');
       $account = $this->securityTokenStorage->getToken()->getUser();
       if (!$account instanceof Account || true === $this->authorizationChecker->isGranted('ROLE_PARTNER')) {
           return;

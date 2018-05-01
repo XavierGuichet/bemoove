@@ -45,9 +45,6 @@ class CheckOrderPayment {
     // Ne fait rien de particulier
     $order_state_id = $order->getCurrentStatus()->getOrderState()->getId();
 
-    dump($order_state_id);
-    // dump($order_state_id);
-    // return $order;
     if($order_state_id === OrderStatus::PAYMENTACCEPTED ||
        $order_state_id === OrderStatus::DONE ||
        $order_state_id === OrderStatus::CANCELED ||
@@ -65,7 +62,6 @@ class CheckOrderPayment {
     }
     $transaction_id = $payment->getMangoIdTransaction();
     $mangoTransaction = $this->mangoPayService->getPayIn($transaction_id);
-    dump($mangoTransaction->Status);
 
     $orderStateRepository =  $this->em->getRepository('OrderBundle:OrderStatus');
     switch($mangoTransaction->Status) {

@@ -53,7 +53,6 @@ class BemooveSportyUserProvider implements UserProviderInterface
         $user = $this->findUser(array("email" => $userEmail));
         // if null just create new user and set it properties
         if (null === $user) {
-            var_dump("Sporty Provider");
             die();
             $email = $response->getEmail();
             $user = new User();

@@ -43,21 +43,15 @@ final class CartSubscriber implements EventSubscriberInterface
 
         $cart->setOriginIp($originIp);
 
-        dump($cart);
-
         $securityToken = $this->securityTokenStorage->getToken();
         if(!$securityToken) {
-          dump('no token');
           return;
         }
         $account = $securityToken->getUser();
-        dump($account);
         if (!$account instanceof Account) {
-            dump('no account');
             return;
         }
         $person = $account->getPerson();
         $cart->setMember($person);
-        dump($cart);
     }
 }

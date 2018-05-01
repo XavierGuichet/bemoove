@@ -44,7 +44,6 @@ final class WorkoutSubscriber implements EventSubscriberInterface
         if (!$object instanceof Workout || Request::METHOD_POST !== $method) {
             return;
         }
-        // var_dump($object);
 
         //Ajoute le coach a partir du token
         $account = $this->securityTokenStorage->getToken()->getUser();

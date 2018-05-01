@@ -47,7 +47,6 @@ class GetMyCurrentCart
       // -- utilisé par une commande en cours
       // -- abandonné volontairement
       $account = $this->securityTokenStorage->getToken()->getUser();
-      dump($account);
       $person = null;
       if ($account instanceOf Account) {
         $person = $account->getPerson();
@@ -61,8 +60,6 @@ class GetMyCurrentCart
 
       $orderRepo = $this->em->getRepository('OrderBundle:Order');
       $order = $orderRepo->findOneByCart($cart);
-      dump($cart);
-      dump($order);
       if($order === null) {
         return $cart;
       }
