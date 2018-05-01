@@ -9,7 +9,6 @@ use Bemoove\AppBundle\Entity\Business;
 use Bemoove\AppBundle\Entity\Person;
 use Bemoove\AppBundle\Entity\BankAccount;
 
-
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,10 +37,7 @@ class GetMyBankAccount
      * )
      * @Method("GET")
      */
-    public function __invoke($data) // API Platform retrieves the PHP entity using the data provider then (for POST and
-                                    // PUT method) deserializes user data in it. Then passes it to the action. Here $data
-                                    // is an instance of Book having the given ID. By convention, the action's parameter
-                                    // must be called $data.
+    public function __invoke($data)
     {
         $account = $this->securityTokenStorage->getToken()->getUser();
 
