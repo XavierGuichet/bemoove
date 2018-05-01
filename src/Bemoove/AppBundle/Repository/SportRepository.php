@@ -10,12 +10,4 @@ namespace Bemoove\AppBundle\Repository;
  */
 class SportRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function FindAllAsArray() {
-        $list = $this->findAll();
-        $res = array();
-        foreach($list as $sport) {
-            $res[$sport->getId()] = $sport->getName();
-        }
-        return $res;
-    }
 }
