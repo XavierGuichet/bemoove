@@ -31,11 +31,11 @@ final class CheckPartnerValidity implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => [['CheckPartnerValidity', EventPriorities::POST_WRITE]],
+            KernelEvents::VIEW => [['checkPartnerValidity', EventPriorities::POST_WRITE]],
         ];
     }
 
-    public function CheckPartnerValidity(GetResponseForControllerResultEvent $event)
+    public function checkPartnerValidity(GetResponseForControllerResultEvent $event)
     {
         $method = $event->getRequest()->getMethod();
         $object = $event->getControllerResult();
