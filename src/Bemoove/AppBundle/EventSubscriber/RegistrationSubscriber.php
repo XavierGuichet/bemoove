@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Bemoove\AppBundle\Entity\Workout;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
+
 use Doctrine\ORM\EntityManager;
 use Bemoove\AppBundle\Entity\Account;
 use Bemoove\AppBundle\Entity\RegistrationToken;

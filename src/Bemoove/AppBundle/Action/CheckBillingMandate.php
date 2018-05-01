@@ -5,6 +5,9 @@
 namespace Bemoove\AppBundle\Action;
 
 use Bemoove\AppBundle\Entity\BillingMandate;
+use Bemoove\AppBundle\Entity\Business;
+use Bemoove\AppBundle\Entity\Person;
+use Bemoove\AppBundle\Entity\Place\Address;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

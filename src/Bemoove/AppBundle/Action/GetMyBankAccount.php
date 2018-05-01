@@ -6,6 +6,7 @@ namespace Bemoove\AppBundle\Action;
 
 use Bemoove\AppBundle\Entity\Place\Address;
 use Bemoove\AppBundle\Entity\Business;
+use Bemoove\AppBundle\Entity\Person;
 use Bemoove\AppBundle\Entity\BankAccount;
 
 

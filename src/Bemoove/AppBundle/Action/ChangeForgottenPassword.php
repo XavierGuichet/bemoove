@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Bemoove\AppBundle\Services\MyMail;
