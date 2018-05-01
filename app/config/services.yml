@@ -45,7 +45,13 @@ services:
             - { name: api_platform.doctrine.orm.query_extension.item }
 
     Bemoove\AppBundle\EventSubscriber\:
-        resource: '../../src/Bemoove/AppBundle/EventSubscriber'
+      resource: '../../src/Bemoove/AppBundle/EventSubscriber'
+
+    Bemoove\AppBundle\EventSubscriber\ConvertImageSubscriber:
+        class: 'Bemoove\AppBundle\EventSubscriber\ConvertImageSubscriber'
+        public: true
+        arguments:
+          $app_front_url: '%app_front_url%'
 
     Bemoove\AppBundle\Action\:
         resource: '../../src/Bemoove/AppBundle/Action'

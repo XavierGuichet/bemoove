@@ -19,9 +19,11 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
 {
     const FILE_EXT = '.jpg';
     private $fs;
+    private $app_front_url;
 
-    public function __construct()
+    public function __construct(string $app_front_url)
     {
+      $this->app_front_url = $app_front_url;
     }
 
     public static function getSubscribedEvents()
@@ -98,11 +100,11 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
             $this->fs->copy($tmpFile,$folder."/".$fileName.self::FILE_EXT);
         } catch (IOExceptionInterface $e) {
             // TODO : add Logger
-            die("image copy failed : ".$e->getPath());
+            throw new \Exception("image copy failed", 1);
         }
 
         // private $name;
         $image->setName($fileName);
-        $image->setPath("https://".$_SERVER['HTTP_HOST']."/uploads/images/".$fileName.self::FILE_EXT);
+        $image->setPath($this->app_front_url."/uploads/images/".$fileName.self::FILE_EXT);
     }
 }
