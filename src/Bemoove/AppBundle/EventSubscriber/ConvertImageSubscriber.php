@@ -71,14 +71,14 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
             $tmpfile = $this->fs->tempnam($folder."tmp","tmp");
         } catch (IOExceptionInterface $e) {
             // TODO : add Logger
-            die("Tmp file creation failed");
+            throw new \Exception("Tmp file creation failed", 1);
         }
 
         try {
             $this->fs->dumpFile($tmpfile, base64_decode($data[1]));
         } catch (IOExceptionInterface $e) {
             // TODO : add Logger
-            die("file image dumping failed");
+            throw new \Exception("file image dumping failed", 1);
         }
 
         return $tmpfile;
@@ -92,7 +92,7 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
                 $this->fs->mkdir($folder, 0755);
             } catch (IOExceptionInterface $e) {
                 // TODO : add Logger
-                die("An error occurred while creating your directory at ".$e->getPath());
+                throw new \Exception("An error occurred while creating your directory at ".$e->getPath(), 1);
             }
         }
 
@@ -106,6 +106,6 @@ final class ConvertImageSubscriber implements EventSubscriberInterface
 
         // private $name;
         $image->setName($fileName);
-        $image->setPath("http://".$_SERVER['HTTP_HOST']."/uploads/images/".$fileName.self::FILE_EXT);
+        $image->setPath("https://".$_SERVER['HTTP_HOST']."/uploads/images/".$fileName.self::FILE_EXT);
     }
 }
