@@ -142,7 +142,7 @@ class ApiService
          return $mangoPayUserWallets[0];
        }
 
-       public function createCardWebPayIn(Order $order, $creditedWallet, $mangoUser) {
+       public function createCardWebPayIn(Order $order, \MangoPay\Wallet $creditedWallet, \MangoPay\User $mangoUser) {
          $webPayIn = new \MangoPay\PayIn();
 
          $webPayIn->Tag = "Order ".$order->getOrderNumber();
