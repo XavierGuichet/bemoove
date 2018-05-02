@@ -48,6 +48,9 @@ final class CartSubscriber implements EventSubscriberInterface
 
         // FIXME: work only for cart with one product, or same business products
         $products = $cart->getProducts();
+        if ($this->getProductAvailability($products) === false) {
+          throw new \Exception("Product not available", 1);
+        }
         if (count($products) > 0) {
           $business = $products[0]->getProduct()->getCoach()->getBusiness();
           $cart->setSeller($business);
@@ -69,5 +72,16 @@ final class CartSubscriber implements EventSubscriberInterface
       $person = $account->getPerson();
       $cart->setMember($person);
       return $cart;
+    }
+
+    private function getProductAvailability($products) {
+      $return = true;
+      dump($return);
+      foreach($products as $product) {
+        $nbTicketAvailable = $product->getProduct()->getNbTicketAvailable();
+        $return = $return && ($nbTicketAvailable >= $product->getQuantity());
+        dump($return);
+      }
+      return $return;
     }
 }
