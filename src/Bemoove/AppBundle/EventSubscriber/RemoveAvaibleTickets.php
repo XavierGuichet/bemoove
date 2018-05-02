@@ -36,20 +36,20 @@ final class RemoveAvaibleTickets implements EventSubscriberInterface
 
     public function removeAvaibleTickets(GetResponseForControllerResultEvent $event)
     {
-        $order = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
-
-        if (!$order instanceof Order || Request::METHOD_POST !== $method) {
-            return;
-        }
-
-        $reservation = $order->getReservation();
-
-        $workoutInstance = $reservation->getWorkoutInstance();
-
-        $workoutInstance->addTicketBooked($reservation->getNbBooking());
-
-        $this->em->persist($workoutInstance);
-        $this->em->flush();
+        // $order = $event->getControllerResult();
+        // $method = $event->getRequest()->getMethod();
+        //
+        // if (!$order instanceof Order || Request::METHOD_POST !== $method) {
+        //     return;
+        // }
+        //
+        // $reservation = $order->getReservation();
+        //
+        // $workoutInstance = $reservation->getWorkoutInstance();
+        //
+        // $workoutInstance->addTicketBooked($reservation->getNbBooking());
+        //
+        // $this->em->persist($workoutInstance);
+        // $this->em->flush();
     }
 }

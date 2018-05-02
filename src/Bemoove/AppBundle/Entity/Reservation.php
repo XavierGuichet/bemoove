@@ -30,10 +30,10 @@ class Reservation
 
     /**
      * @Groups({"reservation"})
-     * @ORM\ManyToOne(targetEntity="OrderBundle\Entity\Order")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="OrderBundle\Entity\Order", inversedBy="reservations")
+     * @ORM\JoinColumn(nullable=true)
      */
-    // private $order;
+    private $order;
 
     /**
      * @Groups({"reservation"})
@@ -143,31 +143,6 @@ class Reservation
         return $this->nbBooking;
     }
 
-
-    /**
-     * Set order
-     *
-     * @param string $order
-     *
-     * @return Reservation
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return string
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
     /**
      * Set workoutInstance
      *
@@ -238,5 +213,29 @@ class Reservation
     public function getUnitPriceTaxExcl()
     {
         return $this->unitPriceTaxExcl;
+    }
+
+    /**
+     * Set order
+     *
+     * @param \OrderBundle\Entity\Order $order
+     *
+     * @return Reservation
+     */
+    public function setOrder(\OrderBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \OrderBundle\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

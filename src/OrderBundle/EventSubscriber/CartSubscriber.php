@@ -43,15 +43,31 @@ final class CartSubscriber implements EventSubscriberInterface
 
         $cart->setOriginIp($originIp);
 
-        $securityToken = $this->securityTokenStorage->getToken();
-        if(!$securityToken) {
-          return;
+        $cart = $this->addMember($cart);
+
+
+        // FIXME: work only for cart with one product, or same business products
+        $products = $cart->getProducts();
+        if (count($products) > 0) {
+          $business = $products[0]->getProduct()->getCoach()->getBusiness();
+          $cart->setSeller($business);
         }
-        $account = $securityToken->getUser();
-        if (!$account instanceof Account) {
-            return;
-        }
-        $person = $account->getPerson();
-        $cart->setMember($person);
+    }
+
+    /*
+     * Associate Member to cart if it's a logged User
+     */
+    private function addMember(Cart $cart) {
+      $securityToken = $this->securityTokenStorage->getToken();
+      if(!$securityToken) {
+          return $cart;
+      }
+      $account = $securityToken->getUser();
+      if (!$account instanceof Account) {
+          return $cart;
+      }
+      $person = $account->getPerson();
+      $cart->setMember($person);
+      return $cart;
     }
 }

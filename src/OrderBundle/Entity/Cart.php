@@ -10,7 +10,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Cart
  *
  * @ApiResource(attributes={
- *          "normalization_context"={"groups"={"cart", "person", "full_workoutinstance", "coach", "business_cart", "workout"}}
+ *          "normalization_context"={"groups"={"cart", "person", "full_workoutinstance", "coach", "business_cart", "workout"}},
+ *          "denormalization_context"={"groups"={"cart"}}
  *  })
  * @ORM\Table(name="cart")
  * @ORM\Entity(repositoryClass="OrderBundle\Repository\CartRepository")
@@ -42,9 +43,15 @@ class Cart
 
     /**
      * @Groups({"cart"})
-     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\WorkoutInstance")
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\Business")
      */
-    private $workoutInstance;
+    private $seller;
+
+    /**
+     * @Groups({"cart"})
+     * @ORM\ManyToMany(targetEntity="OrderBundle\Entity\CartProduct", cascade="persist")
+     */
+    private $products;
 
     /**
      * @var \DateTime
@@ -55,12 +62,28 @@ class Cart
     private $dateAdd;
 
     /**
-     * @var int
+     * @var float
      *
      * @Groups({"cart"})
-     * @ORM\Column(name="nb_booking", type="smallint")
+     * @ORM\Column(name="total_amount_tax_incl", type="float")
      */
-    private $nbBooking;
+    private $totalAmountTaxIncl;
+
+    /**
+     * @var float
+     *
+     * @Groups({"cart"})
+     * @ORM\Column(name="total_amount_tax_excl", type="float")
+     */
+    private $totalAmountTaxExcl;
+
+    /**
+    * @var float
+    *
+    * @Groups({"cart"})
+    * @ORM\Column(name="tax_rate", type="float")
+    */
+    private $taxRate;
 
     /**
      * Constructor
@@ -68,6 +91,7 @@ class Cart
     public function __construct()
     {
         $this->setDateAdd(new \DateTime());
+        $this->taxRate = 0;
     }
 
     /**
@@ -105,30 +129,6 @@ class Cart
     }
 
     /**
-     * Set nbBooking
-     *
-     * @param integer $nbBooking
-     *
-     * @return Booking
-     */
-    public function setNbBooking($nbBooking)
-    {
-        $this->nbBooking = $nbBooking;
-
-        return $this;
-    }
-
-    /**
-     * Get nbBooking
-     *
-     * @return integer
-     */
-    public function getNbBooking()
-    {
-        return $this->nbBooking;
-    }
-
-    /**
      * Set member
      *
      * @param \Bemoove\AppBundle\Entity\Person $member
@@ -153,30 +153,6 @@ class Cart
     }
 
     /**
-     * Set workoutInstance
-     *
-     * @param \Bemoove\AppBundle\Entity\WorkoutInstance $workoutInstance
-     *
-     * @return Booking
-     */
-    public function setWorkoutInstance(\Bemoove\AppBundle\Entity\WorkoutInstance $workoutInstance = null)
-    {
-        $this->workoutInstance = $workoutInstance;
-
-        return $this;
-    }
-
-    /**
-     * Get workoutInstance
-     *
-     * @return \Bemoove\AppBundle\Entity\WorkoutInstance
-     */
-    public function getWorkoutInstance()
-    {
-        return $this->workoutInstance;
-    }
-
-    /**
      * Set originIp
      *
      * @param string $originIp
@@ -198,5 +174,153 @@ class Cart
     public function getOriginIp()
     {
         return $this->originIp;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \OrderBundle\Entity\CartProduct $product
+     *
+     * @return Cart
+     */
+    public function addProduct(\OrderBundle\Entity\CartProduct $product)
+    {
+        $this->products[] = $product;
+
+        $this->updateTotalAmounts();
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \OrderBundle\Entity\CartProduct $product
+     */
+    public function removeProduct(\OrderBundle\Entity\CartProduct $product)
+    {
+        $this->products->removeElement($product);
+        $this->updateTotalAmounts();
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    public function updateTotalAmounts() {
+      $totalAmountTaxIncl = 0;
+      foreach($this->products as $product) {
+        $totalAmountTaxIncl += $product->getProduct()->getWorkout()->getPrice() * $product->getQuantity();
+      }
+      $this->totalAmountTaxIncl = $totalAmountTaxIncl;
+      $this->totalAmountTaxExcl = $totalAmountTaxIncl / (1 + $this->taxRate / 100);
+
+      return $this;
+    }
+
+    /**
+     * Set totalAmountTaxIncl
+     *
+     * @param float $totalAmountTaxIncl
+     *
+     * @return Cart
+     */
+    public function setTotalAmountTaxIncl($totalAmountTaxIncl)
+    {
+        $this->totalAmountTaxIncl = $totalAmountTaxIncl;
+
+        return $this;
+    }
+
+    /**
+     * Get totalAmountTaxIncl
+     *
+     * @return float
+     */
+    public function getTotalAmountTaxIncl()
+    {
+        return $this->totalAmountTaxIncl;
+    }
+
+    /**
+     * Set totalAmountTaxExcl
+     *
+     * @param float $totalAmountTaxExcl
+     *
+     * @return Cart
+     */
+    public function setTotalAmountTaxExcl($totalAmountTaxExcl)
+    {
+        $this->totalAmountTaxExcl = $totalAmountTaxExcl;
+
+        return $this;
+    }
+
+    /**
+     * Get totalAmountTaxExcl
+     *
+     * @return float
+     */
+    public function getTotalAmountTaxExcl()
+    {
+        return $this->totalAmountTaxExcl;
+    }
+
+    /**
+     * Set taxRate
+     *
+     * @param float $taxRate
+     *
+     * @return Cart
+     */
+    public function setTaxRate($taxRate)
+    {
+        $this->taxRate = $taxRate;
+
+        $this->updateTotalAmounts();
+
+        return $this;
+    }
+
+    /**
+     * Get taxRate
+     *
+     * @return float
+     */
+    public function getTaxRate()
+    {
+        return $this->taxRate;
+    }
+
+    /**
+     * Set seller
+     *
+     * @param \Bemoove\AppBundle\Entity\Business $seller
+     *
+     * @return Cart
+     */
+    public function setSeller(\Bemoove\AppBundle\Entity\Business $seller = null)
+    {
+        $this->seller = $seller;
+
+        $this->setTaxRate($seller->getVatRate());
+
+        return $this;
+    }
+
+    /**
+     * Get seller
+     *
+     * @return \Bemoove\AppBundle\Entity\Business
+     */
+    public function getSeller()
+    {
+        return $this->seller;
     }
 }

@@ -48,17 +48,24 @@ class CreateOrderFromCart
       $account = $this->securityTokenStorage->getToken()->getUser();
       $cart = $data->getCart();
 
-      $order = $this->prepareOrderFromCart($cart);
+      // Prepare les reservations
+      // Ce qui va supprimer les places necessaire de la session de la séance
+      $reservations = $this->createReservationsFromCart($cart);
 
       // Ajout des produits à la commande
-      $reservation = $this->createReservationsFromCart($cart);
-      $order->setReservation($reservation);
+      $order = $this->prepareOrderFromCart($cart);
+      dump($reservations);
+      foreach($reservations as $reservation) {
+        dump('booking iteration');
+        dump($order->addReservation($reservation));
+      }
+      // dump($order);
 
       // Calcul du cout de la commande
       $order->updateOrderTotalAmounts();
-
       $this->em->persist($order);
       $this->em->flush();
+
 
 
       // This part should already be done.
@@ -99,7 +106,7 @@ class CreateOrderFromCart
       $order = new Order();
       $order->setCart($cart);
 
-      $seller = $cart->getWorkoutInstance()->getCoach()->getBusiness();
+      $seller = $cart->getSeller();
       $order->setSeller($seller);
       $order->setTaxRate($seller->getVatRate());
 
@@ -117,16 +124,26 @@ class CreateOrderFromCart
     }
 
     private function createReservationsFromCart(Cart $cart) {
-      $reservation = new Reservation();
+      $reservations = array();
+      foreach($cart->getProducts() as $cartProduct) {
+        $workoutInstance = $cartProduct->getProduct();
+        $quantity = $cartProduct->getQuantity();
+        // Check ticket are always available
+        if($workoutInstance->getNbTicketAvailable() < $quantity) {
+          throw new \Exception("Not enough Ticket avaible for this session", 1);
+        }
+        $workoutInstance->addTicketBooked($quantity);
+        $this->em->persist($workoutInstance);
 
-      $reservation->setPerson($cart->getMember());
-      $reservation->setWorkoutInstance($cart->getWorkoutInstance());
-      $reservation->setNbBooking($cart->getNbBooking());
-      $reservation->setUnitPriceTaxExcl($cart->getWorkoutInstance()->getWorkout()->getPrice());
+        $reservation = new Reservation();
+        $reservation->setPerson($cart->getMember());
+        $reservation->setWorkoutInstance($workoutInstance);
+        $reservation->setNbBooking($cartProduct->getQuantity());
+        $reservation->setUnitPriceTaxExcl($workoutInstance->getWorkout()->getPrice());
+        $this->em->persist($reservation);
+        array_push($reservations, $reservation);
+      }
 
-      $this->em->persist($reservation);
-      $this->em->flush();
-
-      return $reservation;
+      return $reservations;
     }
 }

@@ -106,10 +106,10 @@ use OrderBundle\Entity\OrderHistory;
 
      /**
       * @Groups({"order"})
-      * @ORM\OneToOne(targetEntity="Bemoove\AppBundle\Entity\Reservation")
+      * @ORM\OneToMany(targetEntity="Bemoove\AppBundle\Entity\Reservation", mappedBy="order")
       * @ORM\JoinColumn(nullable=true)
       */
-     private $reservation;
+     private $reservations;
 
      /**
       * Constructor
@@ -117,13 +117,18 @@ use OrderBundle\Entity\OrderHistory;
      public function __construct()
      {
          $this->statusHistory = new ArrayCollection();
+         $this->reservations = new ArrayCollection();
          $this->setOrderNumber(uniqid());
          $this->setOrderDate(new \DateTime());
      }
 
      public function updateOrderTotalAmounts() {
-       $reservationTotalTaxExcl = $this->reservation->getUnitPriceTaxExcl() * $this->reservation->getNbBooking();
-       $this->setTotalAmountTaxExcl($reservationTotalTaxExcl);
+       $totalAmountTaxExcl = 0;
+       dump($this);
+       foreach($this->reservations as $reservation) {
+         $totalAmountTaxExcl += $reservation->getUnitPriceTaxExcl() * $reservation->getNbBooking();
+       }
+       $this->setTotalAmountTaxExcl($totalAmountTaxExcl);
 
        return $this;
      }
@@ -312,16 +317,6 @@ use OrderBundle\Entity\OrderHistory;
      }
 
      /**
-      * Get reservation
-      *
-      * @return \Doctrine\Common\Collections\Collection
-      */
-     public function getReservation()
-     {
-         return $this->reservation;
-     }
-
-     /**
       * Set cart
       *
       * @param \OrderBundle\Entity\Cart $cart
@@ -367,20 +362,6 @@ use OrderBundle\Entity\OrderHistory;
      public function getInvoice()
      {
          return $this->invoice;
-     }
-
-     /**
-      * Set reservation
-      *
-      * @param \Bemoove\AppBundle\Entity\Reservation $reservation
-      *
-      * @return Order
-      */
-     public function setReservation(\Bemoove\AppBundle\Entity\Reservation $reservation = null)
-     {
-         $this->reservation = $reservation;
-
-         return $this;
      }
 
     /**
@@ -453,5 +434,40 @@ use OrderBundle\Entity\OrderHistory;
     public function getStatusHistory()
     {
         return $this->statusHistory;
+    }
+
+    /**
+     * Add reservation
+     *
+     * @param \Bemoove\AppBundle\Entity\Reservation $reservation
+     *
+     * @return Order
+     */
+    public function addReservation(\Bemoove\AppBundle\Entity\Reservation $reservation)
+    {
+      dump($reservation);
+        $this->reservations[] = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservation
+     *
+     * @param \Bemoove\AppBundle\Entity\Reservation $reservation
+     */
+    public function removeReservation(\Bemoove\AppBundle\Entity\Reservation $reservation)
+    {
+        $this->reservations->removeElement($reservation);
+    }
+
+    /**
+     * Get reservations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReservations()
+    {
+        return $this->reservations;
     }
 }
