@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "normalization_context"={"groups"={""}}
  *  })
  * @ORM\Table(name="billingmandate")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\BookingRepository")
+ * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\BillingMandateRepository")
  */
 class BillingMandate
 {

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "normalization_context"={"groups"={"reservation","person","workout","full_workoutinstance"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
  * @ORM\Table(name="reservation")
- * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\OrderRepository")
+ * @ORM\Entity(repositoryClass="Bemoove\AppBundle\Repository\ReservationRepository")
  */
 class Reservation
 {
