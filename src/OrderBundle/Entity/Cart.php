@@ -81,6 +81,14 @@ class Cart
     * @var float
     *
     * @Groups({"cart"})
+    * @ORM\Column(name="total_tax", type="float")
+    */
+    private $totalTax;
+
+    /**
+    * @var float
+    *
+    * @Groups({"cart"})
     * @ORM\Column(name="tax_rate", type="float")
     */
     private $taxRate;
@@ -215,12 +223,20 @@ class Cart
 
     public function updateTotalAmounts() {
       $totalAmountTaxIncl = 0;
+      $totalTaxAmount = 0;
+      $totalAmountTaxExcl = 0;
       foreach($this->products as $product) {
-        $totalAmountTaxIncl += $product->getProduct()->getWorkout()->getPrice() * $product->getQuantity();
+        $productPriceTaxIncl = $product->getProduct()->getWorkout()->getPrice();
+        $productPriceTax = round(($productPriceTaxIncl * $this->taxRate / 100),2, PHP_ROUND_HALF_UP);
+        $productPriceTaxExcl = $productPriceTaxIncl - $productPriceTax;
+
+        $totalAmountTaxIncl += $productPriceTaxIncl * $product->getQuantity();
+        $totalTaxAmount += $productPriceTax * $product->getQuantity();
+        $totalAmountTaxExcl += $productPriceTaxExcl * $product->getQuantity();
       }
       $this->totalAmountTaxIncl = $totalAmountTaxIncl;
-      $this->totalAmountTaxExcl = $totalAmountTaxIncl / (1 + $this->taxRate / 100);
-
+      $this->totalTax = $totalTaxAmount;
+      $this->totalAmountTaxExcl = $totalAmountTaxExcl;
       return $this;
     }
 
@@ -322,5 +338,29 @@ class Cart
     public function getSeller()
     {
         return $this->seller;
+    }
+
+    /**
+     * Set totalTax
+     *
+     * @param float $totalTax
+     *
+     * @return Cart
+     */
+    public function setTotalTax($totalTax)
+    {
+        $this->totalTax = $totalTax;
+
+        return $this;
+    }
+
+    /**
+     * Get totalTax
+     *
+     * @return float
+     */
+    public function getTotalTax()
+    {
+        return $this->totalTax;
     }
 }

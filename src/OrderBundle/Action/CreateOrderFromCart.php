@@ -139,7 +139,7 @@ class CreateOrderFromCart
         $reservation->setPerson($cart->getMember());
         $reservation->setWorkoutInstance($workoutInstance);
         $reservation->setNbBooking($cartProduct->getQuantity());
-        $reservation->setUnitPriceTaxExcl($workoutInstance->getWorkout()->getPrice());
+        $reservation->setUnitPriceTaxIncl($workoutInstance->getWorkout()->getPrice());
         $this->em->persist($reservation);
         array_push($reservations, $reservation);
       }

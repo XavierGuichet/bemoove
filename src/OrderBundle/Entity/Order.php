@@ -93,6 +93,14 @@ use OrderBundle\Entity\OrderHistory;
      * @var float
      *
      * @Groups({"order"})
+     * @ORM\Column(name="total_tax", type="float")
+     */
+     private $totalTax;
+
+     /**
+     * @var float
+     *
+     * @Groups({"order"})
      * @ORM\Column(name="tax_rate", type="float")
      */
      private $taxRate;
@@ -123,13 +131,21 @@ use OrderBundle\Entity\OrderHistory;
      }
 
      public function updateOrderTotalAmounts() {
+       $totalAmountTaxIncl = 0;
+       $totalTaxAmount = 0;
        $totalAmountTaxExcl = 0;
-       dump($this);
        foreach($this->reservations as $reservation) {
-         $totalAmountTaxExcl += $reservation->getUnitPriceTaxExcl() * $reservation->getNbBooking();
-       }
-       $this->setTotalAmountTaxExcl($totalAmountTaxExcl);
+         $productPriceTaxIncl = $reservation->getUnitPriceTaxIncl();
+         $productPriceTax = round(($productPriceTaxIncl * $this->taxRate / 100),2, PHP_ROUND_HALF_UP);
+         $productPriceTaxExcl = $productPriceTaxIncl - $productPriceTax;
 
+         $totalAmountTaxIncl += $productPriceTaxIncl * $reservation->getNbBooking();
+         $totalTaxAmount += $productPriceTax * $reservation->getNbBooking();
+         $totalAmountTaxExcl += $productPriceTaxExcl * $reservation->getNbBooking();
+       }
+       $this->totalAmountTaxIncl = $totalAmountTaxIncl;
+       $this->totalTax = $totalTaxAmount;
+       $this->totalAmountTaxExcl = $totalAmountTaxExcl;
        return $this;
      }
 
@@ -226,11 +242,6 @@ use OrderBundle\Entity\OrderHistory;
      {
          $this->totalAmountTaxExcl = $totalAmountTaxExcl;
 
-         if (!is_float($this->taxRate)) {
-           throw new \Exception("Tax Rate is not set", 1);
-         }
-         $totalAmountTaxIncl = $this->totalAmountTaxExcl * (1 + $this->taxRate / 100);
-         $this->totalAmountTaxIncl = $totalAmountTaxIncl;
          return $this;
      }
 
@@ -469,5 +480,29 @@ use OrderBundle\Entity\OrderHistory;
     public function getReservations()
     {
         return $this->reservations;
+    }
+
+    /**
+     * Set totalTax
+     *
+     * @param float $totalTax
+     *
+     * @return Order
+     */
+    public function setTotalTax($totalTax)
+    {
+        $this->totalTax = $totalTax;
+
+        return $this;
+    }
+
+    /**
+     * Get totalTax
+     *
+     * @return float
+     */
+    public function getTotalTax()
+    {
+        return $this->totalTax;
     }
 }

@@ -69,9 +69,9 @@ class Reservation
      * @var float
      *
      * @Groups({"reservation"})
-     * @ORM\Column(name="unit_price_tax_excl", type="float")
+     * @ORM\Column(name="unit_price_tax_incl", type="float")
      */
-    private $unitPriceTaxExcl;
+    private $unitPriceTaxIncl;
 
 
 
@@ -192,30 +192,6 @@ class Reservation
     }
 
     /**
-     * Set unitPriceTaxExcl
-     *
-     * @param float $unitPriceTaxExcl
-     *
-     * @return Reservation
-     */
-    public function setUnitPriceTaxExcl($unitPriceTaxExcl)
-    {
-        $this->unitPriceTaxExcl = $unitPriceTaxExcl;
-
-        return $this;
-    }
-
-    /**
-     * Get unitPriceTaxExcl
-     *
-     * @return float
-     */
-    public function getUnitPriceTaxExcl()
-    {
-        return $this->unitPriceTaxExcl;
-    }
-
-    /**
      * Set order
      *
      * @param \OrderBundle\Entity\Order $order
@@ -237,5 +213,29 @@ class Reservation
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set unitPriceTaxIncl
+     *
+     * @param float $unitPriceTaxIncl
+     *
+     * @return Reservation
+     */
+    public function setUnitPriceTaxIncl($unitPriceTaxIncl)
+    {
+        $this->unitPriceTaxIncl = $unitPriceTaxIncl;
+
+        return $this;
+    }
+
+    /**
+     * Get unitPriceTaxIncl
+     *
+     * @return float
+     */
+    public function getUnitPriceTaxIncl()
+    {
+        return $this->unitPriceTaxIncl;
     }
 }
