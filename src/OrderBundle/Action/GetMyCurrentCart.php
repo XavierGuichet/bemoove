@@ -56,7 +56,11 @@ class GetMyCurrentCart
       $originIp = $request->getClientIp();
 
       $CartRepo = $this->em->getRepository('OrderBundle:Cart');
+
       $cart = $CartRepo->findCurrentCart($originIp, $person);
+      if($cart === null && $person !== null) {
+        $cart = $CartRepo->findCurrentCart($originIp, null);
+      }
 
       $orderRepo = $this->em->getRepository('OrderBundle:Order');
       $order = $orderRepo->findOneByCart($cart);
