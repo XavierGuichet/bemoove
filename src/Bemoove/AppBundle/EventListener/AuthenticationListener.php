@@ -4,6 +4,8 @@
 namespace Bemoove\AppBundle\EventListener;
 
 use Bemoove\AppBundle\Entity\Account;
+use Bemoove\AppBundle\Entity\Person;
+use Bemoove\AppBundle\Entity\Place\Address;
 use OrderBundle\Entity\Cart;
 
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -31,6 +33,7 @@ class AuthenticationListener
      */
     public function onAuthenticationSuccess( InteractiveLoginEvent $event)
     {
+      dump('[onAuthenticationSuccess] Init');
       $account = $this->securityTokenStorage->getToken()->getUser();
       if (!$account instanceof Account || true === $this->authorizationChecker->isGranted('ROLE_PARTNER')) {
           return;
@@ -47,10 +50,40 @@ class AuthenticationListener
                         );
 
       if($cart) {
+        $this->checkAccountPerson($account);
         $cart->setMember($account->getPerson());
         $this->em->persist($cart);
         $this->em->flush();
+        dump('[onAuthenticationSuccess] Cart flush');
       }
+    }
+
+    /**
+     * This method is a duplicate of a part of GetMyPerson.php
+     * A service & a factory would be more appropriate
+     */
+    private function checkAccountPerson($account) {
+      $person = $account->getPerson();
+
+      if($person) {
+          if(!$person->getAddress()){
+              $address = new Address();
+              $this->em->persist($address);
+              $person->setAddress($address);
+              $this->em->persist($person);
+              $this->em->flush();
+          }
+          return;
+      }
+
+      $address = new Address();
+      $this->em->persist($address);
+      $person = new Person();
+      $person->setAddress($address);
+      $this->em->persist($person);
+      $account->setPerson($person);
+      $this->em->persist($account);
+      $this->em->flush();
     }
 
 }
