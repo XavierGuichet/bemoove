@@ -62,6 +62,9 @@ services:
     OrderBundle\EventSubscriber\:
         resource: '../../src/OrderBundle/EventSubscriber'
 
+    OrderBundle\Services\:
+        resource: '../../src/OrderBundle/Services'
+
     OrderBundle\Action\:
         resource: '../../src/OrderBundle/Action'
         public: true
