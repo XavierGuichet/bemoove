@@ -68,8 +68,7 @@ class GetMyCurrentCart
         return $cart;
       }
 
-      return 'no current cart';
-
+      return null;
   }
 
 }
