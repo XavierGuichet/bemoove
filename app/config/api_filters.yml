@@ -30,6 +30,10 @@ services:
         parent: 'api_platform.doctrine.orm.search_filter'
         arguments: [ { person.id: 'exact' }]
         tags: [ { name: 'api_platform.filter', id: 'reservation.person_filter' }]
+    reservation.state_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { state.id: 'exact' }]
+        tags: [ { name: 'api_platform.filter', id: 'reservation.state_filter' }]
     reservation.futureworkoutinstance_filter:
         parent: 'api_platform.doctrine.orm.date_filter'
         arguments: [ { workoutInstance.startdate: ~ }]

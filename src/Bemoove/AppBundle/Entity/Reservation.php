@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Reservation
  *
  * @ApiResource(attributes={
- *          "filters"={"reservation.futureworkoutinstance", "reservation.person_filter", "reservation.workoutinstance"},
+ *          "filters"={"reservation.futureworkoutinstance", "reservation.state_filter", "reservation.person_filter", "reservation.workoutinstance"},
  *          "normalization_context"={"groups"={"reservation","person","workout","full_workoutinstance"}},
  *          "denormalization_context"={"groups"={"post_person"}},})
  * @ORM\Table(name="reservation")
@@ -72,6 +72,13 @@ class Reservation
      * @ORM\Column(name="unit_price_tax_incl", type="float")
      */
     private $unitPriceTaxIncl;
+
+    /**
+     * @Groups({"reservation"})
+     * @ORM\ManyToOne(targetEntity="Bemoove\AppBundle\Entity\ReservationState")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $state;
 
 
 
@@ -237,5 +244,29 @@ class Reservation
     public function getUnitPriceTaxIncl()
     {
         return $this->unitPriceTaxIncl;
+    }
+
+    /**
+     * Set state
+     *
+     * @param \Bemoove\AppBundle\Entity\ReservationState $state
+     *
+     * @return Reservation
+     */
+    public function setState(\Bemoove\AppBundle\Entity\ReservationState $state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return \Bemoove\AppBundle\Entity\ReservationState
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 }
