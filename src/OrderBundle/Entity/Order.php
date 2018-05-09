@@ -456,7 +456,6 @@ use OrderBundle\Entity\OrderHistory;
      */
     public function addReservation(\Bemoove\AppBundle\Entity\Reservation $reservation)
     {
-      dump($reservation);
         $this->reservations[] = $reservation;
 
         return $this;
