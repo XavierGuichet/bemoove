@@ -9,6 +9,9 @@ use OrderBundle\Entity\OrderHistory;
 use OrderBundle\Entity\OrderStatus;
 use OrderBundle\Entity\Payment;
 use Bemoove\AppBundle\Entity\Reservation;
+use Bemoove\AppBundle\Entity\ReservationState;
+
+use OrderBundle\Services\OrderManager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -16,6 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
+
+
+use Bemoove\AppBundle\Services\MangoPay\ApiService as MangoPayApiService;
+use \Bemoove\AppBundle\Services\MangoPay\ValidationService as MangoPayValidationService;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,14 +32,16 @@ class CreateOrderFromCart
     private $em;
     private $mangoPayService;
     private $mangoPayValidation;
+    private $orderManager;
 
-    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ValidationService $mangoPayValidation, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangoPayService)
+    public function __construct(TokenStorageInterface $securityTokenStorage, EntityManagerInterface $em, MangoPayValidationService $mangoPayValidation, MangoPayApiService $mangoPayService, OrderManager $orderManager)
     {
         $this->securityTokenStorage = $securityTokenStorage;
         $this->em = $em;
 
         $this->mangoPayService = $mangoPayService;
         $this->mangoPayValidation = $mangoPayValidation;
+        $this->orderManager = $orderManager;
     }
 
     /**
@@ -54,19 +63,16 @@ class CreateOrderFromCart
 
       // Ajout des produits à la commande
       $order = $this->prepareOrderFromCart($cart);
-      dump($reservations);
       foreach($reservations as $reservation) {
-        dump('booking iteration');
-        dump($order->addReservation($reservation));
+        $order->addReservation($reservation);
+        $reservation->setOrder($order);
+        $this->em->persist($reservation);
       }
-      // dump($order);
 
       // Calcul du cout de la commande
       $order->updateOrderTotalAmounts();
       $this->em->persist($order);
       $this->em->flush();
-
-
 
       // This part should already be done.
       // It should only require a quick checking on second part (else)
@@ -88,12 +94,12 @@ class CreateOrderFromCart
       // END
 
       $payIn = $this->mangoPayService->createCardWebPayIn($order, $mangoPayUserWallet, $mangoPayUser);
-      $payment = new Payment();
-      $payment->setMangoIdTransaction($payIn->Id);
-      $payment->setTransactionRedirectUrl($payIn->ExecutionDetails->RedirectURL);
       if($payIn->Status !== "CREATED") {
         throw new \Exception("PayIn creation failed", 1);
       }
+      $payment = new Payment();
+      $payment->setMangoIdTransaction($payIn->Id);
+      $payment->setTransactionRedirectUrl($payIn->ExecutionDetails->RedirectURL);
       $payment->setStatus($payIn->Status);
       $this->em->persist($payment);
       $order->setPayment($payment);
@@ -113,12 +119,7 @@ class CreateOrderFromCart
       $customer = $cart->getMember();
       $order->setCustomer($customer);
 
-      $orderStateRepository =  $this->em->getRepository('OrderBundle:OrderStatus');
-      $newOrderStatus = $orderStateRepository->find(OrderStatus::WAITINGPAYMENT);
-      $orderHistory = new OrderHistory();
-      $orderHistory->setOrderState($newOrderStatus);
-      $orderHistory->setOrder($order);
-      $order->addStatusHistory($orderHistory);
+      $order = $this->orderManager->setNewOrderState($order, OrderStatus::WAITINGPAYMENT);
 
       return $order;
     }
@@ -135,7 +136,11 @@ class CreateOrderFromCart
         $workoutInstance->addTicketBooked($quantity);
         $this->em->persist($workoutInstance);
 
+        $reservationStateRepository =  $this->em->getRepository('BemooveAppBundle:ReservationState');
+        $newReservationState = $reservationStateRepository->find(ReservationState::PENDING);
+
         $reservation = new Reservation();
+        $reservation->setState($newReservationState);
         $reservation->setPerson($cart->getMember());
         $reservation->setWorkoutInstance($workoutInstance);
         $reservation->setNbBooking($cartProduct->getQuantity());

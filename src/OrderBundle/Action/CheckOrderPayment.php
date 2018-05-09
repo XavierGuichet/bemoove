@@ -3,23 +3,28 @@
 namespace OrderBundle\Action;
 
 use OrderBundle\Entity\Order;
-use OrderBundle\Entity\OrderHistory;
 use OrderBundle\Entity\OrderStatus;
 use OrderBundle\Entity\Payment;
+use Bemoove\AppBundle\Entity\Reservation;
+use Bemoove\AppBundle\Entity\ReservationState;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
+
+use OrderBundle\Services\OrderManager;
 
 use Doctrine\ORM\EntityManagerInterface;
 
 class CheckOrderPayment {
   private $em;
   private $mangoPayService;
+  private $orderManager;
 
-  public function __construct(EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangoPayService)
+  public function __construct(EntityManagerInterface $em, \Bemoove\AppBundle\Services\MangoPay\ApiService $mangoPayService, \OrderBundle\Services\OrderManager $orderManager)
   {
       $this->em = $em;
       $this->mangoPayService = $mangoPayService;
+      $this->orderManager = $orderManager;
   }
 
   /**
@@ -57,47 +62,51 @@ class CheckOrderPayment {
     $transaction_id = $payment->getMangoIdTransaction();
     $mangoTransaction = $this->mangoPayService->getPayIn($transaction_id);
 
-    $orderStateRepository =  $this->em->getRepository('OrderBundle:OrderStatus');
+    $payment->setStatus($mangoTransaction->Status);
+    $this->em->persist($payment);
+
+    $reservationStateRepository =  $this->em->getRepository('BemooveAppBundle:ReservationState');
     switch($mangoTransaction->Status) {
       // La transaction est en attente, si ce n'est pas le cas dans l'historique de la commande
       // C'est qu'une nouvelle transaction a du être lancé pour la commande
       // Sinon la commande est dans l'attente que l'utilisateurs paye et nous lui reproposerons le lien de payment
       case 'CREATED':
           if($order_state_id !== OrderStatus::WAITINGPAYMENT) {
-              $newOrderStatus = $orderStateRepository->find(OrderStatus::WAITINGPAYMENT);
-              $orderHistory = new OrderHistory();
-              $orderHistory->setOrderState($newOrderStatus);
-              $orderHistory->setOrder($order);
-              $this->em->persist($orderHistory);
-              $order->addStatusHistory($orderHistory);
+              $order = $this->orderManager->setNewOrderState($order, OrderStatus::WAITINGPAYMENT);
               $this->em->persist($order);
+
+              $reservationState = $reservationStateRepository->find(ReservationState::PENDING);
+              $reservations = $order->getReservations();
+              foreach($reservations as $reservation) {
+                $reservation->setState($reservationState);
+                $this->em->persist($reservation);
+              }
               $this->em->flush();
           }
       break;
       case 'SUCCEEDED':
-          $newOrderStatus = $orderStateRepository->find(OrderStatus::PAYMENTACCEPTED);
-          $orderHistory = new OrderHistory();
-          $orderHistory->setOrderState($newOrderStatus);
-          $orderHistory->setOrder($order);
-          $this->em->persist($orderHistory);
-
-          $order->addStatusHistory($orderHistory);
+          $order = $this->orderManager->setNewOrderState($order, OrderStatus::PAYMENTACCEPTED);
           $this->em->persist($order);
+
+          $reservationState = $reservationStateRepository->find(ReservationState::VALID);
+          $reservations = $order->getReservations();
+          foreach($reservations as $reservation) {
+            $reservation->setState($reservationState);
+            $this->em->persist($reservation);
+          }
 
           $this->em->flush();
-
-          //also need to validate reservations
       break;
       case 'FAILED':
-          $newOrderStatus = $orderStateRepository->find(OrderStatus::PAYMENTERROR);
-          $orderHistory = new OrderHistory();
-          $orderHistory->setOrderState($newOrderStatus);
-          $orderHistory->setOrder($order);
-          $this->em->persist($orderHistory);
-
-          $order->addStatusHistory($orderHistory);
+          $order = $this->orderManager->setNewOrderState($order, OrderStatus::PAYMENTERROR);
           $this->em->persist($order);
 
+          $reservationState = $reservationStateRepository->find(ReservationState::PENDING);
+          $reservations = $order->getReservations();
+          foreach($reservations as $reservation) {
+            $reservation->setState($reservationState);
+            $this->em->persist($reservation);
+          }
           $this->em->flush();
       break;
       default:
