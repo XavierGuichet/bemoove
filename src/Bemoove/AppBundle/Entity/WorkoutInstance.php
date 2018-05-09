@@ -154,9 +154,9 @@ class WorkoutInstance
     }
 
     /**
-     * Set nbTicketBooked
+     * addTicketBooked
      *
-     * @param integer $nbTicketBooked
+     * @param integer $nbTicketToAdd
      *
      * @return WorkoutInstance
      */
@@ -171,6 +171,26 @@ class WorkoutInstance
 
         if($this->nbTicketAvailable === 0) {
           $this->soldOut = true;
+        }
+
+        return $this;
+    }
+    /**
+     * removeTicketBooked
+     *
+     * @param integer $nbTicketToRemove
+     *
+     * @return WorkoutInstance
+     */
+    public function removeTicketBooked($nbTicketToRemove)
+    {
+        $this->nbTicketBooked -= $nbTicketToRemove;
+        $this->nbTicketAvailable += $nbTicketToRemove;
+
+        if($this->nbTicketAvailable === 0) {
+          $this->soldOut = true;
+        } else {
+          $this->soldOut = false;
         }
 
         return $this;
