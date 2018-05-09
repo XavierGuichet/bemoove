@@ -76,11 +76,9 @@ final class CartSubscriber implements EventSubscriberInterface
 
     private function getProductAvailability($products) {
       $return = true;
-      dump($return);
       foreach($products as $product) {
         $nbTicketAvailable = $product->getProduct()->getNbTicketAvailable();
         $return = $return && ($nbTicketAvailable >= $product->getQuantity());
-        dump($return);
       }
       return $return;
     }
