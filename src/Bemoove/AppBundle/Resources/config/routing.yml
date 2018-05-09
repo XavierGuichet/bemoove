@@ -37,3 +37,8 @@ get_my_reservations:
     resource: "@BemooveAppBundle/Action/GetMyReservations.php"
     prefix:   /
     type:     annotation
+
+cancel_reservation:
+    resource: "@BemooveAppBundle/Action/CancelReservation.php"
+    prefix:   /
+    type:     annotation

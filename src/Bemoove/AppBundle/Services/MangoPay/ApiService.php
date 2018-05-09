@@ -189,4 +189,21 @@ class ApiService
 
          return $payIn;
        }
+
+       /**
+        * undocumented function summary
+        *
+        * Undocumented function long description
+        *
+        * @param type var Description
+        * @return return type
+        */
+       public function createPayInRefundFor($mangoTransactionId, $mangoUserId)
+       {
+         $refund = new \MangoPay\Refund();
+         $refund->AuthorId = $mangoUserId;
+
+         $result = $this->mangoPayApi->PayIns->CreateRefund($mangoTransactionId, $refund);
+         return $result;
+       }
 }

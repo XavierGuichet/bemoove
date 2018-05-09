@@ -125,6 +125,8 @@ Bemoove\AppBundle\Entity\Reservation:
     itemOperations:
         get:
             method: 'GET'
+        cancelReservation:
+            route_name: 'cancelReservation'
 
 Bemoove\AppBundle\Entity\RegistrationToken:
     collectionOperations:
